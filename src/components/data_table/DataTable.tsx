@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { Endpoint, get } from '../api'
+import { useAppDispatch, useAppSelector } from '../../store/store'
+import { getTableData } from '../GoLens.actions'
+import { dataSelector } from '../GoLens.selector'
 
 const columns: GridColDef[] = [
   { field: 'item', headerName: 'Item', width: 70 },
@@ -8,11 +10,15 @@ const columns: GridColDef[] = [
   { field: 'coverage', headerName: 'Coverage %', width: 130 },
 ]
 
-export const DataTable = () => {
-  const [data, setData] = useState<any[]>()
+export const DataTable: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const data = useAppSelector(dataSelector)
+
   useEffect(() => {
-    get(Endpoint.GetDirectories).then((resp) => setData(resp.directories))
+    dispatch(getTableData())
   }, [])
+
+  console.log(data)
 
   return (
     <div style={{ height: 'auto', width: 700, backgroundColor: 'white' }}>
