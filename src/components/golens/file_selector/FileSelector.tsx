@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAppDispatch } from '../../store/store'
+import { useAppDispatch } from '../../../store/store'
 import { createDirectory } from '../GoLens.actions'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
-import { AppThunk } from '../store/store'
-import { Endpoint, get, post } from '../utils/api'
+import { AppThunk } from '../../store/store'
+import { Endpoint, get, post } from '../../utils/api'
 
 export const getTableDataLoading = createAction<string>('GET_DATA_TABLE_LOADING')
 export const getTableDataFailed = createAction<string>('GET_DATA_TABLE_FAILED')

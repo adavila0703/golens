@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../store/store'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { getTableData, sortByCoverage, sortById, sortByName } from '../GoLens.actions'
 import { dataSelector, isCoverageSortAscSelector, isIdSortAscSelector, isNameSortAscSelector } from '../GoLens.selector'
 import './DataTable.css'
@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 export const DataTable: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -17,6 +18,7 @@ export const DataTable: React.FC = () => {
   const [idClicked, setIdClick] = useState(true)
   const [nameClicked, setNameClick] = useState(false)
   const [coverageClicked, setCoverageClick] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getTableData())
@@ -92,11 +94,11 @@ export const DataTable: React.FC = () => {
           </th>
           <th>Delete</th>
         </tr>
-        {tableData.map((data) => {
+        {tableData.map((data: any) => {
           return (
             <tr>
               <td>{data.item}</td>
-              <td className="row-hover" onClick={() => console.log(data.id)}>
+              <td className="row-hover" onClick={() => navigate(`/repo-details/${data.id}`)}>
                 {data.coverageName}
               </td>
               <td className="table-row-container">

@@ -1,7 +1,7 @@
 import { configureStore, Action, combineReducers } from '@reduxjs/toolkit'
 import thunk, { ThunkAction, ThunkDispatch, ThunkMiddleware } from 'redux-thunk'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
-import { IGoLensState, goLensReducer } from '../components/GoLens.reducer'
+import { IGoLensState, goLensReducer } from '../components/golens/GoLens.reducer'
 
 export interface IAppReducerState {
   goLensState: IGoLensState

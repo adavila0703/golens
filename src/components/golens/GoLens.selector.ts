@@ -1,4 +1,4 @@
-import { IAppReducerState } from '../store/store'
+import { IAppReducerState } from '../../store/store'
 
 export const dataSelector = (state: IAppReducerState) => state.goLensState.data
 export const isIdSortAscSelector = (state: IAppReducerState) => state.goLensState.idSortAsc
