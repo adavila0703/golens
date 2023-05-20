@@ -22,3 +22,7 @@ export const createDirectory =
     }
     post(body, Endpoint.CreateDirectory).then(() => dispatch(getTableData()))
   }
+
+export const sortById = createAction('SORT_BY_ID')
+export const sortByName = createAction('SORT_BY_NAME')
+export const sortByCoverage = createAction('SORT_BY_COVERAGE')

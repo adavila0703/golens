@@ -1,22 +1,14 @@
 .table-container {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
+  font-size: x-large;
+}
+
+.table-row-container {
   position: relative;
-  height: 30px;
+  height: 10px;
   background-color: black;
   z-index: 0;
   border-color: lightgray;
-  border-radius: 50px;
-}
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  font-weight: bold;
+  border-radius: 25px;
 }
 
 .filler {
@@ -26,6 +18,25 @@
   height: 100%;
   z-index: -1;
   animation: fillAnimation 1s ease-in-out forwards;
+  border-radius: 25px;
+}
+
+.row-hover:hover {
+  background-color: white;
+  cursor: pointer;
+  z-index: 2;
+  color: black;
+}
+
+.table-header-row {
+  cursor: pointer;
+}
+
+.table-header-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes fillAnimation {
