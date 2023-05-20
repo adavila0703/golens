@@ -2,12 +2,12 @@ import { createReducer } from '@reduxjs/toolkit'
 import { getTableDataCompleted } from './GoLens.actions'
 
 export interface IGoLensState {
-  data: any
+  data: any[]
 }
 
 export const getInitialGoLensState = (): IGoLensState => {
   return {
-    data: {},
+    data: [],
   }
 }
 

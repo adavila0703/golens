@@ -1,0 +1,35 @@
+.table-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  height: 30px;
+  background-color: black;
+  z-index: 0;
+  border-color: lightgray;
+  border-radius: 50px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  font-weight: bold;
+}
+
+.filler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: -1;
+  animation: fillAnimation 1s ease-in-out forwards;
+}
+
+@keyframes fillAnimation {
+  0% {
+    width: 0;
+  }
+}
