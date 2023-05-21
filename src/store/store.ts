@@ -1,14 +1,17 @@
 import { configureStore, Action, combineReducers } from '@reduxjs/toolkit'
 import thunk, { ThunkAction, ThunkDispatch, ThunkMiddleware } from 'redux-thunk'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
-import { IGoLensState, goLensReducer } from '../components/GoLens.reducer'
+import { IGoLensState, goLensReducer } from '../components/golens/GoLens.reducer'
+import { IRepoDetailsState, repoDetailsReducer } from '../components/package_coverage/PackageCoverage.reducer'
 
 export interface IAppReducerState {
   goLensState: IGoLensState
+  repoDetailsState: IRepoDetailsState
 }
 
 export const appReducer = combineReducers({
   goLensState: goLensReducer,
+  repoDetailsState: repoDetailsReducer,
 })
 
 const rootReducer = (state: any, action: any): any => appReducer(state, action)

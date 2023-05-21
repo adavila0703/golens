@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
-import { AppThunk } from '../store/store'
-import { Endpoint, get, post } from '../utils/api'
+import { AppThunk } from '../../store/store'
+import { Endpoint, get, post } from '../../utils/api'
 
 export const getTableDataLoading = createAction<string>('GET_DATA_TABLE_LOADING')
 export const getTableDataFailed = createAction<string>('GET_DATA_TABLE_FAILED')
@@ -22,3 +22,7 @@ export const createDirectory =
     }
     post(body, Endpoint.CreateDirectory).then(() => dispatch(getTableData()))
   }
+
+export const sortById = createAction('SORT_BY_ID')
+export const sortByName = createAction('SORT_BY_NAME')
+export const sortByCoverage = createAction('SORT_BY_COVERAGE')
