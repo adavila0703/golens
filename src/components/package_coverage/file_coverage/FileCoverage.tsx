@@ -7,7 +7,7 @@ import { Button } from '@mui/material'
 import '../PackageCoverage.css'
 
 export const FileCoverage = () => {
-  const { packageName } = useParams()
+  const { id, packageName } = useParams()
   const fileCoverage = useAppSelector(fileCoverageSelector)
   const navigate = useNavigate()
 
@@ -57,7 +57,10 @@ export const FileCoverage = () => {
           tableData.map((data: any) => {
             return (
               <tr>
-                <td className="row-hover" onClick={() => console.log('hello')}>
+                <td
+                  className="row-hover"
+                  onClick={() => navigate(`/repo-details/${id}/${packageName}/${data.fileName}`)}
+                >
                   {data.fileName}
                 </td>
                 <td className="table-row-container">
