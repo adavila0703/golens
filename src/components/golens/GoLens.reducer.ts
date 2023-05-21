@@ -21,7 +21,6 @@ export const goLensReducer = createReducer(getInitialGoLensState(), (builder) =>
   builder
     .addCase(getTableDataCompleted, (state, { payload }) => {
       state.data = payload
-      console.log(state.data)
     })
     .addCase(sortById, (state) => {
       const sortedArray = Array.from(state.data)

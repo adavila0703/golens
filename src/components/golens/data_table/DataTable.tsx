@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { getBarColor } from '../../../utils/utils'
 
 export const DataTable: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -23,18 +24,6 @@ export const DataTable: React.FC = () => {
   useEffect(() => {
     dispatch(getTableData())
   }, [])
-
-  const getBarColor = (coverage: number): string => {
-    if (coverage >= 0 && coverage < 79) {
-      return 'red'
-    } else if (coverage >= 80 && coverage < 89) {
-      return 'yellow'
-    } else if (coverage >= 90 && coverage <= 100) {
-      return 'green'
-    }
-
-    return ''
-  }
 
   const clickId = () => {
     dispatch(sortById())
