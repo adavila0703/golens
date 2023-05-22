@@ -1,7 +1,8 @@
 export enum Endpoint {
   GetDirectories = 'api/directory/GetDirectories',
   CreateDirectory = 'api/directory/CreateDirectory',
-  GetRepoCoverage = 'api/directory/GetRepoCoverage',
+  GetPackageCoverage = 'api/directory/GetPackageCoverage',
+  GetFileCoverage = 'api/directory/GetFileCoverage',
   GetHtmlContents = 'api/directory/GetHtmlContents',
 }
 

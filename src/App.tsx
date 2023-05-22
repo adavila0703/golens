@@ -1,9 +1,9 @@
-import './App.css'
 import { GoLens } from './components/golens/GoLens'
 import { Routes, Route, Outlet, Link } from 'react-router-dom'
 import { RepoDetails } from './components/package_coverage/PackageCoverage'
-import { FileCoverage } from './components/package_coverage/file_coverage/FileCoverage'
+import { FileCoverage } from './components/file_coverage/FileCoverage'
 import { HtmlContent } from './components/html_content/HtmlContent'
+import './App.css'
 
 function App() {
   return (

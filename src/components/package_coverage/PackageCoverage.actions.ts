@@ -10,7 +10,7 @@ export const getRepoDetails =
   (id: string): AppThunk =>
   async (dispatch) => {
     const body = {
-      id: id,
+      id,
     }
-    post(body, Endpoint.GetRepoCoverage).then((resp) => dispatch(getRepoDetailsCompleted(resp)))
+    post(body, Endpoint.GetPackageCoverage).then((resp) => dispatch(getRepoDetailsCompleted(resp)))
   }

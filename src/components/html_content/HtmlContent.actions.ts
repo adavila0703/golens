@@ -11,7 +11,7 @@ export const getHtmlContent =
   async (dispatch) => {
     const body = {
       repoId: id,
-      fileName: fileName,
+      fileName,
     }
-    post(body, Endpoint.GetHtmlContents).then((resp) => dispatch(getHtmlContentCompleted(resp.htmlContent)))
+    post(body, Endpoint.GetHtmlContents).then((resp) => dispatch(getHtmlContentCompleted(resp)))
   }

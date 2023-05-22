@@ -4,9 +4,9 @@ import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getRepoDetails } from './PackageCoverage.actions'
 import { repoDetailsDataSelector } from './PackageCoverage.selector'
 import { getBarColor } from '../../utils/utils'
-import './PackageCoverage.css'
 import { ArrowBack } from '@mui/icons-material'
 import { Button } from '@mui/material'
+// import './PackageCoverage.css'
 
 export const RepoDetails = () => {
   const { id } = useParams()
@@ -33,7 +33,7 @@ export const RepoDetails = () => {
   }
 
   return (
-    <div style={{ display: 'flex', gap: 15, flexDirection: 'column', width: '70rem' }}>
+    <div className="root-content">
       <div className="back-button-container">
         <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate('/')}>
           Back
