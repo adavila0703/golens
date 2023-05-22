@@ -1,25 +1,28 @@
+import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useAppSelector } from '../../../store/store'
-import { fileCoverageSelector } from '../PackageCoverage.selector'
-import { getBarColor } from '../../../utils/utils'
+import { useAppDispatch, useAppSelector } from '../../store/store'
+import { getBarColor } from '../../utils/utils'
 import { ArrowBack } from '@mui/icons-material'
 import { Button } from '@mui/material'
-import '../PackageCoverage.css'
+import { fileCoverageSelector } from './FileCoverage.selector'
+import { getFileCoverage } from './FileCoverage.actions'
 
 export const FileCoverage = () => {
-  const { packageName } = useParams()
-  const fileCoverage = useAppSelector(fileCoverageSelector)
+  const { id, packageName } = useParams()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const fileCoverage = useAppSelector(fileCoverageSelector)
 
-  let tableData
-  if (packageName) {
-    tableData = fileCoverage[packageName]
-  }
+  useEffect(() => {
+    if (id && packageName) {
+      dispatch(getFileCoverage(id, packageName))
+    }
+  }, [])
 
   return (
-    <div style={{ display: 'flex', gap: 15, flexDirection: 'column', width: '70rem' }}>
+    <div className="root-content">
       <div className="back-button-container">
-        <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate('/')}>
+        <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate(`/repo-details/${id}`)}>
           Back
         </Button>
       </div>
@@ -53,11 +56,12 @@ export const FileCoverage = () => {
             </div>
           </th>
         </tr>
-        {tableData &&
-          tableData.map((data: any) => {
+        {fileCoverage &&
+          fileCoverage.map((data: any) => {
+            const fileName = data.fileName.split('.')[0]
             return (
               <tr>
-                <td className="row-hover" onClick={() => console.log('hello')}>
+                <td className="row-hover" onClick={() => navigate(`/repo-details/${id}/${packageName}/${fileName}`)}>
                   {data.fileName}
                 </td>
                 <td className="table-row-container">

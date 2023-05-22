@@ -1,0 +1,7 @@
+.root-content {
+  display: flex;
+  text-align: center;
+  gap: 15;
+  flex-direction: column;
+  width: 70rem;
+}
