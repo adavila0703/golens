@@ -6,6 +6,10 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import './FileSelector.css'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
 
 export const FileSelector: React.FC = () => {
   const [path, setPath] = useState<string>()
@@ -18,10 +22,21 @@ export const FileSelector: React.FC = () => {
     if (path) dispatch(createDirectory(path))
   }
 
+  const [age, setAge] = useState('')
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value as string)
+  }
+
   return (
     <>
       <div>
-        <Button className="manage-repo-button" onClick={handleOpen} variant="outlined">
+        <Button
+          className="manage-repo-button"
+          onClick={handleOpen}
+          variant="outlined"
+          style={{ color: 'white', borderColor: 'white' }}
+        >
           Add Repos
         </Button>
         <Modal
@@ -30,13 +45,30 @@ export const FileSelector: React.FC = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box className="file-selector-container">
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
+          <Box className="file-selector-container" width="100px">
+            <Typography id="modal-modal-title" variant="h5" component="h1">
+              Add Repo
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              Select type
             </Typography>
+            <FormControl fullWidth style={{ backgroundColor: 'white', padding: 1, width: '50%' }}>
+              <InputLabel id="demo-simple-select-label" style={{ color: 'black' }}>
+                Type
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={age}
+                label="Type"
+                onChange={handleChange}
+                style={{ color: 'black', borderColor: 'white', backgroundColor: 'white' }}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </Modal>
       </div>

@@ -21,6 +21,7 @@ export const FileCoverage = () => {
 
   return (
     <div className="root-content">
+      <h1>Files</h1>
       <div className="back-button-container">
         <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate(`/repo-details/${id}`)}>
           Back

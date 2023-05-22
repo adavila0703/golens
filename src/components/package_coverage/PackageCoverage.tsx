@@ -34,6 +34,7 @@ export const RepoDetails = () => {
 
   return (
     <div className="root-content">
+      <h1>Packages</h1>
       <div className="back-button-container">
         <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate('/')}>
           Back
