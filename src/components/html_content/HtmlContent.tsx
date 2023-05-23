@@ -36,13 +36,47 @@ export const HtmlContent = () => {
           Back
         </Button>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 25 }}>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: 5, justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ backgroundColor: 'rgb(20, 236, 155)', width: '25px', height: '15px' }}></div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          gap: 25,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'rgb(20, 236, 155)',
+              width: '25px',
+              height: '15px',
+            }}
+          ></div>
           <div>Covered</div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-          <div style={{ backgroundColor: 'rgb(192, 0, 0)', width: '25px', height: '15px' }}></div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'rgb(192, 0, 0)',
+              width: '25px',
+              height: '15px',
+            }}
+          ></div>
           <div>Not Covered</div>
         </div>
       </div>

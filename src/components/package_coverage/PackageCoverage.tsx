@@ -24,7 +24,11 @@ export const RepoDetails = () => {
     return (
       <div>
         <div className="back-button-container">
-          <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate('/')}>
+          <Button
+            startIcon={<ArrowBack />}
+            sx={{ color: 'white' }}
+            onClick={() => navigate('/')}
+          >
             Back
           </Button>
         </div>
@@ -36,7 +40,11 @@ export const RepoDetails = () => {
     <div className="root-content">
       <h1>Packages</h1>
       <div className="back-button-container">
-        <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate('/')}>
+        <Button
+          startIcon={<ArrowBack />}
+          sx={{ color: 'white' }}
+          onClick={() => navigate('/')}
+        >
           Back
         </Button>
       </div>
@@ -73,14 +81,22 @@ export const RepoDetails = () => {
         {tableData.map((data: any) => {
           return (
             <tr>
-              <td className="row-hover" onClick={() => navigate(`/repo-details/${id}/${data.packageName}`)}>
+              <td
+                className="row-hover"
+                onClick={() =>
+                  navigate(`/repo-details/${id}/${data.packageName}`)
+                }
+              >
                 {data.packageName}
               </td>
               <td className="table-row-container">
                 {data.coverage}
                 <div
                   className="filler"
-                  style={{ width: `${data.coverage}%`, backgroundColor: getBarColor(data.coverage) }}
+                  style={{
+                    width: `${data.coverage}%`,
+                    backgroundColor: getBarColor(data.coverage),
+                  }}
                 ></div>
               </td>
             </tr>

@@ -94,8 +94,14 @@ export const FileSelector: React.FC = () => {
         >
           <Box className="file-selector-container">
             <div className="add-repo-title">Add Repo</div>
-            <FormControl fullWidth style={{ backgroundColor: 'white', padding: 1, width: '50%' }}>
-              <InputLabel id="demo-simple-select-label" style={{ color: 'black' }}>
+            <FormControl
+              fullWidth
+              style={{ backgroundColor: 'white', padding: 1, width: '50%' }}
+            >
+              <InputLabel
+                id="demo-simple-select-label"
+                style={{ color: 'black' }}
+              >
                 Type
               </InputLabel>
               <Select
@@ -103,7 +109,11 @@ export const FileSelector: React.FC = () => {
                 id="demo-simple-select"
                 label="Type"
                 onChange={handleChange}
-                style={{ color: 'black', borderColor: 'white', backgroundColor: 'white' }}
+                style={{
+                  color: 'black',
+                  borderColor: 'white',
+                  backgroundColor: 'white',
+                }}
                 error={selectError}
               >
                 <MenuItem value={TypeSelect.SINGLE_REPO}>Single Repo</MenuItem>
@@ -112,7 +122,8 @@ export const FileSelector: React.FC = () => {
             </FormControl>
             {typeSelect == TypeSelect.MULTI_REPO && (
               <div className="warning-text">
-                Note: This will walk the given directory and search for any Go projects to add.
+                Note: This will walk the given directory and search for any Go
+                projects to add.
               </div>
             )}
             <div className="input-and-buttons">

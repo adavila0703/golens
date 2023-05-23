@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { GoLens } from './components/golens/GoLens'
-import { Routes, Route, Outlet, Link, useLocation, useParams } from 'react-router-dom'
+import {
+  Routes,
+  Route,
+  Outlet,
+  Link,
+  useLocation,
+  useParams,
+} from 'react-router-dom'
 import { RepoDetails } from './components/package_coverage/PackageCoverage'
 import { FileCoverage } from './components/file_coverage/FileCoverage'
 import { HtmlContent } from './components/html_content/HtmlContent'
@@ -34,7 +41,10 @@ const PageTransition = () => {
     }
 
     for (let i = 0; i < routeSegments.length; i++) {
-      if (routeSegments[i] !== locationSegments[i] && !routeSegments[i].startsWith(':')) {
+      if (
+        routeSegments[i] !== locationSegments[i] &&
+        !routeSegments[i].startsWith(':')
+      ) {
         return false
       }
     }
@@ -54,12 +64,18 @@ const PageTransition = () => {
         items={location}
         from={{
           opacity: 0,
-          transform: currentRouteIndex > previousRouteIndex ? 'translateX(100%)' : 'translateX(-100%)',
+          transform:
+            currentRouteIndex > previousRouteIndex
+              ? 'translateX(100%)'
+              : 'translateX(-100%)',
         }}
         enter={{ opacity: 1, transform: 'translateX(0%)' }}
         leave={{
           opacity: 0,
-          transform: currentRouteIndex > previousRouteIndex ? 'translateX(-100%)' : 'translateX(100%)',
+          transform:
+            currentRouteIndex > previousRouteIndex
+              ? 'translateX(-100%)'
+              : 'translateX(100%)',
         }}
         config={{ duration: 100 }}
         onStart={handleTransitionStart}
@@ -100,14 +116,22 @@ const routes = [
 
 function App() {
   const location = useLocation()
+  console.log('hello')
   return (
-    <Routes location={location}>
-      <Route path="/" element={<PageTransition />}>
-        {routes.map((route) => {
-          return <Route index={route.index} path={route.path} element={route.element} />
-        })}
-      </Route>
-    </Routes>
+    <div>hello</div>
+    // <Routes location={location}>
+    //   <Route path="/" element={<PageTransition />}>
+    //     {routes.map((route) => {
+    //       return (
+    //         <Route
+    //           index={route.index}
+    //           path={route.path}
+    //           element={route.element}
+    //         />
+    //       )
+    //     })}
+    //   </Route>
+    // </Routes>
   )
 }
 
