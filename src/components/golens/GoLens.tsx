@@ -4,10 +4,12 @@ import './GoLens.css'
 
 export const GoLens = () => {
   return (
-    <div className="root-content">
-      <h1>GoLens</h1>
-      <FileSelector />
-      <DataTable />
-    </div>
+    <>
+      <div className="root-content">
+        <h1>GoLens</h1>
+        <FileSelector />
+        <DataTable />
+      </div>
+    </>
   )
 }

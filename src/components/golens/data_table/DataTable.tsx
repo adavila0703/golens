@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { getTableData, sortByCoverage, sortById, sortByName } from '../GoLens.actions'
+import { deleteDirectory, getTableData, sortByCoverage, sortById, sortByName } from '../GoLens.actions'
 import { dataSelector, isCoverageSortAscSelector, isIdSortAscSelector, isNameSortAscSelector } from '../GoLens.selector'
 import './DataTable.css'
 import IconButton from '@mui/material/IconButton'
@@ -46,6 +46,10 @@ export const DataTable: React.FC = () => {
     setCoverageClick(true)
   }
 
+  const deleteRepo = (id: string) => {
+    dispatch(deleteDirectory(id))
+  }
+
   return (
     <>
       <table className="table-container">
@@ -83,28 +87,29 @@ export const DataTable: React.FC = () => {
           </th>
           <th>Delete</th>
         </tr>
-        {tableData.map((data: any) => {
-          return (
-            <tr>
-              <td>{data.item}</td>
-              <td className="row-hover" onClick={() => navigate(`/repo-details/${data.id}`)}>
-                {data.coverageName}
-              </td>
-              <td className="table-row-container">
-                {data.coverage}
-                <div
-                  className="filler"
-                  style={{ width: `${data.coverage}%`, backgroundColor: getBarColor(data.coverage) }}
-                ></div>
-              </td>
-              <td>
-                <IconButton style={{ color: 'white' }} aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </td>
-            </tr>
-          )
-        })}
+        {tableData &&
+          tableData.map((data: any) => {
+            return (
+              <tr>
+                <td>{data.item}</td>
+                <td className="row-hover" onClick={() => navigate(`/repo-details/${data.id}`)}>
+                  {data.coverageName}
+                </td>
+                <td className="table-row-container">
+                  {data.coverage}
+                  <div
+                    className="filler"
+                    style={{ width: `${data.coverage}%`, backgroundColor: getBarColor(data.coverage) }}
+                  ></div>
+                </td>
+                <td>
+                  <IconButton style={{ color: 'white' }} aria-label="delete" onClick={() => deleteRepo(data.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </td>
+              </tr>
+            )
+          })}
       </table>
     </>
   )
