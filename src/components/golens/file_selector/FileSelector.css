@@ -1,14 +1,40 @@
 .file-selector-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
-  top: 50%;
+  top: 15%;
   left: 50%;
   transform: translate(-50%, 50%);
-  width: 400;
-  background-color: black;
+  width: 50%;
   box-shadow: 24;
-  p: 4;
+  background-color: white;
+  color: black;
+  padding: 20px;
+  font-size: larger;
+  gap: 25px;
 }
 
 .manage-repo-button {
-  width: 100;
+  width: 200px;
+}
+
+.input-and-buttons {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.warning-text {
+  font-style: italic;
+  text-align: left;
+  font-weight: 500;
+  font-size: medium;
+}
+
+.add-repo-title {
+  font-size: x-large;
+  font-weight: bold;
 }
