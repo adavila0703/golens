@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { Endpoint, get, post } from '../../utils/api'
+import { IDirectoryDetails } from './GoLens.reducer'
 
 export const getTableDataLoading = createAction<string>(
   'GET_DATA_TABLE_LOADING'
@@ -38,7 +39,6 @@ export const createDirectory =
       .finally(() => dispatch(createDirectoriesLoading(false)))
   }
 
-export const sortById = createAction('SORT_BY_ID')
 export const sortByName = createAction('SORT_BY_NAME')
 export const sortByCoverage = createAction('SORT_BY_COVERAGE')
 
@@ -99,3 +99,21 @@ export const deleteDirectory =
     }
     post(body, Endpoint.DeleteDirectory).then(() => dispatch(getTableData()))
   }
+
+export const setSelectedIds = createAction<string[]>('SELECT_ID')
+export const selectAllIds = (): AppThunk => async (dispatch, state) => {
+  const { goLensState } = state()
+
+  if (goLensState.data.length == goLensState.selectedIds.length) {
+    dispatch(setSelectedIds([]))
+    return
+  }
+
+  const data: IDirectoryDetails[] = goLensState.data
+  const ids: string[] = []
+  console.log(data)
+  data.forEach((d) => {
+    ids.push(d.id)
+  })
+  dispatch(setSelectedIds(ids))
+}

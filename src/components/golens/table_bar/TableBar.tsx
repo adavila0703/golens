@@ -1,15 +1,24 @@
 import { useState } from 'react'
-import { useAppDispatch } from '../../../store/store'
-import { createDirectories, createDirectory } from '../GoLens.actions'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
+import {
+  createDirectories,
+  createDirectory,
+  selectAllIds,
+} from '../GoLens.actions'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
-import './FileSelector.css'
+import './TableBar.css'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import { TextField } from '@mui/material'
+import {
+  getSelectedIdsSelector,
+  isAllSelectedSelector,
+} from '../GoLens.selector'
+import { Add, Refresh, SelectAll, Deselect, Delete } from '@mui/icons-material'
 
 enum TypeSelect {
   NONE,
@@ -19,6 +28,9 @@ enum TypeSelect {
 
 export const TableBar: React.FC = () => {
   const dispatch = useAppDispatch()
+  const isAllSelected = useAppSelector(isAllSelectedSelector)
+  const selectedIds = useAppSelector(getSelectedIdsSelector)
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
@@ -75,25 +87,66 @@ export const TableBar: React.FC = () => {
     setTypeSelect(selectionType)
   }
 
+  const handleSelectAll = () => {
+    dispatch(selectAllIds())
+  }
+
   return (
     <>
-      <div>
+      <div className="button-container">
         <Button
           className="manage-repo-button"
           onClick={handleOpen}
           variant="outlined"
           style={{ color: 'white', borderColor: 'white' }}
+          endIcon={<Add />}
         >
           Add Repos
         </Button>
         <Button
           className="manage-repo-button"
-          onClick={() => console.log('heloo')}
+          onClick={() => console.log('refresh')}
           variant="outlined"
           style={{ color: 'white', borderColor: 'white' }}
+          endIcon={<Refresh />}
         >
-          woop
+          Refresh All
         </Button>
+        <Button
+          className="manage-repo-button"
+          onClick={handleSelectAll}
+          variant="outlined"
+          style={{ color: 'white', borderColor: 'white' }}
+          endIcon={isAllSelected ? <Deselect /> : <SelectAll />}
+        >
+          {isAllSelected ? 'Deselect All' : 'Select All'}
+        </Button>
+        <div className="selected-buttons">
+          {selectedIds.length > 0 && (
+            <>
+              <Button
+                className="manage-repo-button"
+                onClick={() => console.log('refresh')}
+                variant="outlined"
+                style={{ color: 'white', borderColor: 'white' }}
+                endIcon={<Delete />}
+                fullWidth
+              >
+                Delete Selected
+              </Button>
+              <Button
+                className="manage-repo-button"
+                onClick={() => console.log('refresh')}
+                variant="outlined"
+                style={{ color: 'white', borderColor: 'white' }}
+                endIcon={<Refresh />}
+                fullWidth
+              >
+                Refresh Selected
+              </Button>
+            </>
+          )}
+        </div>
       </div>
       <div>
         <Modal

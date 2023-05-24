@@ -3,14 +3,14 @@ import { useAppDispatch, useAppSelector } from '../../../store/store'
 import {
   deleteDirectory,
   getTableData,
+  setSelectedIds,
   sortByCoverage,
-  sortById,
   sortByName,
 } from '../GoLens.actions'
 import {
   getDataSelector,
+  getSelectedIdsSelector,
   isCoverageSortAscSelector,
-  isIdSortAscSelector,
   isLoadingSelector,
   isNameSortAscSelector,
 } from '../GoLens.selector'
@@ -26,15 +26,13 @@ import Checkbox from '@mui/material/Checkbox'
 export const DataTable: React.FC = () => {
   const dispatch = useAppDispatch()
   const tableData = useAppSelector(getDataSelector)
-  const isIdSortAsc = useAppSelector(isIdSortAscSelector)
   const isNameSortAsc = useAppSelector(isNameSortAscSelector)
   const isCoverageSortAsc = useAppSelector(isCoverageSortAscSelector)
   const isLoading = useAppSelector(isLoadingSelector)
+  const selectedIds = useAppSelector(getSelectedIdsSelector)
 
-  const [idClicked, setIdClick] = useState(true)
   const [nameClicked, setNameClick] = useState(false)
   const [coverageClicked, setCoverageClick] = useState(false)
-  const [repoIds, setRepoIds] = useState<string[]>([])
 
   const navigate = useNavigate()
 
@@ -42,23 +40,14 @@ export const DataTable: React.FC = () => {
     dispatch(getTableData())
   }, [])
 
-  const clickId = () => {
-    dispatch(sortById())
-    setIdClick(true)
-    setNameClick(false)
-    setCoverageClick(false)
-  }
-
   const clickName = () => {
     dispatch(sortByName())
-    setIdClick(false)
     setNameClick(true)
     setCoverageClick(false)
   }
 
   const clickCoverage = () => {
     dispatch(sortByCoverage())
-    setIdClick(false)
     setNameClick(false)
     setCoverageClick(true)
   }
@@ -70,11 +59,11 @@ export const DataTable: React.FC = () => {
   const onSelect = (id: string, checked: boolean) => {
     let newRepoIds: string[] = []
     if (checked) {
-      newRepoIds = [...repoIds, id]
+      newRepoIds = [...selectedIds, id]
     } else {
-      newRepoIds = repoIds.filter((repoId) => repoId != id)
+      newRepoIds = selectedIds.filter((repoId) => repoId != id)
     }
-    setRepoIds(newRepoIds)
+    dispatch(setSelectedIds(newRepoIds))
   }
 
   return (
@@ -99,7 +88,6 @@ export const DataTable: React.FC = () => {
           <th className="table-header-row" onClick={clickCoverage}>
             <div className="table-header-content">
               <div>Coverage</div>
-
               {isCoverageSortAsc ? (
                 <ArrowUpward
                   style={{ visibility: coverageClicked ? 'visible' : 'hidden' }}
@@ -123,6 +111,7 @@ export const DataTable: React.FC = () => {
                     sx={{ color: 'white' }}
                     color="default"
                     onChange={(_, checked) => onSelect(data.id, checked)}
+                    checked={selectedIds.includes(data.id)}
                   />
                 </td>
                 <td

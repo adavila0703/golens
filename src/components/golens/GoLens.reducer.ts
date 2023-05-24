@@ -1,28 +1,35 @@
 import { createReducer } from '@reduxjs/toolkit'
 import {
   getTableDataCompleted,
-  sortById,
   sortByName,
   sortByCoverage,
   createDirectoriesLoading,
   createDirectoriesCompleted,
+  setSelectedIds,
 } from './GoLens.actions'
 
+export interface IDirectoryDetails {
+  coverage: number
+  coverageName: string
+  id: string
+  path: string
+}
+
 export interface IGoLensState {
-  data: any[]
-  idSortAsc: boolean
+  data: IDirectoryDetails[]
   nameSortAsc: boolean
   coverageSortAsc: boolean
   loading: boolean
+  selectedIds: string[]
 }
 
 export const getInitialGoLensState = (): IGoLensState => {
   return {
     data: [],
-    idSortAsc: true,
     nameSortAsc: true,
     coverageSortAsc: true,
     loading: false,
+    selectedIds: [],
   }
 }
 
@@ -32,19 +39,6 @@ export const goLensReducer = createReducer(
     builder
       .addCase(getTableDataCompleted, (state, { payload }) => {
         state.data = payload
-      })
-      .addCase(sortById, (state) => {
-        const sortedArray = Array.from(state.data)
-
-        if (state.idSortAsc) {
-          sortedArray.sort((a, b) => b.item - a.item)
-          state.idSortAsc = false
-        } else {
-          sortedArray.sort((a, b) => a.item - b.item)
-          state.idSortAsc = true
-        }
-
-        state.data = sortedArray
       })
       .addCase(sortByName, (state) => {
         const sortedArray = Array.from(state.data)
@@ -101,6 +95,9 @@ export const goLensReducer = createReducer(
           return
         }
         state.data = [...state.data, payload]
+      })
+      .addCase(setSelectedIds, (state, { payload }) => {
+        state.selectedIds = payload
       })
   }
 )
