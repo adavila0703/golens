@@ -6,6 +6,7 @@ import {
   setSelectedIds,
   sortByCoverage,
   sortByName,
+  updateDirectory,
 } from '../GoLens.actions'
 import {
   getDataSelector,
@@ -52,7 +53,7 @@ export const DataTable: React.FC = () => {
     setCoverageClick(true)
   }
 
-  const deleteRepo = (id: string) => {
+  const handleDeleteDirectory = (id: string) => {
     dispatch(deleteDirectory(id))
   }
 
@@ -64,6 +65,10 @@ export const DataTable: React.FC = () => {
       newRepoIds = selectedIds.filter((repoId) => repoId != id)
     }
     dispatch(setSelectedIds(newRepoIds))
+  }
+
+  const handleUpdateDirectory = (id: string) => {
+    dispatch(updateDirectory(id))
   }
 
   return (
@@ -121,7 +126,7 @@ export const DataTable: React.FC = () => {
                   {data.coverageName}
                 </td>
                 <td className="table-row-container">
-                  {data.coverage}
+                  {data.coverage}%
                   <div
                     className="filler"
                     style={{
@@ -134,7 +139,7 @@ export const DataTable: React.FC = () => {
                   <IconButton
                     style={{ color: 'white' }}
                     aria-label="delete"
-                    onClick={() => deleteRepo(data.id)}
+                    onClick={() => handleDeleteDirectory(data.id)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -143,7 +148,7 @@ export const DataTable: React.FC = () => {
                   <IconButton
                     style={{ color: 'white' }}
                     aria-label="delete"
-                    onClick={() => console.log()}
+                    onClick={() => handleUpdateDirectory(data.id)}
                   >
                     <Refresh />
                   </IconButton>

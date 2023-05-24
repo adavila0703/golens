@@ -90,7 +90,7 @@ export const RepoDetails = () => {
                 {data.packageName}
               </td>
               <td className="table-row-container">
-                {data.coverage}
+                {data.coverage}%
                 <div
                   className="filler"
                   style={{

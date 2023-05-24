@@ -6,6 +6,7 @@ export enum Endpoint {
   GetPackageCoverage = 'api/directory/GetPackageCoverage',
   GetFileCoverage = 'api/directory/GetFileCoverage',
   GetHtmlContents = 'api/directory/GetHtmlContents',
+  UpdateDirectory = 'api/directory/UpdateDirectory',
 }
 
 export const post = async (body: any, endpoint: Endpoint) => {

@@ -75,7 +75,7 @@ export const FileCoverage = () => {
                   {data.fileName}
                 </td>
                 <td className="table-row-container">
-                  {data.coverage}
+                  {data.coverage}%
                   <div
                     className="filler"
                     style={{

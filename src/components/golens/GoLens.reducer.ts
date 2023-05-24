@@ -6,6 +6,8 @@ import {
   createDirectoriesLoading,
   createDirectoriesCompleted,
   setSelectedIds,
+  deleteSelectedIdsCompleted,
+  updateDirectoryCompleted,
 } from './GoLens.actions'
 
 export interface IDirectoryDetails {
@@ -98,6 +100,26 @@ export const goLensReducer = createReducer(
       })
       .addCase(setSelectedIds, (state, { payload }) => {
         state.selectedIds = payload
+      })
+      .addCase(deleteSelectedIdsCompleted, (state, { payload }) => {
+        const newData = state.data.filter((data) => data.id != payload)
+        const newSelectedIds = state.selectedIds.filter((id) => id != payload)
+        state.data = newData
+        state.selectedIds = newSelectedIds
+      })
+      .addCase(updateDirectoryCompleted, (state, { payload }) => {
+        const newData = state.data.map((data) => {
+          if (data.id === payload.id) {
+            data.coverage = payload.coverage
+            data.coverageName = payload.coverageName
+          }
+          return data
+        })
+        const newSelectedIds = state.selectedIds.filter(
+          (id) => id != payload.id
+        )
+        state.data = newData
+        state.selectedIds = newSelectedIds
       })
   }
 )

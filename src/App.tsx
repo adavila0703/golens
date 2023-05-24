@@ -122,9 +122,10 @@ function App() {
       <NavBar />
       <Routes location={location}>
         <Route path="/" element={<PageTransition />}>
-          {routes.map((route) => {
+          {routes.map((route, index) => {
             return (
               <Route
+                key={index}
                 index={route.index}
                 path={route.path}
                 element={route.element}

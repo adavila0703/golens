@@ -3,7 +3,9 @@ import { useAppDispatch, useAppSelector } from '../../../store/store'
 import {
   createDirectories,
   createDirectory,
+  deleteSelectedIds,
   selectAllIds,
+  updateDirectories,
 } from '../GoLens.actions'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -91,6 +93,14 @@ export const TableBar: React.FC = () => {
     dispatch(selectAllIds())
   }
 
+  const handleDeleteSelectedIds = () => {
+    dispatch(deleteSelectedIds())
+  }
+
+  const handleUpdateSelectedIds = () => {
+    dispatch(updateDirectories())
+  }
+
   return (
     <>
       <div className="button-container">
@@ -126,7 +136,7 @@ export const TableBar: React.FC = () => {
             <>
               <Button
                 className="manage-repo-button"
-                onClick={() => console.log('refresh')}
+                onClick={handleDeleteSelectedIds}
                 variant="outlined"
                 style={{ color: 'white', borderColor: 'white' }}
                 endIcon={<Delete />}
@@ -136,7 +146,7 @@ export const TableBar: React.FC = () => {
               </Button>
               <Button
                 className="manage-repo-button"
-                onClick={() => console.log('refresh')}
+                onClick={handleUpdateSelectedIds}
                 variant="outlined"
                 style={{ color: 'white', borderColor: 'white' }}
                 endIcon={<Refresh />}

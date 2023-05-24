@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { Endpoint, get, post } from '../../utils/api'
-import { IDirectoryDetails } from './GoLens.reducer'
+import { IDirectoryDetails, IGoLensState } from './GoLens.reducer'
 
 export const getTableDataLoading = createAction<string>(
   'GET_DATA_TABLE_LOADING'
@@ -97,7 +97,11 @@ export const deleteDirectory =
     const body = {
       id,
     }
-    post(body, Endpoint.DeleteDirectory).then(() => dispatch(getTableData()))
+
+    // TODO: what happens if we dont get a 200 status
+    post(body, Endpoint.DeleteDirectory).finally(() => {
+      dispatch(deleteSelectedIdsCompleted(id))
+    })
   }
 
 export const setSelectedIds = createAction<string[]>('SELECT_ID')
@@ -111,9 +115,41 @@ export const selectAllIds = (): AppThunk => async (dispatch, state) => {
 
   const data: IDirectoryDetails[] = goLensState.data
   const ids: string[] = []
-  console.log(data)
   data.forEach((d) => {
     ids.push(d.id)
   })
   dispatch(setSelectedIds(ids))
+}
+
+export const deleteSelectedIdsCompleted = createAction<string>(
+  'DELETE_SELECTED_IDS_COMPLETED'
+)
+
+export const deleteSelectedIds = (): AppThunk => async (dispatch, state) => {
+  const goLensState = state().goLensState as IGoLensState
+
+  goLensState.selectedIds.forEach((id) => {
+    post({ id }, Endpoint.DeleteDirectory).finally(() => {
+      dispatch(deleteSelectedIdsCompleted(id))
+    })
+  })
+}
+
+export const updateDirectoryCompleted = createAction<any>(
+  'UPDATE_DIRECTORY_COMPLETED'
+)
+export const updateDirectory =
+  (id: string): AppThunk =>
+  async (dispatch) => {
+    post({ id }, Endpoint.UpdateDirectory).then((resp) => {
+      console.log(resp.directory)
+      dispatch(updateDirectoryCompleted(resp.directory))
+    })
+  }
+
+export const updateDirectories = (): AppThunk => async (dispatch, state) => {
+  const goLensState = state().goLensState as IGoLensState
+  goLensState.selectedIds.forEach((id) => {
+    dispatch(updateDirectory(id))
+  })
 }

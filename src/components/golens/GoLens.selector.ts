@@ -24,6 +24,6 @@ export const isAllSelectedSelector = createSelector(
   dataSelector,
   selectedIdsSelector,
   (data, selectedIds) => {
-    return data.length == selectedIds.length
+    return data?.length == selectedIds?.length
   }
 )
