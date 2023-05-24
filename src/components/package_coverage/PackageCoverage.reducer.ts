@@ -11,8 +11,11 @@ export const getInitialRepoDetailsState = (): IRepoDetailsState => {
   }
 }
 
-export const repoDetailsReducer = createReducer(getInitialRepoDetailsState(), (builder) => {
-  builder.addCase(getRepoDetailsCompleted, (state, { payload }) => {
-    state.data = payload.packageCoverage
-  })
-})
+export const repoDetailsReducer = createReducer(
+  getInitialRepoDetailsState(),
+  (builder) => {
+    builder.addCase(getRepoDetailsCompleted, (state, { payload }) => {
+      state.data = payload.packageCoverage
+    })
+  }
+)

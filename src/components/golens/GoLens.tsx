@@ -1,5 +1,5 @@
 import { DataTable } from './data_table/DataTable'
-import { FileSelector } from './file_selector/FileSelector'
+import { TableBar } from './table_bar/TableBar'
 import './GoLens.css'
 
 export const GoLens = () => {
@@ -7,7 +7,7 @@ export const GoLens = () => {
     <>
       <div className="root-content">
         <h1>GoLens</h1>
-        <FileSelector />
+        <TableBar />
         <DataTable />
       </div>
     </>

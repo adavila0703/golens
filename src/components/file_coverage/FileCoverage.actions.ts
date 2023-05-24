@@ -2,9 +2,15 @@ import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { Endpoint, post } from '../../utils/api'
 
-export const getFileCoverageLoading = createAction<string>('GET_REPO_DETAILS_LOADING')
-export const getFileCoverageFailed = createAction<string>('GET_REPO_DETAILS_FAILED')
-export const getFileCoverageCompleted = createAction<any>('GET_REPO_DETAILS_COMPLETED')
+export const getFileCoverageLoading = createAction<string>(
+  'GET_REPO_DETAILS_LOADING'
+)
+export const getFileCoverageFailed = createAction<string>(
+  'GET_REPO_DETAILS_FAILED'
+)
+export const getFileCoverageCompleted = createAction<any>(
+  'GET_REPO_DETAILS_COMPLETED'
+)
 
 export const getFileCoverage =
   (id: string, packageName: string): AppThunk =>
@@ -13,5 +19,7 @@ export const getFileCoverage =
       repoId: id,
       packageName,
     }
-    post(body, Endpoint.GetFileCoverage).then((resp) => dispatch(getFileCoverageCompleted(resp)))
+    post(body, Endpoint.GetFileCoverage).then((resp) =>
+      dispatch(getFileCoverageCompleted(resp))
+    )
   }

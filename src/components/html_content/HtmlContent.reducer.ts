@@ -13,9 +13,12 @@ export const getInitialHtmlContentState = (): IHtmlContentState => {
   }
 }
 
-export const htmlContentReducer = createReducer(getInitialHtmlContentState(), (builder) => {
-  builder.addCase(getHtmlContentCompleted, (state, { payload }) => {
-    state.content = payload.htmlContent
-    state.lineCount = payload.lineCount
-  })
-})
+export const htmlContentReducer = createReducer(
+  getInitialHtmlContentState(),
+  (builder) => {
+    builder.addCase(getHtmlContentCompleted, (state, { payload }) => {
+      state.content = payload.htmlContent
+      state.lineCount = payload.lineCount
+    })
+  }
+)

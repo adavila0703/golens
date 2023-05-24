@@ -16,8 +16,11 @@ export const getInitialFileCoverageState = (): IFileCoverageState => {
   }
 }
 
-export const fileCoverageReducer = createReducer(getInitialFileCoverageState(), (builder) => {
-  builder.addCase(getFileCoverageCompleted, (state, { payload }) => {
-    state.fileCoverage = payload.fileCoverage
-  })
-})
+export const fileCoverageReducer = createReducer(
+  getInitialFileCoverageState(),
+  (builder) => {
+    builder.addCase(getFileCoverageCompleted, (state, { payload }) => {
+      state.fileCoverage = payload.fileCoverage
+    })
+  }
+)

@@ -26,6 +26,7 @@
   cursor: pointer;
   z-index: 2;
   color: black;
+  border-radius: 20px;
 }
 
 .table-header-row {
@@ -43,4 +44,9 @@
   0% {
     width: 0;
   }
+}
+
+.loading-bar {
+  display: flex;
+  justify-content: center;
 }

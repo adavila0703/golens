@@ -23,7 +23,11 @@ export const FileCoverage = () => {
     <div className="root-content">
       <h1>Files</h1>
       <div className="back-button-container">
-        <Button startIcon={<ArrowBack />} sx={{ color: 'white' }} onClick={() => navigate(`/repo-details/${id}`)}>
+        <Button
+          startIcon={<ArrowBack />}
+          sx={{ color: 'white' }}
+          onClick={() => navigate(`/repo-details/${id}`)}
+        >
           Back
         </Button>
       </div>
@@ -62,14 +66,22 @@ export const FileCoverage = () => {
             const fileName = data.fileName.split('.')[0]
             return (
               <tr>
-                <td className="row-hover" onClick={() => navigate(`/repo-details/${id}/${packageName}/${fileName}`)}>
+                <td
+                  className="row-hover"
+                  onClick={() =>
+                    navigate(`/repo-details/${id}/${packageName}/${fileName}`)
+                  }
+                >
                   {data.fileName}
                 </td>
                 <td className="table-row-container">
-                  {data.coverage}
+                  {data.coverage}%
                   <div
                     className="filler"
-                    style={{ width: `${data.coverage}%`, backgroundColor: getBarColor(data.coverage) }}
+                    style={{
+                      width: `${data.coverage}%`,
+                      backgroundColor: getBarColor(data.coverage),
+                    }}
                   ></div>
                 </td>
               </tr>

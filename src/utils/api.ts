@@ -1,15 +1,18 @@
 export enum Endpoint {
   GetDirectories = 'api/directory/GetDirectories',
   CreateDirectory = 'api/directory/CreateDirectory',
-  CreateDirectories = 'api/directory/CreateDirectories',
+  GetRootDirectoryPaths = 'api/directory/GetRootDirectoryPaths',
   DeleteDirectory = 'api/directory/DeleteDirectory',
   GetPackageCoverage = 'api/directory/GetPackageCoverage',
   GetFileCoverage = 'api/directory/GetFileCoverage',
   GetHtmlContents = 'api/directory/GetHtmlContents',
+  UpdateDirectory = 'api/directory/UpdateDirectory',
 }
 
 export const post = async (body: any, endpoint: Endpoint) => {
-  const url = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/${endpoint}`
+  const url = `${import.meta.env.VITE_HOST}:${
+    import.meta.env.VITE_PORT
+  }/${endpoint}`
 
   try {
     const response = await fetch(url, {
@@ -29,7 +32,9 @@ export const post = async (body: any, endpoint: Endpoint) => {
 }
 
 export const get = async (endpoint: Endpoint) => {
-  const url = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/${endpoint}`
+  const url = `${import.meta.env.VITE_HOST}:${
+    import.meta.env.VITE_PORT
+  }/${endpoint}`
 
   try {
     const resp = await fetch(url, {
