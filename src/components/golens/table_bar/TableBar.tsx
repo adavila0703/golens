@@ -17,7 +17,7 @@ enum TypeSelect {
   MULTI_REPO,
 }
 
-export const FileSelector: React.FC = () => {
+export const TableBar: React.FC = () => {
   const dispatch = useAppDispatch()
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -77,14 +77,24 @@ export const FileSelector: React.FC = () => {
 
   return (
     <>
-      <Button
-        className="manage-repo-button"
-        onClick={handleOpen}
-        variant="outlined"
-        style={{ color: 'white', borderColor: 'white' }}
-      >
-        Add Repos
-      </Button>
+      <div>
+        <Button
+          className="manage-repo-button"
+          onClick={handleOpen}
+          variant="outlined"
+          style={{ color: 'white', borderColor: 'white' }}
+        >
+          Add Repos
+        </Button>
+        <Button
+          className="manage-repo-button"
+          onClick={() => console.log('heloo')}
+          variant="outlined"
+          style={{ color: 'white', borderColor: 'white' }}
+        >
+          woop
+        </Button>
+      </div>
       <div>
         <Modal
           open={open}

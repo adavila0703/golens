@@ -13,3 +13,5 @@ const isLoading = (state: IAppReducerState) => state.goLensState.loading
 export const isLoadingSelector = createSelector(isLoading, (loading) => {
   return loading
 })
+
+export const getDataSelector = createSelector(dataSelector, (data) => data)

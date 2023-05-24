@@ -29,10 +29,13 @@ export const createDirectoryCompleted = createAction<any>(
 export const createDirectory =
   (path: string): AppThunk =>
   async (dispatch) => {
+    dispatch(createDirectoriesLoading(true))
     const body = {
       path: path,
     }
-    post(body, Endpoint.CreateDirectory).then(() => dispatch(getTableData()))
+    post(body, Endpoint.CreateDirectory)
+      .then(() => dispatch(getTableData()))
+      .finally(() => dispatch(createDirectoriesLoading(false)))
   }
 
 export const sortById = createAction('SORT_BY_ID')
@@ -40,13 +43,13 @@ export const sortByName = createAction('SORT_BY_NAME')
 export const sortByCoverage = createAction('SORT_BY_COVERAGE')
 
 export const createDirectoriesLoading = createAction<boolean>(
-  'GET_DATA_TABLE_LOADING'
+  'CREATE_DIRECTORIES_LOADING'
 )
 export const createDirectoriesFailed = createAction<string>(
-  'GET_DATA_TABLE_FAILED'
+  'CREATE_DIRECTORIES_FAILED'
 )
 export const createDirectoriesCompleted = createAction<any>(
-  'GET_DATA_TABLE_COMPLETED'
+  'CREATE_DIRECTORIES_COMPLETED'
 )
 
 export const createDirectories =
@@ -56,21 +59,26 @@ export const createDirectories =
     const body = {
       rootPath: path,
     }
-    post(body, Endpoint.GetRootDirectoryPaths).then((resp) => {
-      const paths: string[] = resp.paths
+    post(body, Endpoint.GetRootDirectoryPaths)
+      .then((resp) => {
+        const paths: string[] = resp.paths
+        const requests: number[] = []
 
-      paths.forEach((path, index) => {
-        post({ path }, Endpoint.CreateDirectory)
-          .then((resp) => {
-            dispatch(createDirectoriesCompleted(resp.directory))
-          })
-          .finally(() => {
-            if (index == paths.length - 1) {
-              dispatch(createDirectoriesLoading(false))
-            }
-          })
+        paths.forEach((path) => {
+          post({ path }, Endpoint.CreateDirectory)
+            .then((resp) => {
+              dispatch(createDirectoriesCompleted(resp.directory))
+            })
+            .finally(() => {
+              requests.push(1)
+
+              if (requests.length >= paths.length) {
+                dispatch(createDirectoriesLoading(false))
+              }
+            })
+        })
       })
-    })
+      .finally()
   }
 
 export const deleteDirectoryLoading = createAction<string>(

@@ -13,6 +13,7 @@ import { FileCoverage } from './components/file_coverage/FileCoverage'
 import { HtmlContent } from './components/html_content/HtmlContent'
 import './App.css'
 import { Transition, animated } from '@react-spring/web'
+import { NavBar } from './components/nav_bar/NavBar'
 
 const PageTransition = () => {
   const location = useLocation()
@@ -116,22 +117,23 @@ const routes = [
 
 function App() {
   const location = useLocation()
-  console.log('hello')
   return (
-    <div>hello</div>
-    // <Routes location={location}>
-    //   <Route path="/" element={<PageTransition />}>
-    //     {routes.map((route) => {
-    //       return (
-    //         <Route
-    //           index={route.index}
-    //           path={route.path}
-    //           element={route.element}
-    //         />
-    //       )
-    //     })}
-    //   </Route>
-    // </Routes>
+    <>
+      <NavBar />
+      <Routes location={location}>
+        <Route path="/" element={<PageTransition />}>
+          {routes.map((route) => {
+            return (
+              <Route
+                index={route.index}
+                path={route.path}
+                element={route.element}
+              />
+            )
+          })}
+        </Route>
+      </Routes>
+    </>
   )
 }
 

@@ -26,6 +26,7 @@
   cursor: pointer;
   z-index: 2;
   color: black;
+  border-radius: 20px;
 }
 
 .table-header-row {

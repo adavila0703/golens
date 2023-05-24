@@ -8,7 +8,7 @@ import {
   sortByName,
 } from '../GoLens.actions'
 import {
-  dataSelector,
+  getDataSelector,
   isCoverageSortAscSelector,
   isIdSortAscSelector,
   isLoadingSelector,
@@ -17,14 +17,15 @@ import {
 import './DataTable.css'
 import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
+import { ArrowDownward, ArrowUpward, Refresh } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { getBarColor } from '../../../utils/utils'
 import ReactLoading from 'react-loading'
+import Checkbox from '@mui/material/Checkbox'
 
 export const DataTable: React.FC = () => {
   const dispatch = useAppDispatch()
-  const tableData = useAppSelector(dataSelector)
+  const tableData = useAppSelector(getDataSelector)
   const isIdSortAsc = useAppSelector(isIdSortAscSelector)
   const isNameSortAsc = useAppSelector(isNameSortAscSelector)
   const isCoverageSortAsc = useAppSelector(isCoverageSortAscSelector)
@@ -33,6 +34,7 @@ export const DataTable: React.FC = () => {
   const [idClicked, setIdClick] = useState(true)
   const [nameClicked, setNameClick] = useState(false)
   const [coverageClicked, setCoverageClick] = useState(false)
+  const [repoIds, setRepoIds] = useState<string[]>([])
 
   const navigate = useNavigate()
 
@@ -65,10 +67,21 @@ export const DataTable: React.FC = () => {
     dispatch(deleteDirectory(id))
   }
 
+  const onSelect = (id: string, checked: boolean) => {
+    let newRepoIds: string[] = []
+    if (checked) {
+      newRepoIds = [...repoIds, id]
+    } else {
+      newRepoIds = repoIds.filter((repoId) => repoId != id)
+    }
+    setRepoIds(newRepoIds)
+  }
+
   return (
     <>
       <table className="table-container">
         <tr>
+          <th>Select</th>
           <th className="table-header-row" onClick={clickName}>
             <div className="table-header-content">
               <div>Name</div>
@@ -99,11 +112,19 @@ export const DataTable: React.FC = () => {
             </div>
           </th>
           <th>Delete</th>
+          <th>Refresh</th>
         </tr>
         {tableData &&
           tableData.map((data: any) => {
             return (
               <tr>
+                <td>
+                  <Checkbox
+                    sx={{ color: 'white' }}
+                    color="default"
+                    onChange={(_, checked) => onSelect(data.id, checked)}
+                  />
+                </td>
                 <td
                   className="row-hover"
                   onClick={() => navigate(`/repo-details/${data.id}`)}
@@ -127,6 +148,15 @@ export const DataTable: React.FC = () => {
                     onClick={() => deleteRepo(data.id)}
                   >
                     <DeleteIcon />
+                  </IconButton>
+                </td>
+                <td>
+                  <IconButton
+                    style={{ color: 'white' }}
+                    aria-label="delete"
+                    onClick={() => console.log()}
+                  >
+                    <Refresh />
                   </IconButton>
                 </td>
               </tr>
