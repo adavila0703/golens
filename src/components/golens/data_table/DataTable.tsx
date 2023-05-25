@@ -126,7 +126,14 @@ export const DataTable: React.FC = () => {
                   {data.coverageName}
                 </td>
                 <td className="table-row-container">
-                  {data.coverage}%
+                  <div
+                    style={{
+                      color:
+                        getBarColor(data.coverage) === 'yellow' ? 'black' : '',
+                    }}
+                  >
+                    {data.coverage}%
+                  </div>
                   <div
                     className="filler"
                     style={{

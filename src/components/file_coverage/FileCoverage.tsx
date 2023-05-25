@@ -75,7 +75,14 @@ export const FileCoverage = () => {
                   {data.fileName}
                 </td>
                 <td className="table-row-container">
-                  {data.coverage}%
+                  <div
+                    style={{
+                      color:
+                        getBarColor(data.coverage) === 'yellow' ? 'black' : '',
+                    }}
+                  >
+                    {data.coverage}%
+                  </div>
                   <div
                     className="filler"
                     style={{
