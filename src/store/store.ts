@@ -17,12 +17,17 @@ import {
   IFileCoverageState,
   fileCoverageReducer,
 } from '../components/file_coverage/FileCoverage.reducer'
+import {
+  ISettingsState,
+  settingsReducer,
+} from '../components/settings/Settings.reducer'
 
 export interface IAppReducerState {
   goLensState: IGoLensState
   repoDetailsState: IRepoDetailsState
   htmlContentState: IHtmlContentState
   fileCoverageState: IFileCoverageState
+  settingsState: ISettingsState
 }
 
 export const appReducer = combineReducers({
@@ -30,6 +35,7 @@ export const appReducer = combineReducers({
   repoDetailsState: repoDetailsReducer,
   htmlContentState: htmlContentReducer,
   fileCoverageState: fileCoverageReducer,
+  settingsState: settingsReducer,
 })
 
 const rootReducer = (state: any, action: any): any => appReducer(state, action)

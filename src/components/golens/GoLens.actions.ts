@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
-import { Endpoint, get, post } from '../../utils/api'
+import { DirectoryEndpoints, get, post } from '../../utils/api'
 import { IDirectoryDetails, IGoLensState } from './GoLens.reducer'
 
 export const getTableDataLoading = createAction<string>(
@@ -12,7 +12,8 @@ export const getTableDataCompleted = createAction<any>(
 )
 
 export const getTableData = (): AppThunk => async (dispatch) => {
-  get(Endpoint.GetDirectories).then((resp) =>
+  console.log('whassup')
+  get(DirectoryEndpoints.GetDirectories).then((resp) =>
     dispatch(getTableDataCompleted(resp.directories))
   )
 }
@@ -34,7 +35,7 @@ export const createDirectory =
     const body = {
       path: path,
     }
-    post(body, Endpoint.CreateDirectory)
+    post(body, DirectoryEndpoints.CreateDirectory)
       .then(() => dispatch(getTableData()))
       .finally(() => dispatch(createDirectoriesLoading(false)))
   }
@@ -59,13 +60,13 @@ export const createDirectories =
     const body = {
       rootPath: path,
     }
-    post(body, Endpoint.GetRootDirectoryPaths)
+    post(body, DirectoryEndpoints.GetRootDirectoryPaths)
       .then((resp) => {
         const paths: string[] = resp.paths
         const requests: number[] = []
 
         paths.forEach((path) => {
-          post({ path }, Endpoint.CreateDirectory)
+          post({ path }, DirectoryEndpoints.CreateDirectory)
             .then((resp) => {
               dispatch(createDirectoriesCompleted(resp.directory))
             })
@@ -99,7 +100,7 @@ export const deleteDirectory =
     }
 
     // TODO: what happens if we dont get a 200 status
-    post(body, Endpoint.DeleteDirectory).finally(() => {
+    post(body, DirectoryEndpoints.DeleteDirectory).finally(() => {
       dispatch(deleteSelectedIdsCompleted(id))
     })
   }
@@ -129,7 +130,7 @@ export const deleteSelectedIds = (): AppThunk => async (dispatch, state) => {
   const goLensState = state().goLensState as IGoLensState
 
   goLensState.selectedIds.forEach((id) => {
-    post({ id }, Endpoint.DeleteDirectory).finally(() => {
+    post({ id }, DirectoryEndpoints.DeleteDirectory).finally(() => {
       dispatch(deleteSelectedIdsCompleted(id))
     })
   })
@@ -141,7 +142,7 @@ export const updateDirectoryCompleted = createAction<any>(
 export const updateDirectory =
   (id: string): AppThunk =>
   async (dispatch) => {
-    post({ id }, Endpoint.UpdateDirectory).then((resp) => {
+    post({ id }, DirectoryEndpoints.UpdateDirectory).then((resp) => {
       console.log(resp.directory)
       dispatch(updateDirectoryCompleted(resp.directory))
     })

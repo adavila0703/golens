@@ -171,15 +171,12 @@ export const TableBar: React.FC = () => {
               fullWidth
               style={{ backgroundColor: 'white', padding: 1, width: '50%' }}
             >
-              <InputLabel
-                id="demo-simple-select-label"
-                style={{ color: 'black' }}
-              >
+              <InputLabel id="directory-type-label" style={{ color: 'black' }}>
                 Type
               </InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="directory-type-label"
+                id="directory-type"
                 label="Type"
                 onChange={handleChange}
                 style={{
