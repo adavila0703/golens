@@ -1,8 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getSettingsTasksCompleted } from './Settings.actions'
+import {
+  getSettingsTasksCompleted,
+  createTaskCompleted,
+} from './Settings.actions'
+import { getScheduleType } from './Settings.helper'
 
 export interface ISettingsState {
-  tasks: any
+  tasks: any[]
 }
 
 export const getInitialSettingsState = (): ISettingsState => {
@@ -14,8 +18,38 @@ export const getInitialSettingsState = (): ISettingsState => {
 export const settingsReducer = createReducer(
   getInitialSettingsState(),
   (builder) => {
-    builder.addCase(getSettingsTasksCompleted, (state, { payload }) => {
-      state.tasks = payload
-    })
+    builder
+      .addCase(
+        getSettingsTasksCompleted,
+        (state, { payload }: { payload: any[] }) => {
+          const data: any[] = []
+
+          payload.forEach((task, index) => {
+            const newTask = {
+              ...task,
+              id: index + 1,
+              coverageName: task.Directory.CoverageName,
+              scheduleTypeName: getScheduleType(task.ScheduleType),
+            }
+            data.push(newTask)
+          })
+
+          state.tasks = data
+        }
+      )
+      .addCase(createTaskCompleted, (state, { payload }) => {
+        const { task, coverageName } = payload
+        const newTasks = [
+          ...state.tasks,
+          {
+            ...payload,
+            id: state.tasks.length + 1,
+            coverageName: coverageName,
+            scheduleTypeName: getScheduleType(task.ScheduleType),
+          },
+        ]
+
+        state.tasks = newTasks
+      })
   }
 )

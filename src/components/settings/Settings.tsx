@@ -5,6 +5,7 @@ import { getTableData } from './../golens/GoLens.actions'
 import { getDataSelector } from './../golens/GoLens.selector'
 import { tasksSelector } from './Settings.selector'
 import { getSettingsTasks } from './Settings.actions'
+import PositionedSnackbar from './Test'
 
 export const Settings = () => {
   const dispatch = useAppDispatch()
@@ -24,7 +25,6 @@ export const Settings = () => {
   return (
     <>
       <Schedule />
-      <div>Settings page</div>
     </>
   )
 }

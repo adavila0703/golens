@@ -7,13 +7,21 @@ import {
   Divider,
 } from '@mui/material'
 import './Schedule.css'
-import { useAppSelector } from '../../../store/store'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { getDataSelector } from '../../golens/GoLens.selector'
-import { ScheudleTable } from './schedule_table/ScheduleTable'
+import { ScheduleTable } from './schedule_table/ScheduleTable'
+import { useState } from 'react'
+import { useSnackbar } from 'notistack'
+import { getScheduleInt } from '../Settings.helper'
+import { createTask } from '../Settings.actions'
+import { getTasksSelector } from '../Settings.selector'
 
 export const Schedule = () => {
   const tableData = useAppSelector(getDataSelector)
   const sortedArray = Array.from(tableData)
+  const { enqueueSnackbar } = useSnackbar()
+  const dispatch = useAppDispatch()
+  const tasks = useAppSelector(getTasksSelector)
 
   sortedArray.sort((a, b) => {
     if (a.coverageName < b.coverageName) {
@@ -26,6 +34,43 @@ export const Schedule = () => {
 
     return 0
   })
+
+  const [directoryId, setDirectoryId] = useState<string>('')
+  const [schedule, setSchedule] = useState<number>(0)
+
+  const [directoryError, setDirectoryError] = useState<boolean>(false)
+  const [scheduleError, setScheduleError] = useState<boolean>(false)
+
+  const validateFields = () => {
+    if (directoryId === '' || schedule === 0) {
+      if (directoryId === '') {
+        setDirectoryError(true)
+        enqueueSnackbar('Directory field needs to be selected.', {
+          variant: 'error',
+        })
+      }
+
+      if (schedule === 0) {
+        setScheduleError(true)
+        enqueueSnackbar('Schedule type field needs to be selected.', {
+          variant: 'error',
+        })
+      }
+      return false
+    }
+
+    setDirectoryError(false)
+    setScheduleError(false)
+    return true
+  }
+
+  const handleCreateTask = () => {
+    const validated = validateFields()
+
+    if (validated) {
+      dispatch(createTask(directoryId, schedule))
+    }
+  }
 
   return (
     <>
@@ -44,18 +89,36 @@ export const Schedule = () => {
             labelId="directory-type-label"
             id="directory-type"
             label="Directory"
-            onChange={() => console.log('hi')}
+            onChange={(e) => {
+              const directory = tableData.filter(
+                (row) => row.coverageName === (e.target.value as string)
+              )
+              setDirectoryId(directory[0].id)
+            }}
             style={{
               color: 'black',
               borderColor: 'white',
               backgroundColor: 'white',
             }}
-            // error={selectError}
+            error={directoryError}
           >
-            <MenuItem>All</MenuItem>
+            <MenuItem value={'All'}>All</MenuItem>
             {sortedArray &&
               sortedArray.map((data) => {
-                return <MenuItem>{data.coverageName}</MenuItem>
+                let exists = false
+                tasks.forEach((task) => {
+                  if (task.coverageName === data.coverageName) {
+                    exists = true
+                  }
+                })
+
+                if (!exists) {
+                  return (
+                    <MenuItem value={data.coverageName}>
+                      {data.coverageName}
+                    </MenuItem>
+                  )
+                }
               })}
           </Select>
         </FormControl>
@@ -70,22 +133,31 @@ export const Schedule = () => {
             labelId="directory-type-label"
             id="directory-type"
             label="Schedule Type"
-            onChange={() => console.log('hi')}
+            onChange={(e) => {
+              const scheduleInt = getScheduleInt(e.target.value as string)
+              if (scheduleInt) {
+                setSchedule(scheduleInt)
+              }
+            }}
             style={{
               color: 'black',
               borderColor: 'white',
               backgroundColor: 'white',
             }}
-            // error={selectError}
+            error={scheduleError}
           >
-            <MenuItem>Daily (12 AM)</MenuItem>
-            <MenuItem>Weekly (Monday 12 AM)</MenuItem>
-            <MenuItem>Monthly (1st 12 AM)</MenuItem>
+            <MenuItem value={'Daily (12 AM)'}>Daily (12 AM)</MenuItem>
+            <MenuItem value={'Weekly (Monday 12 AM)'}>
+              Weekly (Monday 12 AM)
+            </MenuItem>
+            <MenuItem value={'Monthly (1st 12 AM)'}>
+              Monthly (1st 12 AM)
+            </MenuItem>
           </Select>
         </FormControl>
       </div>
       <Button
-        onClick={() => console.log('push')}
+        onClick={handleCreateTask}
         variant="outlined"
         style={{
           color: 'white',
@@ -105,7 +177,7 @@ export const Schedule = () => {
         }}
       />
       <h2>Currently Scheduled</h2>
-      <ScheudleTable />
+      <ScheduleTable />
     </>
   )
 }

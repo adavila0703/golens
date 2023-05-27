@@ -11,9 +11,13 @@ export enum DirectoryEndpoints {
 
 export enum SettingsEndpoints {
   GetTasks = 'api/settings/GetTasks',
+  CreateTask = 'api/settings/CreateTask',
 }
 
-export const post = async (body: any, endpoint: DirectoryEndpoints) => {
+export const post = async (
+  body: any,
+  endpoint: DirectoryEndpoints | SettingsEndpoints
+) => {
   const url = `${import.meta.env.VITE_HOST}:${
     import.meta.env.VITE_PORT
   }/${endpoint}`

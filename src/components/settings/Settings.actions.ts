@@ -17,3 +17,15 @@ export const getSettingsTasks = (): AppThunk => async (dispatch) => {
     dispatch(getSettingsTasksCompleted(resp.tasks))
   )
 }
+
+export const createTaskLoading = createAction<string>('CREATE_TASK_LOADING')
+export const createTaskFailed = createAction<string>('CREATE_TASK_FAILED')
+export const createTaskCompleted = createAction<any>('CREATE_TASK_COMPLETED')
+
+export const createTask =
+  (directoryId: string, scheduleType: number): AppThunk =>
+  async (dispatch) => {
+    post({ directoryId, scheduleType }, SettingsEndpoints.CreateTask).then(
+      (resp) => dispatch(createTaskCompleted(resp))
+    )
+  }
