@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
-import { Endpoint, post } from '../../utils/api'
+import { DirectoryEndpoints, post } from '../../utils/api'
 
 export const getRepoDetailsLoading = createAction<string>(
   'GET_REPO_DETAILS_LOADING'
@@ -18,7 +18,7 @@ export const getRepoDetails =
     const body = {
       id,
     }
-    post(body, Endpoint.GetPackageCoverage).then((resp) =>
+    post(body, DirectoryEndpoints.GetPackageCoverage).then((resp) =>
       dispatch(getRepoDetailsCompleted(resp))
     )
   }

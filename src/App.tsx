@@ -14,6 +14,8 @@ import { HtmlContent } from './components/html_content/HtmlContent'
 import './App.css'
 import { Transition, animated } from '@react-spring/web'
 import { NavBar } from './components/nav_bar/NavBar'
+import { Settings } from '@mui/icons-material'
+import { Settings as SettingsPage } from './components/settings/Settings'
 
 const PageTransition = () => {
   const location = useLocation()
@@ -111,6 +113,11 @@ const routes = [
   {
     path: '/repo-details/:id/:packageName/:fileName',
     element: <HtmlContent />,
+    index: true,
+  },
+  {
+    path: '/settings',
+    element: <SettingsPage />,
     index: true,
   },
 ]

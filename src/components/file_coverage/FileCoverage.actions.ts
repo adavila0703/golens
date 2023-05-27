@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
-import { Endpoint, post } from '../../utils/api'
+import { DirectoryEndpoints, post } from '../../utils/api'
 
 export const getFileCoverageLoading = createAction<string>(
   'GET_REPO_DETAILS_LOADING'
@@ -19,7 +19,7 @@ export const getFileCoverage =
       repoId: id,
       packageName,
     }
-    post(body, Endpoint.GetFileCoverage).then((resp) =>
+    post(body, DirectoryEndpoints.GetFileCoverage).then((resp) =>
       dispatch(getFileCoverageCompleted(resp))
     )
   }

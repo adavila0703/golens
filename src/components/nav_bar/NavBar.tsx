@@ -17,7 +17,7 @@ export const NavBar = () => {
           <div>Analytics</div>
         </div>
         <hr style={{ width: '100%' }} />
-        <div className="link-container" onClick={() => navigate('/')}>
+        <div className="link-container" onClick={() => navigate('/settings')}>
           <Settings />
           <div>Settings</div>
         </div>

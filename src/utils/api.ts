@@ -1,4 +1,4 @@
-export enum Endpoint {
+export enum DirectoryEndpoints {
   GetDirectories = 'api/directory/GetDirectories',
   CreateDirectory = 'api/directory/CreateDirectory',
   GetRootDirectoryPaths = 'api/directory/GetRootDirectoryPaths',
@@ -9,7 +9,16 @@ export enum Endpoint {
   UpdateDirectory = 'api/directory/UpdateDirectory',
 }
 
-export const post = async (body: any, endpoint: Endpoint) => {
+export enum SettingsEndpoints {
+  GetTasks = 'api/settings/GetTasks',
+  CreateTask = 'api/settings/CreateTask',
+  CreateTasks = 'api/settings/CreateTasks',
+}
+
+export const post = async (
+  body: any,
+  endpoint: DirectoryEndpoints | SettingsEndpoints
+) => {
   const url = `${import.meta.env.VITE_HOST}:${
     import.meta.env.VITE_PORT
   }/${endpoint}`
@@ -31,7 +40,7 @@ export const post = async (body: any, endpoint: Endpoint) => {
   }
 }
 
-export const get = async (endpoint: Endpoint) => {
+export const get = async (endpoint: DirectoryEndpoints | SettingsEndpoints) => {
   const url = `${import.meta.env.VITE_HOST}:${
     import.meta.env.VITE_PORT
   }/${endpoint}`
