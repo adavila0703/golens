@@ -12,6 +12,7 @@ export enum DirectoryEndpoints {
 export enum SettingsEndpoints {
   GetTasks = 'api/settings/GetTasks',
   CreateTask = 'api/settings/CreateTask',
+  CreateTasks = 'api/settings/CreateTasks',
 }
 
 export const post = async (

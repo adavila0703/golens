@@ -29,3 +29,15 @@ export const createTask =
       (resp) => dispatch(createTaskCompleted(resp))
     )
   }
+
+export const createTasksLoading = createAction<string>('CREATE_TASKS_LOADING')
+export const createTasksFailed = createAction<string>('CREATE_TASKS_FAILED')
+export const createTasksCompleted = createAction<any>('CREATE_TASKS_COMPLETED')
+
+export const createTasks =
+  (scheduleType: number): AppThunk =>
+  async (dispatch) => {
+    post({ scheduleType }, SettingsEndpoints.CreateTasks).then((resp) =>
+      dispatch(createTasksCompleted(resp.tasks))
+    )
+  }

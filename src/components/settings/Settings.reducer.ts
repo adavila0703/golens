@@ -2,6 +2,7 @@ import { createReducer } from '@reduxjs/toolkit'
 import {
   getSettingsTasksCompleted,
   createTaskCompleted,
+  createTasksCompleted,
 } from './Settings.actions'
 import { getScheduleType } from './Settings.helper'
 
@@ -50,6 +51,10 @@ export const settingsReducer = createReducer(
         ]
 
         state.tasks = newTasks
+      })
+      .addCase(createTasksCompleted, (state, { payload }) => {
+        console.log(payload)
+        state.tasks = payload
       })
   }
 )

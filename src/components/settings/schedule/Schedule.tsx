@@ -13,8 +13,8 @@ import { ScheduleTable } from './schedule_table/ScheduleTable'
 import { useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { getScheduleInt } from '../Settings.helper'
-import { createTask } from '../Settings.actions'
-import { getTasksSelector } from '../Settings.selector'
+import { createTask, createTasks } from '../Settings.actions'
+import { allSelectedSelector, getTasksSelector } from '../Settings.selector'
 
 export const Schedule = () => {
   const tableData = useAppSelector(getDataSelector)
@@ -40,6 +40,7 @@ export const Schedule = () => {
 
   const [directoryError, setDirectoryError] = useState<boolean>(false)
   const [scheduleError, setScheduleError] = useState<boolean>(false)
+  const allSelected = useAppSelector(allSelectedSelector)
 
   const validateFields = () => {
     if (directoryId === '' || schedule === 0) {
@@ -59,6 +60,13 @@ export const Schedule = () => {
       return false
     }
 
+    if (allSelected) {
+      enqueueSnackbar('All available directories have been scheduled.', {
+        variant: 'error',
+      })
+      return false
+    }
+
     setDirectoryError(false)
     setScheduleError(false)
     return true
@@ -67,14 +75,16 @@ export const Schedule = () => {
   const handleCreateTask = () => {
     const validated = validateFields()
 
-    if (validated) {
+    if (validated && directoryId === 'All') {
+      dispatch(createTasks(schedule))
+    } else if (validated) {
       dispatch(createTask(directoryId, schedule))
     }
   }
 
   return (
     <>
-      <h1>Schedule</h1>
+      <h1>Update Schedule</h1>
       <p>Select directory you would like to schedule to update.</p>
       <p>
         Note: If you chose "All", you will not be able to chose individual
@@ -90,6 +100,11 @@ export const Schedule = () => {
             id="directory-type"
             label="Directory"
             onChange={(e) => {
+              if (e.target.value === 'All') {
+                setDirectoryId('All')
+                return
+              }
+
               const directory = tableData.filter(
                 (row) => row.coverageName === (e.target.value as string)
               )
