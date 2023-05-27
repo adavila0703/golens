@@ -12,7 +12,6 @@ export const getTableDataCompleted = createAction<any>(
 )
 
 export const getTableData = (): AppThunk => async (dispatch) => {
-  console.log('whassup')
   get(DirectoryEndpoints.GetDirectories).then((resp) =>
     dispatch(getTableDataCompleted(resp.directories))
   )
@@ -143,7 +142,6 @@ export const updateDirectory =
   (id: string): AppThunk =>
   async (dispatch) => {
     post({ id }, DirectoryEndpoints.UpdateDirectory).then((resp) => {
-      console.log(resp.directory)
       dispatch(updateDirectoryCompleted(resp.directory))
     })
   }

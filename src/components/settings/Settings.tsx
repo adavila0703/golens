@@ -21,8 +21,6 @@ export const Settings = () => {
     }
   }, [])
 
-  console.log(tasks)
-
   return (
     <>
       <Schedule />

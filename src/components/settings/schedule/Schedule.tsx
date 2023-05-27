@@ -4,13 +4,15 @@ import {
   InputLabel,
   FormControl,
   Button,
+  Divider,
 } from '@mui/material'
 import './Schedule.css'
 import { useAppSelector } from '../../../store/store'
-import { dataSelector } from '../../golens/GoLens.selector'
+import { getDataSelector } from '../../golens/GoLens.selector'
+import { ScheudleTable } from './schedule_table/ScheduleTable'
 
 export const Schedule = () => {
-  const tableData = useAppSelector(dataSelector)
+  const tableData = useAppSelector(getDataSelector)
   const sortedArray = Array.from(tableData)
 
   sortedArray.sort((a, b) => {
@@ -94,6 +96,16 @@ export const Schedule = () => {
       >
         Schedule
       </Button>
+
+      <Divider
+        style={{
+          backgroundColor: 'white',
+          marginTop: '10px',
+          marginBottom: '10px',
+        }}
+      />
+      <h2>Currently Scheduled</h2>
+      <ScheudleTable />
     </>
   )
 }
