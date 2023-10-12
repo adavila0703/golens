@@ -6,17 +6,17 @@ import {
   goLensReducer,
 } from '../components/golens/GoLens.reducer'
 import {
-  IRepoDetailsState,
-  repoDetailsReducer,
-} from '../components/package_coverage/PackageCoverage.reducer'
+  IPackageCoverageState,
+  packageCoverageReducer,
+} from '../components/packagecoverage/PackageCoverage.reducer'
 import {
   IHtmlContentState,
   htmlContentReducer,
-} from '../components/html_content/HtmlContent.reducer'
+} from '../components/htmlcontent/HtmlContent.reducer'
 import {
   IFileCoverageState,
   fileCoverageReducer,
-} from '../components/file_coverage/FileCoverage.reducer'
+} from '../components/filecoverage/FileCoverage.reducer'
 import {
   ISettingsState,
   settingsReducer,
@@ -24,7 +24,7 @@ import {
 
 export interface IAppReducerState {
   goLensState: IGoLensState
-  repoDetailsState: IRepoDetailsState
+  packageCoverageState: IPackageCoverageState
   htmlContentState: IHtmlContentState
   fileCoverageState: IFileCoverageState
   settingsState: ISettingsState
@@ -32,7 +32,7 @@ export interface IAppReducerState {
 
 export const appReducer = combineReducers({
   goLensState: goLensReducer,
-  repoDetailsState: repoDetailsReducer,
+  packageCoverageState: packageCoverageReducer,
   htmlContentState: htmlContentReducer,
   fileCoverageState: fileCoverageReducer,
   settingsState: settingsReducer,

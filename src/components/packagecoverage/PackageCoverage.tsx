@@ -1,22 +1,23 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import { getRepoDetails } from './PackageCoverage.actions'
-import { repoDetailsDataSelector } from './PackageCoverage.selector'
-import { getBarColor } from '../../utils/utils'
+import { getPackageCoverage } from './PackageCoverage.actions'
+import { packageDetailsDataSelector } from './PackageCoverage.selector'
 import { ArrowBack } from '@mui/icons-material'
-import { Button } from '@mui/material'
-// import './PackageCoverage.css'
+import { Button, Typography } from '@mui/material'
+import { CoverageBar } from '../coveragebar/CoverageBar'
+import { PackageCoverageContainer } from './PackageCoverage.style'
+import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
 
-export const RepoDetails = () => {
+export const PackageCoverage = () => {
   const { id } = useParams()
   const dispatch = useAppDispatch()
-  const tableData = useAppSelector(repoDetailsDataSelector)
+  const tableData = useAppSelector(packageDetailsDataSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
     if (id) {
-      dispatch(getRepoDetails(id))
+      dispatch(getPackageCoverage(id))
     }
   }, [])
 
@@ -37,8 +38,9 @@ export const RepoDetails = () => {
   }
 
   return (
-    <div className="root-content">
-      <h1>Packages</h1>
+    <PackageCoverageContainer>
+      <Typography variant="h2">Packages</Typography>
+      <TotalCoverage data={tableData} />
       <div className="back-button-container">
         <Button
           startIcon={<ArrowBack />}
@@ -84,32 +86,18 @@ export const RepoDetails = () => {
               <td
                 className="row-hover"
                 onClick={() =>
-                  navigate(`/repo-details/${id}/${data.packageName}`)
+                  navigate(`/package-coverage/${id}/${data.packageName}`)
                 }
               >
                 {data.packageName}
               </td>
-              <td className="table-row-container">
-                <div
-                  style={{
-                    color:
-                      getBarColor(data.coverage) === 'yellow' ? 'black' : '',
-                  }}
-                >
-                  {data.coverage}%
-                </div>
-                <div
-                  className="filler"
-                  style={{
-                    width: `${data.coverage}%`,
-                    backgroundColor: getBarColor(data.coverage),
-                  }}
-                ></div>
+              <td>
+                <CoverageBar coverage={data.coverage} />
               </td>
             </tr>
           )
         })}
       </table>
-    </div>
+    </PackageCoverageContainer>
   )
 }

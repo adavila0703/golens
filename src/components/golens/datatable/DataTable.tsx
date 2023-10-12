@@ -20,9 +20,9 @@ import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { ArrowDownward, ArrowUpward, Refresh } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import { getBarColor } from '../../../utils/utils'
 import ReactLoading from 'react-loading'
 import Checkbox from '@mui/material/Checkbox'
+import { CoverageBar } from '../../coveragebar/CoverageBar'
 
 export const DataTable: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -121,26 +121,12 @@ export const DataTable: React.FC = () => {
                 </td>
                 <td
                   className="row-hover"
-                  onClick={() => navigate(`/repo-details/${data.id}`)}
+                  onClick={() => navigate(`/package-coverage/${data.id}`)}
                 >
                   {data.coverageName}
                 </td>
-                <td className="table-row-container">
-                  <div
-                    style={{
-                      color:
-                        getBarColor(data.coverage) === 'yellow' ? 'black' : '',
-                    }}
-                  >
-                    {data.coverage}%
-                  </div>
-                  <div
-                    className="filler"
-                    style={{
-                      width: `${data.coverage}%`,
-                      backgroundColor: getBarColor(data.coverage),
-                    }}
-                  ></div>
+                <td>
+                  <CoverageBar coverage={data.coverage} />
                 </td>
                 <td>
                   <IconButton

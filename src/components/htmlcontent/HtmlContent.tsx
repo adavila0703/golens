@@ -25,13 +25,15 @@ export const HtmlContent = () => {
     }
   }, [])
 
+  console.log(id, packageName, fileName)
+
   return (
     <>
       <div className="back-button-container">
         <Button
           startIcon={<ArrowBack />}
           sx={{ color: 'white' }}
-          onClick={() => navigate(`/repo-details/${id}/${packageName}`)}
+          onClick={() => navigate(`/package-coverage/${id}/${packageName}`)}
         >
           Back
         </Button>

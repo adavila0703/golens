@@ -8,14 +8,14 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom'
-import { RepoDetails } from './components/package_coverage/PackageCoverage'
-import { FileCoverage } from './components/file_coverage/FileCoverage'
-import { HtmlContent } from './components/html_content/HtmlContent'
-import './App.css'
+import { PackageCoverage } from './components/packagecoverage/PackageCoverage'
+import { FileCoverage } from './components/filecoverage/FileCoverage'
+import { HtmlContent } from './components/htmlcontent/HtmlContent'
 import { Transition, animated } from '@react-spring/web'
-import { NavBar } from './components/nav_bar/NavBar'
+import { NavBar } from './components/navbar/NavBar'
 import { Settings } from '@mui/icons-material'
 import { Settings as SettingsPage } from './components/settings/Settings'
+import { AppRoot } from './App.style'
 
 const PageTransition = () => {
   const location = useLocation()
@@ -62,35 +62,33 @@ const PageTransition = () => {
   }, [location, previousRouteIndex, currentRouteIndex])
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Transition
-        items={location}
-        from={{
-          opacity: 0,
-          transform:
-            currentRouteIndex > previousRouteIndex
-              ? 'translateX(100%)'
-              : 'translateX(-100%)',
-        }}
-        enter={{ opacity: 1, transform: 'translateX(0%)' }}
-        leave={{
-          opacity: 0,
-          transform:
-            currentRouteIndex > previousRouteIndex
-              ? 'translateX(-100%)'
-              : 'translateX(100%)',
-        }}
-        config={{ duration: 100 }}
-        onStart={handleTransitionStart}
-        onRest={handleTransitionEnd}
-      >
-        {(styles) => (
-          <animated.div style={styles}>
-            <Outlet />
-          </animated.div>
-        )}
-      </Transition>
-    </div>
+    <Transition
+      items={location}
+      from={{
+        opacity: 0,
+        transform:
+          currentRouteIndex > previousRouteIndex
+            ? 'translateX(100%)'
+            : 'translateX(-100%)',
+      }}
+      enter={{ opacity: 1, transform: 'translateX(0%)' }}
+      leave={{
+        opacity: 0,
+        transform:
+          currentRouteIndex > previousRouteIndex
+            ? 'translateX(-100%)'
+            : 'translateX(100%)',
+      }}
+      config={{ duration: 100 }}
+      onStart={handleTransitionStart}
+      onRest={handleTransitionEnd}
+    >
+      {(styles) => (
+        <animated.div style={styles}>
+          <Outlet />
+        </animated.div>
+      )}
+    </Transition>
   )
 }
 
@@ -101,17 +99,17 @@ const routes = [
     index: true,
   },
   {
-    path: '/repo-details/:id',
-    element: <RepoDetails />,
+    path: '/package-coverage/:id',
+    element: <PackageCoverage />,
     index: true,
   },
   {
-    path: '/repo-details/:id/:packageName',
+    path: '/package-coverage/:id/:packageName',
     element: <FileCoverage />,
     index: true,
   },
   {
-    path: '/repo-details/:id/:packageName/:fileName',
+    path: '/package-coverage/:id/:packageName/:fileName',
     element: <HtmlContent />,
     index: true,
   },
@@ -125,7 +123,7 @@ const routes = [
 function App() {
   const location = useLocation()
   return (
-    <>
+    <AppRoot>
       <NavBar />
       <Routes location={location}>
         <Route path="/" element={<PageTransition />}>
@@ -141,7 +139,7 @@ function App() {
           })}
         </Route>
       </Routes>
-    </>
+    </AppRoot>
   )
 }
 
