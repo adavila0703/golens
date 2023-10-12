@@ -8,12 +8,12 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom'
-import { RepoDetails } from './components/package_coverage/PackageCoverage'
-import { FileCoverage } from './components/file_coverage/FileCoverage'
-import { HtmlContent } from './components/html_content/HtmlContent'
+import { RepoDetails } from './components/packagecoverage/PackageCoverage'
+import { FileCoverage } from './components/filecoverage/FileCoverage'
+import { HtmlContent } from './components/htmlcontent/HtmlContent'
 import './App.css'
 import { Transition, animated } from '@react-spring/web'
-import { NavBar } from './components/nav_bar/NavBar'
+import { NavBar } from './components/navbar/NavBar'
 import { Settings } from '@mui/icons-material'
 import { Settings as SettingsPage } from './components/settings/Settings'
 
@@ -62,35 +62,33 @@ const PageTransition = () => {
   }, [location, previousRouteIndex, currentRouteIndex])
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Transition
-        items={location}
-        from={{
-          opacity: 0,
-          transform:
-            currentRouteIndex > previousRouteIndex
-              ? 'translateX(100%)'
-              : 'translateX(-100%)',
-        }}
-        enter={{ opacity: 1, transform: 'translateX(0%)' }}
-        leave={{
-          opacity: 0,
-          transform:
-            currentRouteIndex > previousRouteIndex
-              ? 'translateX(-100%)'
-              : 'translateX(100%)',
-        }}
-        config={{ duration: 100 }}
-        onStart={handleTransitionStart}
-        onRest={handleTransitionEnd}
-      >
-        {(styles) => (
-          <animated.div style={styles}>
-            <Outlet />
-          </animated.div>
-        )}
-      </Transition>
-    </div>
+    <Transition
+      items={location}
+      from={{
+        opacity: 0,
+        transform:
+          currentRouteIndex > previousRouteIndex
+            ? 'translateX(100%)'
+            : 'translateX(-100%)',
+      }}
+      enter={{ opacity: 1, transform: 'translateX(0%)' }}
+      leave={{
+        opacity: 0,
+        transform:
+          currentRouteIndex > previousRouteIndex
+            ? 'translateX(-100%)'
+            : 'translateX(100%)',
+      }}
+      config={{ duration: 100 }}
+      onStart={handleTransitionStart}
+      onRest={handleTransitionEnd}
+    >
+      {(styles) => (
+        <animated.div style={styles}>
+          <Outlet />
+        </animated.div>
+      )}
+    </Transition>
   )
 }
 
@@ -126,7 +124,7 @@ function App() {
   const location = useLocation()
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
       <Routes location={location}>
         <Route path="/" element={<PageTransition />}>
           {routes.map((route, index) => {

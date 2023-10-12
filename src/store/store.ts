@@ -8,15 +8,15 @@ import {
 import {
   IRepoDetailsState,
   repoDetailsReducer,
-} from '../components/package_coverage/PackageCoverage.reducer'
+} from '../components/packagecoverage/PackageCoverage.reducer'
 import {
   IHtmlContentState,
   htmlContentReducer,
-} from '../components/html_content/HtmlContent.reducer'
+} from '../components/htmlcontent/HtmlContent.reducer'
 import {
   IFileCoverageState,
   fileCoverageReducer,
-} from '../components/file_coverage/FileCoverage.reducer'
+} from '../components/filecoverage/FileCoverage.reducer'
 import {
   ISettingsState,
   settingsReducer,

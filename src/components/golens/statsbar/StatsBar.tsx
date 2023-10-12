@@ -1,6 +1,8 @@
 import { useAppSelector } from '../../../store/store'
 import { getBarColor } from '../../../utils/utils'
+import { CoverageBar } from '../../coveragebar/CoverageBar'
 import { getDataSelector } from '../GoLens.selector'
+import { StatsBarContainer } from './StatsBar.style'
 
 export const StatsBar = () => {
   const tableData = useAppSelector(getDataSelector)
@@ -8,15 +10,9 @@ export const StatsBar = () => {
   console.log(totalCoverage)
 
   return (
-    <div>
-      Total Coverage
-      {/* <div
-        style={{
-          color: getBarColor(data.coverage) === 'yellow' ? 'black' : '',
-        }}
-      >
-        {data.coverage}%
-      </div> */}
-    </div>
+    <StatsBarContainer>
+      <div>Total Coverage</div>
+      <CoverageBar coverage={10} />
+    </StatsBarContainer>
   )
 }

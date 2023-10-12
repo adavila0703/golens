@@ -6,7 +6,7 @@ import { BarContainer } from './GoLens.style'
 
 export const GoLens = () => {
   return (
-    <div className="root-content">
+    <div style={{ backgroundColor: 'gray' }}>
       <h1>GoLens</h1>
       <BarContainer>
         <TableBar />
