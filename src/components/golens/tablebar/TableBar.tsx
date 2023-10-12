@@ -21,6 +21,7 @@ import {
   isAllSelectedSelector,
 } from '../GoLens.selector'
 import { Add, Refresh, SelectAll, Deselect, Delete } from '@mui/icons-material'
+import { ButtonContainer } from './TableBar.style'
 
 enum TypeSelect {
   NONE,
@@ -103,7 +104,7 @@ export const TableBar: React.FC = () => {
 
   return (
     <>
-      <div className="button-container">
+      <ButtonContainer>
         <Button
           className="manage-repo-button"
           onClick={handleOpen}
@@ -157,7 +158,7 @@ export const TableBar: React.FC = () => {
             </>
           )}
         </div>
-      </div>
+      </ButtonContainer>
       <div>
         <Modal
           open={open}

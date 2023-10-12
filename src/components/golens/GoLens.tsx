@@ -1,15 +1,18 @@
 import { DataTable } from './data_table/DataTable'
-import { TableBar } from './table_bar/TableBar'
+import { TableBar } from './tablebar/TableBar'
 import './GoLens.css'
+import { StatsBar } from './statsbar/StatsBar'
+import { BarContainer } from './GoLens.style'
 
 export const GoLens = () => {
   return (
-    <>
-      <div className="root-content">
-        <h1>GoLens</h1>
+    <div className="root-content">
+      <h1>GoLens</h1>
+      <BarContainer>
         <TableBar />
-        <DataTable />
-      </div>
-    </>
+        <StatsBar />
+      </BarContainer>
+      <DataTable />
+    </div>
   )
 }

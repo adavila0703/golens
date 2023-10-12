@@ -71,6 +71,8 @@ export const DataTable: React.FC = () => {
     dispatch(updateDirectory(id))
   }
 
+  console.log(tableData)
+
   return (
     <>
       <table className="table-container">
