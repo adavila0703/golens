@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import { getBarColor } from '../../utils/utils'
 import { ArrowBack } from '@mui/icons-material'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { fileCoverageSelector } from './FileCoverage.selector'
 import { getFileCoverage } from './FileCoverage.actions'
+import { CoverageBar } from '../coveragebar/CoverageBar'
+import { FileCoverageContainer } from './FileCoverage.style'
+import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
 
 export const FileCoverage = () => {
   const { id, packageName } = useParams()
@@ -20,13 +22,14 @@ export const FileCoverage = () => {
   }, [])
 
   return (
-    <div className="root-content">
-      <h1>Files</h1>
+    <FileCoverageContainer>
+      <Typography variant="h2">Files</Typography>
+      <TotalCoverage data={fileCoverage} />
       <div className="back-button-container">
         <Button
           startIcon={<ArrowBack />}
           sx={{ color: 'white' }}
-          onClick={() => navigate(`/repo-details/${id}`)}
+          onClick={() => navigate(`/package-coverage/${id}`)}
         >
           Back
         </Button>
@@ -69,32 +72,20 @@ export const FileCoverage = () => {
                 <td
                   className="row-hover"
                   onClick={() =>
-                    navigate(`/repo-details/${id}/${packageName}/${fileName}`)
+                    navigate(
+                      `/package-coverage/${id}/${packageName}/${fileName}`
+                    )
                   }
                 >
                   {data.fileName}
                 </td>
-                <td className="table-row-container">
-                  <div
-                    style={{
-                      color:
-                        getBarColor(data.coverage) === 'yellow' ? 'black' : '',
-                    }}
-                  >
-                    {data.coverage}%
-                  </div>
-                  <div
-                    className="filler"
-                    style={{
-                      width: `${data.coverage}%`,
-                      backgroundColor: getBarColor(data.coverage),
-                    }}
-                  ></div>
+                <td>
+                  <CoverageBar coverage={data.coverage} />
                 </td>
               </tr>
             )
           })}
       </table>
-    </div>
+    </FileCoverageContainer>
   )
 }

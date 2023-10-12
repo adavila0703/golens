@@ -1,20 +1,20 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getRepoDetailsCompleted } from './PackageCoverage.actions'
+import { getPackageCoverageCompleted } from './PackageCoverage.actions'
 
-export interface IRepoDetailsState {
+export interface IPackageCoverageState {
   data: any[]
 }
 
-export const getInitialRepoDetailsState = (): IRepoDetailsState => {
+export const getInitialPackageCoverageState = (): IPackageCoverageState => {
   return {
     data: [],
   }
 }
 
-export const repoDetailsReducer = createReducer(
-  getInitialRepoDetailsState(),
+export const packageCoverageReducer = createReducer(
+  getInitialPackageCoverageState(),
   (builder) => {
-    builder.addCase(getRepoDetailsCompleted, (state, { payload }) => {
+    builder.addCase(getPackageCoverageCompleted, (state, { payload }) => {
       state.data = payload.packageCoverage
     })
   }

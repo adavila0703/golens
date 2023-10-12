@@ -6,10 +6,12 @@ export const CoverageBarContainer = styled.div`
   z-index: 0;
   border-color: lightgray;
   border-radius: 25px;
+  width: 250px;
 `
 
 export const CoverageBarText = styled.div<{ color: string }>`
-  color: ${({ color }) => color};
+  color: white;
+  text-align: center;
 `
 
 export const CoverageBarFiller = styled.div<{

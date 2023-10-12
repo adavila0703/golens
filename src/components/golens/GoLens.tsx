@@ -1,18 +1,24 @@
-import { DataTable } from './data_table/DataTable'
+import { DataTable } from './datatable/DataTable'
 import { TableBar } from './tablebar/TableBar'
-import './GoLens.css'
-import { StatsBar } from './statsbar/StatsBar'
-import { BarContainer } from './GoLens.style'
+import { TotalCoverage } from './totalcoverage/TotalCoverage'
+import { BarContainer, GoLensContainer, GoLensTitle } from './GoLens.style'
+import { Typography } from '@mui/material'
+import { useAppSelector } from '../../store/store'
+import { getDataSelector } from './GoLens.selector'
 
 export const GoLens = () => {
+  const data = useAppSelector(getDataSelector)
+
   return (
-    <div style={{ backgroundColor: 'gray' }}>
-      <h1>GoLens</h1>
+    <GoLensContainer>
+      <GoLensTitle>
+        <Typography variant="h2">GoLens</Typography>
+      </GoLensTitle>
       <BarContainer>
         <TableBar />
-        <StatsBar />
+        <TotalCoverage data={data} />
       </BarContainer>
       <DataTable />
-    </div>
+    </GoLensContainer>
   )
 }

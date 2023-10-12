@@ -2,23 +2,23 @@ import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { DirectoryEndpoints, post } from '../../utils/api'
 
-export const getRepoDetailsLoading = createAction<string>(
-  'GET_REPO_DETAILS_LOADING'
+export const packageCoverageLoading = createAction<string>(
+  'GET_PACKAGE_COVERAGE_LOADING'
 )
-export const getRepoDetailsFailed = createAction<string>(
-  'GET_REPO_DETAILS_FAILED'
+export const getPackageCoverageFailed = createAction<string>(
+  'GET_PACKAGE_COVERAGE_FAILED'
 )
-export const getRepoDetailsCompleted = createAction<any>(
-  'GET_REPO_DETAILS_COMPLETED'
+export const getPackageCoverageCompleted = createAction<any>(
+  'GET_PACKAGE_COVERAGE_COMPLETED'
 )
 
-export const getRepoDetails =
+export const getPackageCoverage =
   (id: string): AppThunk =>
   async (dispatch) => {
     const body = {
       id,
     }
     post(body, DirectoryEndpoints.GetPackageCoverage).then((resp) =>
-      dispatch(getRepoDetailsCompleted(resp))
+      dispatch(getPackageCoverageCompleted(resp))
     )
   }

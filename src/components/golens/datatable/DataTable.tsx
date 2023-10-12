@@ -20,7 +20,6 @@ import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { ArrowDownward, ArrowUpward, Refresh } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import { getBarColor } from '../../../utils/utils'
 import ReactLoading from 'react-loading'
 import Checkbox from '@mui/material/Checkbox'
 import { CoverageBar } from '../../coveragebar/CoverageBar'
@@ -72,8 +71,6 @@ export const DataTable: React.FC = () => {
     dispatch(updateDirectory(id))
   }
 
-  console.log(tableData)
-
   return (
     <>
       <table className="table-container">
@@ -124,7 +121,7 @@ export const DataTable: React.FC = () => {
                 </td>
                 <td
                   className="row-hover"
-                  onClick={() => navigate(`/repo-details/${data.id}`)}
+                  onClick={() => navigate(`/package-coverage/${data.id}`)}
                 >
                   {data.coverageName}
                 </td>
