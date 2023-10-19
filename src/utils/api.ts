@@ -1,4 +1,4 @@
-export enum DirectoryEndpoints {
+export enum GolensEndpoints {
   GetDirectories = 'api/directory/GetDirectories',
   CreateDirectory = 'api/directory/CreateDirectory',
   GetRootDirectoryPaths = 'api/directory/GetRootDirectoryPaths',
@@ -17,7 +17,7 @@ export enum SettingsEndpoints {
 
 export const post = async (
   body: any,
-  endpoint: DirectoryEndpoints | SettingsEndpoints
+  endpoint: GolensEndpoints | SettingsEndpoints
 ) => {
   const url = `${import.meta.env.VITE_HOST}:${
     import.meta.env.VITE_PORT
@@ -40,7 +40,7 @@ export const post = async (
   }
 }
 
-export const get = async (endpoint: DirectoryEndpoints | SettingsEndpoints) => {
+export const get = async (endpoint: GolensEndpoints | SettingsEndpoints) => {
   const url = `${import.meta.env.VITE_HOST}:${
     import.meta.env.VITE_PORT
   }/${endpoint}`
