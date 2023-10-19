@@ -15,14 +15,27 @@ import {
   isLoadingSelector,
   isNameSortAscSelector,
 } from '../GoLens.selector'
-import './DataTable.css'
-import IconButton from '@mui/material/IconButton'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { ArrowDownward, ArrowUpward, Refresh } from '@mui/icons-material'
+
+import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import ReactLoading from 'react-loading'
-import Checkbox from '@mui/material/Checkbox'
 import { CoverageBar } from '../../coveragebar/CoverageBar'
+import {
+  Table,
+  Checkbox,
+  TableHead,
+  TableContainer,
+  TableRow,
+  TableCell,
+  TableBody,
+  Typography,
+} from '@mui/material'
+import {
+  LoadingBarContainer,
+  TableCoverage,
+  TableName,
+} from './DataTable.style'
+import { ActionMenu } from './actionmenu/ActionMenu'
 
 export const DataTable: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -41,20 +54,16 @@ export const DataTable: React.FC = () => {
     dispatch(getTableData())
   }, [])
 
-  const clickName = () => {
+  const sortName = () => {
     dispatch(sortByName())
     setNameClick(true)
     setCoverageClick(false)
   }
 
-  const clickCoverage = () => {
+  const sortCoverage = () => {
     dispatch(sortByCoverage())
     setNameClick(false)
     setCoverageClick(true)
-  }
-
-  const handleDeleteDirectory = (id: string) => {
-    dispatch(deleteDirectory(id))
   }
 
   const onSelect = (id: string, checked: boolean) => {
@@ -67,99 +76,95 @@ export const DataTable: React.FC = () => {
     dispatch(setSelectedIds(newRepoIds))
   }
 
-  const handleUpdateDirectory = (id: string) => {
-    dispatch(updateDirectory(id))
-  }
-
   return (
     <>
-      <table className="table-container">
-        <tr>
-          <th>Select</th>
-          <th className="table-header-row" onClick={clickName}>
-            <div className="table-header-content">
-              <div>Name</div>
-              {isNameSortAsc ? (
-                <ArrowUpward
-                  style={{ visibility: nameClicked ? 'visible' : 'hidden' }}
-                />
-              ) : (
-                <ArrowDownward
-                  style={{ visibility: nameClicked ? 'visible' : 'hidden' }}
-                />
-              )}
-            </div>
-          </th>
-          <th className="table-header-row" onClick={clickCoverage}>
-            <div className="table-header-content">
-              <div>Coverage</div>
-              {isCoverageSortAsc ? (
-                <ArrowUpward
-                  style={{ visibility: coverageClicked ? 'visible' : 'hidden' }}
-                />
-              ) : (
-                <ArrowDownward
-                  style={{ visibility: coverageClicked ? 'visible' : 'hidden' }}
-                />
-              )}
-            </div>
-          </th>
-          <th>Delete</th>
-          <th>Refresh</th>
-        </tr>
-        {tableData &&
-          tableData.map((data: any) => {
-            return (
-              <tr>
-                <td>
-                  <Checkbox
-                    sx={{ color: 'white' }}
-                    color="default"
-                    onChange={(_, checked) => onSelect(data.id, checked)}
-                    checked={selectedIds.includes(data.id)}
-                  />
-                </td>
-                <td
-                  className="row-hover"
-                  onClick={() => navigate(`/package-coverage/${data.id}`)}
-                >
-                  {data.coverageName}
-                </td>
-                <td>
-                  <CoverageBar coverage={data.coverage} />
-                </td>
-                <td>
-                  <IconButton
-                    style={{ color: 'white' }}
-                    aria-label="delete"
-                    onClick={() => handleDeleteDirectory(data.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </td>
-                <td>
-                  <IconButton
-                    style={{ color: 'white' }}
-                    aria-label="delete"
-                    onClick={() => handleUpdateDirectory(data.id)}
-                  >
-                    <Refresh />
-                  </IconButton>
-                </td>
-              </tr>
-            )
-          })}
-      </table>
-      <div className="loading-bar">
-        {isLoading && (
+      {isLoading && (
+        <LoadingBarContainer>
           <ReactLoading
             type="bubbles"
             color="#fff"
             width={'10%'}
             height={'10%'}
           />
-        )}
-      </div>
+        </LoadingBarContainer>
+      )}
+      <TableContainer>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">
+                <Typography>Select</Typography>
+              </TableCell>
+              <TableCell align="left" onClick={sortName}>
+                <TableName>
+                  <Typography>Name</Typography>
+                  {isNameSortAsc ? (
+                    <ArrowUpward
+                      style={{ visibility: nameClicked ? 'visible' : 'hidden' }}
+                    />
+                  ) : (
+                    <ArrowDownward
+                      style={{ visibility: nameClicked ? 'visible' : 'hidden' }}
+                    />
+                  )}
+                </TableName>
+              </TableCell>
+              <TableCell align="left" onClick={sortCoverage}>
+                <TableCoverage>
+                  <Typography>Coverage</Typography>
+                  {isCoverageSortAsc ? (
+                    <ArrowUpward
+                      style={{
+                        visibility: coverageClicked ? 'visible' : 'hidden',
+                      }}
+                    />
+                  ) : (
+                    <ArrowDownward
+                      style={{
+                        visibility: coverageClicked ? 'visible' : 'hidden',
+                      }}
+                    />
+                  )}
+                </TableCoverage>
+              </TableCell>
+              <TableCell align="left" onClick={sortCoverage}>
+                <Typography>Actions</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tableData &&
+              tableData.map((data, index) => (
+                <TableRow key={index}>
+                  <TableCell align="left">
+                    <Checkbox
+                      sx={{ color: 'white' }}
+                      color="default"
+                      onChange={(_, checked) => onSelect(data.id, checked)}
+                      checked={selectedIds.includes(data.id)}
+                    />
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    onClick={() => navigate(`/package-coverage/${data.id}`)}
+                    sx={{
+                      cursor: 'pointer',
+                      ':hover': { color: 'white', backgroundColor: 'gray' },
+                    }}
+                  >
+                    <Typography>{data.coverageName}</Typography>
+                  </TableCell>
+                  <TableCell align="left">
+                    <CoverageBar coverage={data.coverage} />
+                  </TableCell>
+                  <TableCell align="left">
+                    <ActionMenu id={data.id} />
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   )
 }
