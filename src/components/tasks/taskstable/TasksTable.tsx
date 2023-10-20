@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { useAppSelector } from '../../../../store/store'
-import { getTasksSelector } from '../../Settings.selector'
+import { getTasksSelector } from '../Tasks.selector'
+import { useAppSelector } from '../../../store/store'
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -9,7 +9,7 @@ const columns: GridColDef[] = [
   { field: 'scheduleTypeName', headerName: 'Schedule Type', width: 130 },
 ]
 
-export const ScheduleTable = () => {
+export const TaskTable = () => {
   const taskData: any[] = useAppSelector(getTasksSelector)
   const [rowsSelected, setRowsSelected] = useState<number[]>([])
 

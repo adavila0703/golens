@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit'
-import { IAppReducerState } from '../../store/store'
 import { dataSelector } from '../golens/GoLens.selector'
+import { IAppReducerState } from '../../store/store'
 
 export const tasksSelector = (state: IAppReducerState) =>
   state.settingsState.tasks
@@ -14,6 +14,3 @@ export const allSelectedSelector = createSelector(
     return tasks.length === directories.length
   }
 )
-
-export const ignoredDirectoriesSelector = (state: IAppReducerState) =>
-  state.settingsState.ignoredDirectories

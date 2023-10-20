@@ -5,7 +5,11 @@ import { ArrowBack } from '@mui/icons-material'
 import { Button } from '@mui/material'
 import { htmlContentSelector, lineCountSelector } from './HtmlContent.selector'
 import { getHtmlContent } from './HtmlContent.actions'
-import './HtmlContent.css'
+import {
+  HtmlContainer,
+  HtmlContentContainer,
+  LineCount,
+} from './HtmlContent.style'
 
 export const HtmlContent = () => {
   const { id, packageName, fileName } = useParams()
@@ -82,8 +86,8 @@ export const HtmlContent = () => {
           <div>Not Covered</div>
         </div>
       </div>
-      <div className="code-container">
-        <div className="line-count">
+      <HtmlContainer>
+        <LineCount>
           {lineCountArray.map((number) => {
             return (
               <>
@@ -91,9 +95,9 @@ export const HtmlContent = () => {
               </>
             )
           })}
-        </div>
-        <div dangerouslySetInnerHTML={{ __html: content }} />
-      </div>
+        </LineCount>
+        <HtmlContentContainer dangerouslySetInnerHTML={{ __html: content }} />
+      </HtmlContainer>
     </>
   )
 }

@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
-import { GolensEndpoints, SettingsEndpoints, get, post } from '../../utils/api'
+import { get, post } from '../../utils/api'
 import { IDirectoryDetails, IGoLensState } from './GoLens.reducer'
+import {
+  DirectoryEndpoints,
+  IgnoreDirectoryEndpoints,
+} from '../../utils/endpoints'
 
 export const getTableDataLoading = createAction<string>(
   'GET_DATA_TABLE_LOADING'
@@ -13,7 +17,7 @@ export const getTableDataCompleted = createAction<any>(
 )
 
 export const getTableData = (): AppThunk => async (dispatch) => {
-  get(GolensEndpoints.GetDirectories).then((resp) =>
+  get(DirectoryEndpoints.GetDirectories).then((resp) =>
     dispatch(getTableDataCompleted(resp.directories))
   )
 }
@@ -35,7 +39,7 @@ export const createDirectory =
     const body = {
       path: path,
     }
-    post(body, GolensEndpoints.CreateDirectory)
+    post(body, DirectoryEndpoints.CreateDirectory)
       .then(() => dispatch(getTableData()))
       .finally(() => dispatch(tableLoading(false)))
   }
@@ -59,13 +63,13 @@ export const createDirectories =
       rootPath: path,
     }
 
-    post(body, GolensEndpoints.GetRootDirectoryPaths).then((resp) => {
+    post(body, DirectoryEndpoints.GetRootDirectoryPaths).then((resp) => {
       const paths: string[] = resp.paths
       const requests: Promise<any>[] = []
 
       paths.forEach((path) => {
         requests.push(
-          post({ path }, GolensEndpoints.CreateDirectory).then((resp) => {
+          post({ path }, DirectoryEndpoints.CreateDirectory).then((resp) => {
             dispatch(createDirectoriesCompleted(resp.directory))
           })
         )
@@ -93,7 +97,7 @@ export const deleteDirectory =
     }
 
     // TODO: what happens if we dont get a 200 status
-    post(body, GolensEndpoints.DeleteDirectory).finally(() => {
+    post(body, DirectoryEndpoints.DeleteDirectory).finally(() => {
       dispatch(deleteSelectedIdsCompleted(id))
     })
   }
@@ -123,7 +127,7 @@ export const deleteSelectedIds = (): AppThunk => async (dispatch, state) => {
   const goLensState = state().goLensState as IGoLensState
 
   goLensState.selectedIds.forEach((id) => {
-    post({ id }, GolensEndpoints.DeleteDirectory).finally(() => {
+    post({ id }, DirectoryEndpoints.DeleteDirectory).finally(() => {
       dispatch(deleteSelectedIdsCompleted(id))
     })
   })
@@ -136,7 +140,7 @@ export const updateDirectory =
   (id: string): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
-    post({ id }, GolensEndpoints.UpdateDirectory)
+    post({ id }, DirectoryEndpoints.UpdateDirectory)
       .then((resp) => {
         dispatch(updateDirectoryCompleted(resp.directory))
       })
@@ -153,5 +157,5 @@ export const updateDirectories = (): AppThunk => async (dispatch, state) => {
 export const createIgnoredDirectory =
   (directoryName: string): AppThunk =>
   async () => {
-    post({ directoryName }, SettingsEndpoints.CreateIgnoredDirectory)
+    post({ directoryName }, IgnoreDirectoryEndpoints.CreateIgnoredDirectory)
   }
