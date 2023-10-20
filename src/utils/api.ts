@@ -1,4 +1,4 @@
-export enum DirectoryEndpoints {
+export enum GolensEndpoints {
   GetDirectories = 'api/directory/GetDirectories',
   CreateDirectory = 'api/directory/CreateDirectory',
   GetRootDirectoryPaths = 'api/directory/GetRootDirectoryPaths',
@@ -13,11 +13,14 @@ export enum SettingsEndpoints {
   GetTasks = 'api/settings/GetTasks',
   CreateTask = 'api/settings/CreateTask',
   CreateTasks = 'api/settings/CreateTasks',
+  CreateIgnoredDirectory = 'api/settings/CreateIgnoredDirectory',
+  GetIgnoredDirectories = 'api/settings/GetIgnoredDirectories',
+  DeleteIgnoredDirectory = 'api/settings/DeleteIgnoredDirectory',
 }
 
 export const post = async (
   body: any,
-  endpoint: DirectoryEndpoints | SettingsEndpoints
+  endpoint: GolensEndpoints | SettingsEndpoints
 ) => {
   const url = `${import.meta.env.VITE_HOST}:${
     import.meta.env.VITE_PORT
@@ -40,7 +43,7 @@ export const post = async (
   }
 }
 
-export const get = async (endpoint: DirectoryEndpoints | SettingsEndpoints) => {
+export const get = async (endpoint: GolensEndpoints | SettingsEndpoints) => {
   const url = `${import.meta.env.VITE_HOST}:${
     import.meta.env.VITE_PORT
   }/${endpoint}`

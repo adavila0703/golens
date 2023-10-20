@@ -41,3 +41,25 @@ export const createTasks =
       dispatch(createTasksCompleted(resp.tasks))
     )
   }
+
+export const getIgnoredDirectoriesCompleted = createAction<any>(
+  'GET_IGNORED_DIRECTORIES_COMPLETED'
+)
+
+export const getIgnoredDirectories = (): AppThunk => async (dispatch) => {
+  get(SettingsEndpoints.GetIgnoredDirectories).then((resp) =>
+    dispatch(getIgnoredDirectoriesCompleted(resp.directories))
+  )
+}
+
+export const deleteIgnoredDirectoryCompleted = createAction<any>(
+  'DELETE_IGNORED_DIRECTORIES_COMPLETED'
+)
+
+export const deleteIgnoredDirectory =
+  (id: string): AppThunk =>
+  async (dispatch) => {
+    post({ id }, SettingsEndpoints.DeleteIgnoredDirectory).then(() =>
+      dispatch(deleteIgnoredDirectoryCompleted(id))
+    )
+  }

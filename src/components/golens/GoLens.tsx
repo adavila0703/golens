@@ -1,10 +1,10 @@
-import { DataTable } from './datatable/DataTable'
 import { TableBar } from './tablebar/TableBar'
 import { TotalCoverage } from './totalcoverage/TotalCoverage'
 import { BarContainer, GoLensContainer, GoLensTitle } from './GoLens.style'
 import { Typography } from '@mui/material'
 import { useAppSelector } from '../../store/store'
 import { getDataSelector } from './GoLens.selector'
+import { DataTable } from './datatable/DataTable'
 
 export const GoLens = () => {
   const data = useAppSelector(getDataSelector)

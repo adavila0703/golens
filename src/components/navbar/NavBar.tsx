@@ -11,11 +11,11 @@ export const NavBar = () => {
           <Home />
           <div>Home</div>
         </div>
-        <hr style={{ width: '100%' }} />
+        {/* <hr style={{ width: '100%' }} />
         <div className="link-container" onClick={() => navigate('/')}>
           <Analytics />
           <div>Analytics</div>
-        </div>
+        </div> */}
         <hr style={{ width: '100%' }} />
         <div className="link-container" onClick={() => navigate('/settings')}>
           <Settings />
