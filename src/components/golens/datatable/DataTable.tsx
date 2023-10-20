@@ -158,7 +158,10 @@ export const DataTable: React.FC = () => {
                     <CoverageBar coverage={data.coverage} />
                   </TableCell>
                   <TableCell align="left">
-                    <ActionMenu id={data.id} />
+                    <ActionMenu
+                      id={data.id}
+                      directoryName={data.coverageName}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

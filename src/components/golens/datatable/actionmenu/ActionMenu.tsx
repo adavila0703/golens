@@ -11,10 +11,15 @@ import {
 import { ButtonNameContainer, MenuItems } from './ActionMenu.style'
 import { Tooltip } from '@mui/material'
 import { useAppDispatch } from '../../../../store/store'
-import { deleteDirectory, updateDirectory } from '../../GoLens.actions'
+import {
+  createIgnoredDirectory,
+  deleteDirectory,
+  updateDirectory,
+} from '../../GoLens.actions'
 
 interface ActionMenuProps {
   id: string
+  directoryName: string
 }
 
 enum ActionMenuOptions {
@@ -23,7 +28,7 @@ enum ActionMenuOptions {
   DELETE_FOREVER,
 }
 
-export const ActionMenu = ({ id }: ActionMenuProps) => {
+export const ActionMenu = ({ id, directoryName }: ActionMenuProps) => {
   const dispatch = useAppDispatch()
 
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
@@ -42,15 +47,17 @@ export const ActionMenu = ({ id }: ActionMenuProps) => {
 
   const handleButtonClick = (options: ActionMenuOptions) => {
     switch (options) {
-      case ActionMenuOptions.DELETE:
-        dispatch(deleteDirectory(id))
-        break
-
       case ActionMenuOptions.REFRESH:
         dispatch(updateDirectory(id))
         break
 
+      case ActionMenuOptions.DELETE:
+        dispatch(deleteDirectory(id))
+        break
+
       case ActionMenuOptions.DELETE_FOREVER:
+        dispatch(deleteDirectory(id))
+        dispatch(createIgnoredDirectory(directoryName))
         break
 
       default:

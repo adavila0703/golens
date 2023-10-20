@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
-import { GolensEndpoints, get, post } from '../../utils/api'
+import { GolensEndpoints, SettingsEndpoints, get, post } from '../../utils/api'
 import { IDirectoryDetails, IGoLensState } from './GoLens.reducer'
 
 export const getTableDataLoading = createAction<string>(
@@ -44,6 +44,13 @@ export const sortByName = createAction('SORT_BY_NAME')
 export const sortByCoverage = createAction('SORT_BY_COVERAGE')
 export const tableLoading = createAction<boolean>('TABLE_LOADING')
 
+export const createDirectoriesFailed = createAction<string>(
+  'CREATE_DIRECTORIES_FAILED'
+)
+export const createDirectoriesCompleted = createAction<any>(
+  'CREATE_DIRECTORIES_COMPLETED'
+)
+
 export const createDirectories =
   (path: string): AppThunk =>
   async (dispatch) => {
@@ -59,7 +66,7 @@ export const createDirectories =
       paths.forEach((path) => {
         requests.push(
           post({ path }, GolensEndpoints.CreateDirectory).then((resp) => {
-            dispatch(tableLoading(resp.directory))
+            dispatch(createDirectoriesCompleted(resp.directory))
           })
         )
       })
@@ -129,9 +136,11 @@ export const updateDirectory =
   (id: string): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
-    post({ id }, GolensEndpoints.UpdateDirectory).then((resp) => {
-      dispatch(updateDirectoryCompleted(resp.directory))
-    })
+    post({ id }, GolensEndpoints.UpdateDirectory)
+      .then((resp) => {
+        dispatch(updateDirectoryCompleted(resp.directory))
+      })
+      .finally(() => dispatch(tableLoading(false)))
   }
 
 export const updateDirectories = (): AppThunk => async (dispatch, state) => {
@@ -140,3 +149,9 @@ export const updateDirectories = (): AppThunk => async (dispatch, state) => {
     dispatch(updateDirectory(id))
   })
 }
+
+export const createIgnoredDirectory =
+  (directoryName: string): AppThunk =>
+  async () => {
+    post({ directoryName }, SettingsEndpoints.CreateIgnoredDirectory)
+  }

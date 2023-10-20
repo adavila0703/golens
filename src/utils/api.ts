@@ -13,6 +13,9 @@ export enum SettingsEndpoints {
   GetTasks = 'api/settings/GetTasks',
   CreateTask = 'api/settings/CreateTask',
   CreateTasks = 'api/settings/CreateTasks',
+  CreateIgnoredDirectory = 'api/settings/CreateIgnoredDirectory',
+  GetIgnoredDirectories = 'api/settings/GetIgnoredDirectories',
+  DeleteIgnoredDirectory = 'api/settings/DeleteIgnoredDirectory',
 }
 
 export const post = async (

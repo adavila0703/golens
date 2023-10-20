@@ -3,16 +3,20 @@ import {
   getSettingsTasksCompleted,
   createTaskCompleted,
   createTasksCompleted,
+  getIgnoredDirectoriesCompleted,
+  deleteIgnoredDirectoryCompleted,
 } from './Settings.actions'
 import { getScheduleType } from './Settings.helper'
 
 export interface ISettingsState {
   tasks: any[]
+  ignoredDirectories: any[]
 }
 
 export const getInitialSettingsState = (): ISettingsState => {
   return {
     tasks: [],
+    ignoredDirectories: [],
   }
 }
 
@@ -53,8 +57,17 @@ export const settingsReducer = createReducer(
         state.tasks = newTasks
       })
       .addCase(createTasksCompleted, (state, { payload }) => {
-        console.log(payload)
         state.tasks = payload
+      })
+      .addCase(getIgnoredDirectoriesCompleted, (state, { payload }) => {
+        state.ignoredDirectories = payload
+      })
+      .addCase(deleteIgnoredDirectoryCompleted, (state, { payload }) => {
+        const newIgnoredDirectories = state.ignoredDirectories.filter(
+          (directory) => directory.ID !== payload
+        )
+
+        state.ignoredDirectories = newIgnoredDirectories
       })
   }
 )

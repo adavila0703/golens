@@ -14,3 +14,6 @@ export const allSelectedSelector = createSelector(
     return tasks.length === directories.length
   }
 )
+
+export const ignoredDirectoriesSelector = (state: IAppReducerState) =>
+  state.settingsState.ignoredDirectories

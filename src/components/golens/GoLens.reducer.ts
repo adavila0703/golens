@@ -4,7 +4,7 @@ import {
   sortByName,
   sortByCoverage,
   tableLoading,
-  tableLoading,
+  createDirectoriesCompleted,
   setSelectedIds,
   deleteSelectedIdsCompleted,
   updateDirectoryCompleted,
@@ -91,7 +91,7 @@ export const goLensReducer = createReducer(
       .addCase(tableLoading, (state, { payload }) => {
         state.loading = payload
       })
-      .addCase(tableLoading, (state, { payload }) => {
+      .addCase(createDirectoriesCompleted, (state, { payload }) => {
         if (!state.data) {
           state.data = [payload]
           return
