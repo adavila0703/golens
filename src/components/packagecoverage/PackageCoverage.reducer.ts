@@ -15,6 +15,7 @@ export const packageCoverageReducer = createReducer(
   getInitialPackageCoverageState(),
   (builder) => {
     builder.addCase(getPackageCoverageCompleted, (state, { payload }) => {
+      console.log('packages', payload)
       state.data = payload.packageCoverage
     })
   }

@@ -1,27 +1,29 @@
+import { useState } from 'react'
+import { allSelectedSelector, tasksSelector } from './Tasks.selector'
+import { createTask, createTasks } from './Tasks.actions'
 import {
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
   Button,
   Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from '@mui/material'
-import './Schedule.css'
-import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { getDataSelector } from '../../golens/GoLens.selector'
-import { ScheduleTable } from './schedule_table/ScheduleTable'
-import { useState } from 'react'
+import { SettingsContainer } from './Tasks.style'
+import { getScheduleInt } from './Tasks.helper'
 import { useSnackbar } from 'notistack'
-import { getScheduleInt } from '../Settings.helper'
-import { createTask, createTasks } from '../Settings.actions'
-import { allSelectedSelector, getTasksSelector } from '../Settings.selector'
+import { TaskTable } from './taskstable/TasksTable'
+import { useAppDispatch, useAppSelector } from '../../store/store'
+import { getDataSelector } from '../golens/GoLens.selector'
+import { PageTitle } from '../pagetitle/PageTitle'
 
-export const Schedule = () => {
+export const Tasks = () => {
+  const dispatch = useAppDispatch()
+  const tasks = useAppSelector(tasksSelector)
+
   const tableData = useAppSelector(getDataSelector)
   const sortedArray = Array.from(tableData)
   const { enqueueSnackbar } = useSnackbar()
-  const dispatch = useAppDispatch()
-  const tasks = useAppSelector(getTasksSelector)
 
   sortedArray.sort((a, b) => {
     if (a.coverageName < b.coverageName) {
@@ -83,8 +85,8 @@ export const Schedule = () => {
   }
 
   return (
-    <>
-      <h1>Update Schedule</h1>
+    <SettingsContainer>
+      <PageTitle title="Tasks" />
       <p>Select directory you would like to schedule to update.</p>
       <p>
         Note: If you chose "All", you will not be able to chose individual
@@ -121,7 +123,7 @@ export const Schedule = () => {
             {sortedArray &&
               sortedArray.map((data) => {
                 let exists = false
-                tasks.forEach((task) => {
+                tasks.forEach((task: any) => {
                   if (task.coverageName === data.coverageName) {
                     exists = true
                   }
@@ -192,7 +194,7 @@ export const Schedule = () => {
         }}
       />
       <h2>Currently Scheduled</h2>
-      <ScheduleTable />
-    </>
+      <TaskTable />
+    </SettingsContainer>
   )
 }

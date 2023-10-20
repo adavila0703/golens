@@ -17,17 +17,19 @@ import {
   IFileCoverageState,
   fileCoverageReducer,
 } from '../components/filecoverage/FileCoverage.reducer'
+import { ITasksState, tasksReducer } from '../components/tasks/Tasks.reducer'
 import {
-  ISettingsState,
-  settingsReducer,
-} from '../components/settings/Settings.reducer'
+  IIgnoredDirectoriesState,
+  ignoredDirectoriesReducer,
+} from '../components/ignoreddirectories/IgnoredDirectories.reducer'
 
 export interface IAppReducerState {
   goLensState: IGoLensState
   packageCoverageState: IPackageCoverageState
   htmlContentState: IHtmlContentState
   fileCoverageState: IFileCoverageState
-  settingsState: ISettingsState
+  settingsState: ITasksState
+  ignoredDirectoriesState: IIgnoredDirectoriesState
 }
 
 export const appReducer = combineReducers({
@@ -35,7 +37,8 @@ export const appReducer = combineReducers({
   packageCoverageState: packageCoverageReducer,
   htmlContentState: htmlContentReducer,
   fileCoverageState: fileCoverageReducer,
-  settingsState: settingsReducer,
+  settingsState: tasksReducer,
+  ignoredDirectoriesState: ignoredDirectoriesReducer,
 })
 
 const rootReducer = (state: any, action: any): any => appReducer(state, action)

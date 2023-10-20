@@ -1,13 +1,8 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
-import { GolensEndpoints, post } from '../../utils/api'
+import { post } from '../../utils/api'
+import { DirectoryEndpoints } from '../../utils/endpoints'
 
-export const getHtmlContentLoading = createAction<string>(
-  'GET_REPO_DETAILS_LOADING'
-)
-export const getHtmlContentFailed = createAction<string>(
-  'GET_REPO_DETAILS_FAILED'
-)
 export const getHtmlContentCompleted = createAction<any>(
   'GET_REPO_DETAILS_COMPLETED'
 )
@@ -19,7 +14,7 @@ export const getHtmlContent =
       repoId: id,
       fileName,
     }
-    post(body, GolensEndpoints.GetHtmlContents).then((resp) =>
+    post(body, DirectoryEndpoints.GetHtmlContents).then((resp) =>
       dispatch(getHtmlContentCompleted(resp))
     )
   }

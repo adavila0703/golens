@@ -7,10 +7,11 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { ignoredDirectoriesSelector } from '../Settings.selector'
+import { useAppDispatch, useAppSelector } from '../../store/store'
 import { Delete } from '@mui/icons-material'
-import { deleteIgnoredDirectory } from '../Settings.actions'
+import { ignoredDirectoriesSelector } from './IgnoredDirectories.selector'
+import { deleteIgnoredDirectory } from './IgnoredDirectories.actions'
+import { PageTitle } from '../pagetitle/PageTitle'
 
 export const IgnoredDirectories = () => {
   const ignoredDirectories = useAppSelector(ignoredDirectoriesSelector)
@@ -18,7 +19,7 @@ export const IgnoredDirectories = () => {
 
   return (
     <>
-      <Typography variant="h3">Ignored Directories</Typography>
+      <PageTitle title="Ignored Directories" />
       <TableContainer>
         <TableHead>
           <TableRow>

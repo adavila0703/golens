@@ -21,22 +21,6 @@ export const PackageCoverage = () => {
     }
   }, [])
 
-  if (!tableData || tableData.length <= 0) {
-    return (
-      <div>
-        <div className="back-button-container">
-          <Button
-            startIcon={<ArrowBack />}
-            sx={{ color: 'white' }}
-            onClick={() => navigate('/')}
-          >
-            Back
-          </Button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <PackageCoverageContainer>
       <Typography variant="h2">Packages</Typography>
@@ -50,54 +34,58 @@ export const PackageCoverage = () => {
           Back
         </Button>
       </div>
-      <table className="table-container">
-        <tr>
-          <th
-            className="table-header-row"
-            // onClick={clickId}
-          >
-            <div className="table-header-content">
-              <div>Package Name</div>
-              {/* {isNameSortAsc ? (
+      {tableData ? (
+        <table className="table-container">
+          <tr>
+            <th
+              className="table-header-row"
+              // onClick={clickId}
+            >
+              <div className="table-header-content">
+                <div>Package Name</div>
+                {/* {isNameSortAsc ? (
               <ArrowUpward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
             ) : (
               <ArrowDownward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
             )} */}
-            </div>
-          </th>
-          <th
-            className="table-header-row"
-            // onClick={clickId}
-          >
-            <div className="table-header-content">
-              <div>Coverage</div>
+              </div>
+            </th>
+            <th
+              className="table-header-row"
+              // onClick={clickId}
+            >
+              <div className="table-header-content">
+                <div>Coverage</div>
 
-              {/* {isCoverageSortAsc ? (
+                {/* {isCoverageSortAsc ? (
               <ArrowUpward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
             ) : (
               <ArrowDownward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
             )} */}
-            </div>
-          </th>
-        </tr>
-        {tableData.map((data: any) => {
-          return (
-            <tr>
-              <td
-                className="row-hover"
-                onClick={() =>
-                  navigate(`/package-coverage/${id}/${data.packageName}`)
-                }
-              >
-                {data.packageName}
-              </td>
-              <td>
-                <CoverageBar coverage={data.coverage} />
-              </td>
-            </tr>
-          )
-        })}
-      </table>
+              </div>
+            </th>
+          </tr>
+          {tableData.map((data: any) => {
+            return (
+              <tr>
+                <td
+                  className="row-hover"
+                  onClick={() =>
+                    navigate(`/package-coverage/${id}/${data.packageName}`)
+                  }
+                >
+                  {data.packageName}
+                </td>
+                <td>
+                  <CoverageBar coverage={data.coverage} />
+                </td>
+              </tr>
+            )
+          })}
+        </table>
+      ) : (
+        <Typography>No package coverage found.</Typography>
+      )}
     </PackageCoverageContainer>
   )
 }
