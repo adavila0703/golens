@@ -76,11 +76,14 @@ export const HtmlContainer = styled.div`
   gap: 25px;
   border: 1px solid white;
   padding: 10px;
+  max-width: 300px;
 `
 
 export const HtmlContentContainer = styled.div`
   ${HtmlContentCSS}
-`
-export const LineCount = styled.div`
-  margin-top: 50px;
+
+  .file {
+    font-size: x-large;
+    font-weight: bold;
+  }
 `

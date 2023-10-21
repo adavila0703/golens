@@ -2,16 +2,12 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { get, post } from '../../utils/api'
-import { IDirectoryDetails, IGoLensState } from './GoLens.reducer'
+import { IDirectoryData, IGoLensState } from './GoLens.reducer'
 import {
   DirectoryEndpoints,
   IgnoreDirectoryEndpoints,
 } from '../../utils/endpoints'
 
-export const getTableDataLoading = createAction<string>(
-  'GET_DATA_TABLE_LOADING'
-)
-export const getTableDataFailed = createAction<string>('GET_DATA_TABLE_FAILED')
 export const getTableDataCompleted = createAction<any>(
   'GET_DATA_TABLE_COMPLETED'
 )
@@ -22,12 +18,6 @@ export const getTableData = (): AppThunk => async (dispatch) => {
   )
 }
 
-export const createDirectoryLoading = createAction<string>(
-  'GET_DATA_TABLE_LOADING'
-)
-export const createDirectoryFailed = createAction<string>(
-  'GET_DATA_TABLE_FAILED'
-)
 export const createDirectoryCompleted = createAction<any>(
   'GET_DATA_TABLE_COMPLETED'
 )
@@ -44,13 +34,8 @@ export const createDirectory =
       .finally(() => dispatch(tableLoading(false)))
   }
 
-export const sortByName = createAction('SORT_BY_NAME')
-export const sortByCoverage = createAction('SORT_BY_COVERAGE')
 export const tableLoading = createAction<boolean>('TABLE_LOADING')
 
-export const createDirectoriesFailed = createAction<string>(
-  'CREATE_DIRECTORIES_FAILED'
-)
 export const createDirectoriesCompleted = createAction<any>(
   'CREATE_DIRECTORIES_COMPLETED'
 )
@@ -79,12 +64,6 @@ export const createDirectories =
     })
   }
 
-export const deleteDirectoryLoading = createAction<string>(
-  'GET_DATA_TABLE_LOADING'
-)
-export const deleteDirectoryFailed = createAction<string>(
-  'GET_DATA_TABLE_FAILED'
-)
 export const deleteDirectoryCompleted = createAction<any>(
   'GET_DATA_TABLE_COMPLETED'
 )
@@ -111,7 +90,7 @@ export const selectAllIds = (): AppThunk => async (dispatch, state) => {
     return
   }
 
-  const data: IDirectoryDetails[] = goLensState.data
+  const data: IDirectoryData[] = goLensState.data
   const ids: string[] = []
   data.forEach((d) => {
     ids.push(d.id)

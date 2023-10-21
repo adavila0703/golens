@@ -7,20 +7,30 @@ import {
   selectAllIds,
   updateDirectories,
 } from '../GoLens.actions'
-import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
-import { TextField } from '@mui/material'
+import { TextField, Typography } from '@mui/material'
 import {
   getSelectedIdsSelector,
   isAllSelectedSelector,
 } from '../GoLens.selector'
-import { Add, Refresh, SelectAll, Deselect, Delete } from '@mui/icons-material'
-import { ButtonContainer } from './TableBar.style'
+import {
+  Add,
+  Refresh,
+  SelectAll,
+  Deselect,
+  Delete,
+  Close,
+} from '@mui/icons-material'
+import {
+  ButtonContainer,
+  ModalBoxContainer,
+  ModalContent,
+} from './TableBar.style'
 
 enum TypeSelect {
   NONE,
@@ -86,19 +96,11 @@ export const TableBar: React.FC = () => {
     setTypeSelect(selectionType)
   }
 
-  const buttonStyle = { color: 'white', borderColor: 'white', width: '10vw' }
-
   const buttons = [
     {
       text: 'Add Repos',
       endIcon: <Add />,
       onClick: () => setOpen(true),
-      selectedButtons: false,
-    },
-    {
-      text: 'Refresh All',
-      endIcon: <Refresh />,
-      onClick: () => console.log('refresh'),
       selectedButtons: false,
     },
     {
@@ -121,6 +123,11 @@ export const TableBar: React.FC = () => {
     },
   ]
 
+  const handleCloseMenu = () => {
+    setOpen(false)
+    setTypeSelect(TypeSelect.NONE)
+  }
+
   return (
     <>
       <ButtonContainer>
@@ -134,7 +141,7 @@ export const TableBar: React.FC = () => {
                 key={index}
                 onClick={button.onClick}
                 variant="outlined"
-                style={buttonStyle}
+                sx={{ color: 'white', borderColor: 'white', width: '10vw' }}
                 endIcon={button.endIcon}
               >
                 {button.text}
@@ -146,60 +153,82 @@ export const TableBar: React.FC = () => {
       <div>
         <Modal
           open={open}
-          onClose={() => setOpen(false)}
+          onClose={handleCloseMenu}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box className="file-selector-container">
-            <div className="add-repo-title">Add Repo</div>
-            <FormControl
-              fullWidth
-              style={{ backgroundColor: 'white', padding: 1, width: '50%' }}
-            >
-              <InputLabel id="directory-type-label" style={{ color: 'black' }}>
-                Type
-              </InputLabel>
-              <Select
-                labelId="directory-type-label"
-                id="directory-type"
-                label="Type"
-                onChange={handleChange}
-                style={{
-                  color: 'black',
-                  borderColor: 'white',
-                  backgroundColor: 'white',
+          <ModalBoxContainer>
+            <ModalContent>
+              <Button
+                onClick={handleCloseMenu}
+                sx={{
+                  color: 'white',
+                  width: 10,
+                  right: 10,
+                  top: 10,
+                  position: 'absolute',
                 }}
-                error={selectError}
               >
-                <MenuItem value={TypeSelect.SINGLE_REPO}>Single Repo</MenuItem>
-                <MenuItem value={TypeSelect.MULTI_REPO}>Multi Repo</MenuItem>
-              </Select>
-            </FormControl>
-            {typeSelect == TypeSelect.MULTI_REPO && (
-              <div className="warning-text">
-                Note: This will walk the given directory and search for any Go
-                projects to add.
-              </div>
-            )}
-            <div className="input-and-buttons">
+                <Close />
+              </Button>
+              <Typography variant="h5">Add Repo</Typography>
+              <FormControl style={{ backgroundColor: 'white' }}>
+                <InputLabel id="directory-type-label" sx={{ color: 'black' }}>
+                  Type
+                </InputLabel>
+                <Select
+                  labelId="directory-type-label"
+                  id="directory-type"
+                  label="Type"
+                  onChange={handleChange}
+                  sx={{
+                    color: 'black',
+                    borderColor: 'white',
+                    backgroundColor: 'white',
+                  }}
+                  error={selectError}
+                >
+                  <MenuItem value={TypeSelect.SINGLE_REPO}>
+                    Single Repo
+                  </MenuItem>
+                  <MenuItem value={TypeSelect.MULTI_REPO}>Multi Repo</MenuItem>
+                </Select>
+              </FormControl>
+
               <TextField
                 id="outlined-basic"
                 label="Enter path"
                 variant="outlined"
-                fullWidth
                 onChange={(e) => setPath(e.target.value)}
                 error={inputError}
+                sx={{
+                  color: 'black',
+                  borderColor: 'white',
+                  backgroundColor: 'white',
+                }}
               />
               <Button
                 className="manage-repo-button"
                 onClick={saveRepo}
                 variant="outlined"
-                style={{ color: 'black', borderColor: 'black' }}
+                sx={{ color: 'white', borderColor: 'white' }}
               >
                 Save
               </Button>
-            </div>
-          </Box>
+              {typeSelect == TypeSelect.MULTI_REPO && (
+                <Typography
+                  sx={{
+                    color: 'red',
+                    fontWeight: 'bold',
+                    backgroundColor: 'black',
+                  }}
+                >
+                  Note: This will walk the given directory and search for any Go
+                  projects to add.
+                </Typography>
+              )}
+            </ModalContent>
+          </ModalBoxContainer>
         </Modal>
       </div>
     </>

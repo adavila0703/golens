@@ -1,8 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { getPackageCoverageCompleted } from './PackageCoverage.actions'
 
+export interface IPackageData {
+  packageName: string
+  coveredLines: number
+  totalLines: number
+}
+
 export interface IPackageCoverageState {
-  data: any[]
+  data: IPackageData[]
 }
 
 export const getInitialPackageCoverageState = (): IPackageCoverageState => {
@@ -15,7 +21,7 @@ export const packageCoverageReducer = createReducer(
   getInitialPackageCoverageState(),
   (builder) => {
     builder.addCase(getPackageCoverageCompleted, (state, { payload }) => {
-      console.log('packages', payload)
+      console.log('playload', payload.packageCoverage)
       state.data = payload.packageCoverage
     })
   }

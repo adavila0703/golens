@@ -1,22 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import {
-  deleteDirectory,
-  getTableData,
-  setSelectedIds,
-  sortByCoverage,
-  sortByName,
-  updateDirectory,
-} from '../GoLens.actions'
+import { getTableData, setSelectedIds } from '../GoLens.actions'
 import {
   getDataSelector,
   getSelectedIdsSelector,
-  isCoverageSortAscSelector,
   isLoadingSelector,
-  isNameSortAscSelector,
 } from '../GoLens.selector'
-
-import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import ReactLoading from 'react-loading'
 import { CoverageBar } from '../../coveragebar/CoverageBar'
@@ -34,37 +23,21 @@ import {
   LoadingBarContainer,
   TableCoverage,
   TableName,
-} from './DataTable.style'
+} from './GoLensTable.style'
 import { ActionMenu } from './actionmenu/ActionMenu'
+import { getCoveragePercentage } from '../../../utils/utils'
 
-export const DataTable: React.FC = () => {
+export const GoLensTable: React.FC = () => {
   const dispatch = useAppDispatch()
   const tableData = useAppSelector(getDataSelector)
-  const isNameSortAsc = useAppSelector(isNameSortAscSelector)
-  const isCoverageSortAsc = useAppSelector(isCoverageSortAscSelector)
   const isLoading = useAppSelector(isLoadingSelector)
   const selectedIds = useAppSelector(getSelectedIdsSelector)
-
-  const [nameClicked, setNameClick] = useState(false)
-  const [coverageClicked, setCoverageClick] = useState(false)
 
   const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getTableData())
   }, [])
-
-  const sortName = () => {
-    dispatch(sortByName())
-    setNameClick(true)
-    setCoverageClick(false)
-  }
-
-  const sortCoverage = () => {
-    dispatch(sortByCoverage())
-    setNameClick(false)
-    setCoverageClick(true)
-  }
 
   const onSelect = (id: string, checked: boolean) => {
     let newRepoIds: string[] = []
@@ -95,39 +68,17 @@ export const DataTable: React.FC = () => {
               <TableCell align="left">
                 <Typography>Select</Typography>
               </TableCell>
-              <TableCell align="left" onClick={sortName}>
+              <TableCell align="left">
                 <TableName>
                   <Typography>Name</Typography>
-                  {isNameSortAsc ? (
-                    <ArrowUpward
-                      style={{ visibility: nameClicked ? 'visible' : 'hidden' }}
-                    />
-                  ) : (
-                    <ArrowDownward
-                      style={{ visibility: nameClicked ? 'visible' : 'hidden' }}
-                    />
-                  )}
                 </TableName>
               </TableCell>
-              <TableCell align="left" onClick={sortCoverage}>
+              <TableCell align="left">
                 <TableCoverage>
                   <Typography>Coverage</Typography>
-                  {isCoverageSortAsc ? (
-                    <ArrowUpward
-                      style={{
-                        visibility: coverageClicked ? 'visible' : 'hidden',
-                      }}
-                    />
-                  ) : (
-                    <ArrowDownward
-                      style={{
-                        visibility: coverageClicked ? 'visible' : 'hidden',
-                      }}
-                    />
-                  )}
                 </TableCoverage>
               </TableCell>
-              <TableCell align="left" onClick={sortCoverage}>
+              <TableCell align="left">
                 <Typography>Actions</Typography>
               </TableCell>
             </TableRow>
@@ -155,7 +106,12 @@ export const DataTable: React.FC = () => {
                     <Typography>{data.coverageName}</Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <CoverageBar coverage={data.coverage} />
+                    <CoverageBar
+                      coverage={getCoveragePercentage(
+                        data.totalLines,
+                        data.coveredLines
+                      )}
+                    />
                   </TableCell>
                   <TableCell align="left">
                     <ActionMenu

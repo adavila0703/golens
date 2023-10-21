@@ -2,17 +2,23 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getPackageCoverage } from './PackageCoverage.actions'
-import { packageDetailsDataSelector } from './PackageCoverage.selector'
+import { packagecoverageDataSelector } from './PackageCoverage.selector'
 import { ArrowBack } from '@mui/icons-material'
 import { Button, Typography } from '@mui/material'
-import { CoverageBar } from '../coveragebar/CoverageBar'
-import { PackageCoverageContainer } from './PackageCoverage.style'
+import {
+  PackageCoverageContainer,
+  PackageCoverageNavBar,
+} from './PackageCoverage.style'
 import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
+import {
+  SimpleCoverageTable,
+  TableType,
+} from '../simplecoveragetable/SimpleCoverageData'
 
 export const PackageCoverage = () => {
   const { id } = useParams()
   const dispatch = useAppDispatch()
-  const tableData = useAppSelector(packageDetailsDataSelector)
+  const packagesCoverage = useAppSelector(packagecoverageDataSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -21,11 +27,20 @@ export const PackageCoverage = () => {
     }
   }, [])
 
+  const totalLines = packagesCoverage?.map((data) => data.totalLines)
+  const coveredLines = packagesCoverage?.map((data) => data.coveredLines)
+
+  const forwardNavigation: { [keyof: string]: string } = {}
+  packagesCoverage?.forEach((data) => {
+    forwardNavigation[
+      data.packageName
+    ] = `/package-coverage/${id}/${data.packageName}`
+  })
+
   return (
     <PackageCoverageContainer>
       <Typography variant="h2">Packages</Typography>
-      <TotalCoverage data={tableData} />
-      <div className="back-button-container">
+      <PackageCoverageNavBar>
         <Button
           startIcon={<ArrowBack />}
           sx={{ color: 'white' }}
@@ -33,56 +48,14 @@ export const PackageCoverage = () => {
         >
           Back
         </Button>
-      </div>
-      {tableData ? (
-        <table className="table-container">
-          <tr>
-            <th
-              className="table-header-row"
-              // onClick={clickId}
-            >
-              <div className="table-header-content">
-                <div>Package Name</div>
-                {/* {isNameSortAsc ? (
-              <ArrowUpward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
-            ) : (
-              <ArrowDownward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
-            )} */}
-              </div>
-            </th>
-            <th
-              className="table-header-row"
-              // onClick={clickId}
-            >
-              <div className="table-header-content">
-                <div>Coverage</div>
-
-                {/* {isCoverageSortAsc ? (
-              <ArrowUpward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
-            ) : (
-              <ArrowDownward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
-            )} */}
-              </div>
-            </th>
-          </tr>
-          {tableData.map((data: any) => {
-            return (
-              <tr>
-                <td
-                  className="row-hover"
-                  onClick={() =>
-                    navigate(`/package-coverage/${id}/${data.packageName}`)
-                  }
-                >
-                  {data.packageName}
-                </td>
-                <td>
-                  <CoverageBar coverage={data.coverage} />
-                </td>
-              </tr>
-            )
-          })}
-        </table>
+        <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
+      </PackageCoverageNavBar>
+      {packagesCoverage ? (
+        <SimpleCoverageTable
+          tableType={TableType.PACKAGES}
+          tableData={packagesCoverage}
+          forwardNavigation={forwardNavigation}
+        />
       ) : (
         <Typography>No package coverage found.</Typography>
       )}

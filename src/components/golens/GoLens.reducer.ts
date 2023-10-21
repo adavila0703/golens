@@ -1,8 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import {
   getTableDataCompleted,
-  sortByName,
-  sortByCoverage,
   tableLoading,
   createDirectoriesCompleted,
   setSelectedIds,
@@ -10,17 +8,16 @@ import {
   updateDirectoryCompleted,
 } from './GoLens.actions'
 
-export interface IDirectoryDetails {
-  coverage: number
+export interface IDirectoryData {
+  totalLines: number
+  coveredLines: number
   coverageName: string
   id: string
   path: string
 }
 
 export interface IGoLensState {
-  data: IDirectoryDetails[]
-  nameSortAsc: boolean
-  coverageSortAsc: boolean
+  data: IDirectoryData[]
   loading: boolean
   selectedIds: string[]
 }
@@ -28,8 +25,6 @@ export interface IGoLensState {
 export const getInitialGoLensState = (): IGoLensState => {
   return {
     data: [],
-    nameSortAsc: true,
-    coverageSortAsc: true,
     loading: false,
     selectedIds: [],
   }
@@ -41,52 +36,6 @@ export const goLensReducer = createReducer(
     builder
       .addCase(getTableDataCompleted, (state, { payload }) => {
         state.data = payload
-      })
-      .addCase(sortByName, (state) => {
-        const sortedArray = Array.from(state.data)
-
-        if (state.nameSortAsc) {
-          sortedArray.sort((a, b) => {
-            if (a.coverageName < b.coverageName) {
-              return -1
-            }
-
-            if (a.coverageName > b.coverageName) {
-              return 1
-            }
-
-            return 0
-          })
-          state.nameSortAsc = false
-        } else {
-          sortedArray.sort((a, b) => {
-            if (a.coverageName > b.coverageName) {
-              return -1
-            }
-
-            if (a.coverageName < b.coverageName) {
-              return 1
-            }
-
-            return 0
-          })
-          state.nameSortAsc = true
-        }
-
-        state.data = sortedArray
-      })
-      .addCase(sortByCoverage, (state) => {
-        const sortedArray = Array.from(state.data)
-
-        if (state.coverageSortAsc) {
-          sortedArray.sort((a, b) => b.coverage - a.coverage)
-          state.coverageSortAsc = false
-        } else {
-          sortedArray.sort((a, b) => a.coverage - b.coverage)
-          state.coverageSortAsc = true
-        }
-
-        state.data = sortedArray
       })
       .addCase(tableLoading, (state, { payload }) => {
         state.loading = payload
@@ -110,11 +59,11 @@ export const goLensReducer = createReducer(
       .addCase(updateDirectoryCompleted, (state, { payload }) => {
         const newData = state.data.map((data) => {
           if (data.id === payload.id) {
-            data.coverage = payload.coverage
             data.coverageName = payload.coverageName
           }
           return data
         })
+
         const newSelectedIds = state.selectedIds.filter(
           (id) => id != payload.id
         )

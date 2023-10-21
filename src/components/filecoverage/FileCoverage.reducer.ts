@@ -1,13 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { getFileCoverageCompleted } from './FileCoverage.actions'
 
-interface IFileCoverage {
-  coverage: number
+export interface IFileData {
+  totalLines: number
+  coveredLines: number
   fileName: string
 }
 
 export interface IFileCoverageState {
-  fileCoverage: IFileCoverage[]
+  fileCoverage: IFileData[]
 }
 
 export const getInitialFileCoverageState = (): IFileCoverageState => {

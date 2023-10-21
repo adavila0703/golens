@@ -6,3 +6,8 @@ export const FileCoverageContainer = styled.div`
   flex-direction: column;
   gap: 15px;
 `
+
+export const FileCoverageNavBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
