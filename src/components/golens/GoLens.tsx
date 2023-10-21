@@ -9,12 +9,15 @@ import { PageTitle } from '../pagetitle/PageTitle'
 export const GoLens = () => {
   const data = useAppSelector(getDataSelector)
 
+  const totalLines = data.map((d) => d.totalLines)
+  const coveredLines = data.map((d) => d.coveredLines)
+
   return (
     <GoLensContainer>
       <PageTitle title="Golens" />
       <BarContainer>
         <TableBar />
-        <TotalCoverage data={data} />
+        <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
       </BarContainer>
       <DataTable />
     </GoLensContainer>

@@ -2,34 +2,22 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { ArrowBack } from '@mui/icons-material'
-import { Button } from '@mui/material'
-import { htmlContentSelector, lineCountSelector } from './HtmlContent.selector'
+import { Button, Typography } from '@mui/material'
+import { htmlContentSelector } from './HtmlContent.selector'
 import { getHtmlContent } from './HtmlContent.actions'
-import {
-  HtmlContainer,
-  HtmlContentContainer,
-  LineCount,
-} from './HtmlContent.style'
+import { HtmlContainer, HtmlContentContainer } from './HtmlContent.style'
 
 export const HtmlContent = () => {
   const { id, packageName, fileName } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const content = useAppSelector(htmlContentSelector)
-  const lineCount = useAppSelector(lineCountSelector)
-  const lineCountArray = []
-
-  for (let index = 1; index < lineCount + 1; index++) {
-    lineCountArray.push(index)
-  }
 
   useEffect(() => {
     if (id && fileName && packageName) {
       dispatch(getHtmlContent(id, fileName))
     }
   }, [])
-
-  console.log(id, packageName, fileName)
 
   return (
     <>
@@ -86,18 +74,9 @@ export const HtmlContent = () => {
           <div>Not Covered</div>
         </div>
       </div>
-      <HtmlContainer>
-        <LineCount>
-          {lineCountArray.map((number) => {
-            return (
-              <>
-                <div>{number}</div>
-              </>
-            )
-          })}
-        </LineCount>
+      <Typography sx={{ color: 'black' }}>
         <HtmlContentContainer dangerouslySetInnerHTML={{ __html: content }} />
-      </HtmlContainer>
+      </Typography>
     </>
   )
 }

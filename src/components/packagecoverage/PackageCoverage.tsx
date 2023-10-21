@@ -8,6 +8,12 @@ import { Button, Typography } from '@mui/material'
 import { CoverageBar } from '../coveragebar/CoverageBar'
 import { PackageCoverageContainer } from './PackageCoverage.style'
 import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
+import { IPackageData } from './PackageCoverage.reducer'
+import { getCoveragePercentage } from '../../utils/utils'
+import {
+  SimpleCoverageTable,
+  TableType,
+} from '../simplecoveragetable/SimpleCoverageData'
 
 export const PackageCoverage = () => {
   const { id } = useParams()
@@ -21,10 +27,20 @@ export const PackageCoverage = () => {
     }
   }, [])
 
+  const totalLines = tableData?.map((data) => data.totalLines)
+  const coveredLines = tableData?.map((data) => data.coveredLines)
+
+  const forwardNavigation: { [keyof: string]: string } = {}
+  tableData?.forEach((data) => {
+    forwardNavigation[
+      data.packageName
+    ] = `/package-coverage/${id}/${data.packageName}`
+  })
+
   return (
     <PackageCoverageContainer>
       <Typography variant="h2">Packages</Typography>
-      <TotalCoverage data={tableData} />
+      <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
       <div className="back-button-container">
         <Button
           startIcon={<ArrowBack />}
@@ -35,54 +51,11 @@ export const PackageCoverage = () => {
         </Button>
       </div>
       {tableData ? (
-        <table className="table-container">
-          <tr>
-            <th
-              className="table-header-row"
-              // onClick={clickId}
-            >
-              <div className="table-header-content">
-                <div>Package Name</div>
-                {/* {isNameSortAsc ? (
-              <ArrowUpward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
-            ) : (
-              <ArrowDownward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
-            )} */}
-              </div>
-            </th>
-            <th
-              className="table-header-row"
-              // onClick={clickId}
-            >
-              <div className="table-header-content">
-                <div>Coverage</div>
-
-                {/* {isCoverageSortAsc ? (
-              <ArrowUpward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
-            ) : (
-              <ArrowDownward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
-            )} */}
-              </div>
-            </th>
-          </tr>
-          {tableData.map((data: any) => {
-            return (
-              <tr>
-                <td
-                  className="row-hover"
-                  onClick={() =>
-                    navigate(`/package-coverage/${id}/${data.packageName}`)
-                  }
-                >
-                  {data.packageName}
-                </td>
-                <td>
-                  <CoverageBar coverage={data.coverage} />
-                </td>
-              </tr>
-            )
-          })}
-        </table>
+        <SimpleCoverageTable
+          tableType={TableType.PACKAGES}
+          tableData={tableData}
+          forwardNavigation={forwardNavigation}
+        />
       ) : (
         <Typography>No package coverage found.</Typography>
       )}

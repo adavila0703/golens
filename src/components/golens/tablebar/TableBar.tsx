@@ -96,12 +96,6 @@ export const TableBar: React.FC = () => {
       selectedButtons: false,
     },
     {
-      text: 'Refresh All',
-      endIcon: <Refresh />,
-      onClick: () => console.log('refresh'),
-      selectedButtons: false,
-    },
-    {
       text: isAllSelected ? 'Deselect All' : 'Select All',
       endIcon: isAllSelected ? <Deselect /> : <SelectAll />,
       onClick: () => dispatch(selectAllIds()),

@@ -9,3 +9,10 @@ export const getBarColor = (coverage: number): string => {
 
   return ''
 }
+
+export const getCoveragePercentage = (
+  totalLines: number,
+  coveredLines: number
+): number => {
+  return (coveredLines / totalLines) * 100
+}

@@ -8,6 +8,12 @@ import { getFileCoverage } from './FileCoverage.actions'
 import { CoverageBar } from '../coveragebar/CoverageBar'
 import { FileCoverageContainer } from './FileCoverage.style'
 import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
+import { IFileData } from './FileCoverage.reducer'
+import { getCoveragePercentage } from '../../utils/utils'
+import {
+  SimpleCoverageTable,
+  TableType,
+} from '../simplecoveragetable/SimpleCoverageData'
 
 export const FileCoverage = () => {
   const { id, packageName } = useParams()
@@ -21,10 +27,21 @@ export const FileCoverage = () => {
     }
   }, [])
 
+  const totalLines = fileCoverage?.map((data) => data.totalLines)
+  const coveredLines = fileCoverage?.map((data) => data.coveredLines)
+
+  const forwardNavigation: { [keyof: string]: string } = {}
+  fileCoverage?.forEach((data) => {
+    const fileName = data.fileName.split('.')[0]
+    forwardNavigation[
+      data.fileName
+    ] = `/package-coverage/${id}/${packageName}/${fileName}`
+  })
+
   return (
     <FileCoverageContainer>
       <Typography variant="h2">Files</Typography>
-      <TotalCoverage data={fileCoverage} />
+      <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
       <div className="back-button-container">
         <Button
           startIcon={<ArrowBack />}
@@ -34,58 +51,11 @@ export const FileCoverage = () => {
           Back
         </Button>
       </div>
-      <table className="table-container">
-        <tr>
-          <th
-            className="table-header-row"
-            // onClick={clickId}
-          >
-            <div className="table-header-content">
-              <div>File Name</div>
-              {/* {isNameSortAsc ? (
-            <ArrowUpward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
-          ) : (
-            <ArrowDownward style={{ visibility: nameClicked ? 'visible' : 'hidden' }} />
-          )} */}
-            </div>
-          </th>
-          <th
-            className="table-header-row"
-            // onClick={clickId}
-          >
-            <div className="table-header-content">
-              <div>Coverage</div>
-
-              {/* {isCoverageSortAsc ? (
-            <ArrowUpward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
-          ) : (
-            <ArrowDownward style={{ visibility: coverageClicked ? 'visible' : 'hidden' }} />
-          )} */}
-            </div>
-          </th>
-        </tr>
-        {fileCoverage &&
-          fileCoverage.map((data: any) => {
-            const fileName = data.fileName.split('.')[0]
-            return (
-              <tr>
-                <td
-                  className="row-hover"
-                  onClick={() =>
-                    navigate(
-                      `/package-coverage/${id}/${packageName}/${fileName}`
-                    )
-                  }
-                >
-                  {data.fileName}
-                </td>
-                <td>
-                  <CoverageBar coverage={data.coverage} />
-                </td>
-              </tr>
-            )
-          })}
-      </table>
+      <SimpleCoverageTable
+        tableType={TableType.FILES}
+        tableData={fileCoverage}
+        forwardNavigation={forwardNavigation}
+      />
     </FileCoverageContainer>
   )
 }
