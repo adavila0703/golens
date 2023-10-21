@@ -6,15 +6,12 @@ import {
   TableCell,
   TableBody,
   Typography,
-  Button,
 } from '@mui/material'
 import { TableName } from './SimpleCoverageData.style'
 import { IPackageData } from '../packagecoverage/PackageCoverage.reducer'
 import { IFileData } from '../filecoverage/FileCoverage.reducer'
 import { getCoveragePercentage } from '../../utils/utils'
 import { CoverageBar } from '../coveragebar/CoverageBar'
-import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
-import { ArrowBack } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 
 export enum TableType {
