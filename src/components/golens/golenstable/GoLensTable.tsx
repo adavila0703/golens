@@ -23,11 +23,11 @@ import {
   LoadingBarContainer,
   TableCoverage,
   TableName,
-} from './DataTable.style'
+} from './GoLensTable.style'
 import { ActionMenu } from './actionmenu/ActionMenu'
 import { getCoveragePercentage } from '../../../utils/utils'
 
-export const DataTable: React.FC = () => {
+export const GoLensTable: React.FC = () => {
   const dispatch = useAppDispatch()
   const tableData = useAppSelector(getDataSelector)
   const isLoading = useAppSelector(isLoadingSelector)

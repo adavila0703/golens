@@ -2,14 +2,14 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getPackageCoverage } from './PackageCoverage.actions'
-import { packageDetailsDataSelector } from './PackageCoverage.selector'
+import { packagecoverageDataSelector } from './PackageCoverage.selector'
 import { ArrowBack } from '@mui/icons-material'
 import { Button, Typography } from '@mui/material'
-import { CoverageBar } from '../coveragebar/CoverageBar'
-import { PackageCoverageContainer } from './PackageCoverage.style'
+import {
+  PackageCoverageContainer,
+  PackageCoverageNavBar,
+} from './PackageCoverage.style'
 import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
-import { IPackageData } from './PackageCoverage.reducer'
-import { getCoveragePercentage } from '../../utils/utils'
 import {
   SimpleCoverageTable,
   TableType,
@@ -18,7 +18,7 @@ import {
 export const PackageCoverage = () => {
   const { id } = useParams()
   const dispatch = useAppDispatch()
-  const tableData = useAppSelector(packageDetailsDataSelector)
+  const packagesCoverage = useAppSelector(packagecoverageDataSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export const PackageCoverage = () => {
     }
   }, [])
 
-  const totalLines = tableData?.map((data) => data.totalLines)
-  const coveredLines = tableData?.map((data) => data.coveredLines)
+  const totalLines = packagesCoverage?.map((data) => data.totalLines)
+  const coveredLines = packagesCoverage?.map((data) => data.coveredLines)
 
   const forwardNavigation: { [keyof: string]: string } = {}
-  tableData?.forEach((data) => {
+  packagesCoverage?.forEach((data) => {
     forwardNavigation[
       data.packageName
     ] = `/package-coverage/${id}/${data.packageName}`
@@ -40,8 +40,7 @@ export const PackageCoverage = () => {
   return (
     <PackageCoverageContainer>
       <Typography variant="h2">Packages</Typography>
-      <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
-      <div className="back-button-container">
+      <PackageCoverageNavBar>
         <Button
           startIcon={<ArrowBack />}
           sx={{ color: 'white' }}
@@ -49,11 +48,12 @@ export const PackageCoverage = () => {
         >
           Back
         </Button>
-      </div>
-      {tableData ? (
+        <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
+      </PackageCoverageNavBar>
+      {packagesCoverage ? (
         <SimpleCoverageTable
           tableType={TableType.PACKAGES}
-          tableData={tableData}
+          tableData={packagesCoverage}
           forwardNavigation={forwardNavigation}
         />
       ) : (

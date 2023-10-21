@@ -6,3 +6,8 @@ export const PackageCoverageContainer = styled.div`
   flex-direction: column;
   gap: 15px;
 `
+
+export const PackageCoverageNavBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

@@ -5,11 +5,8 @@ import { ArrowBack } from '@mui/icons-material'
 import { Button, Typography } from '@mui/material'
 import { fileCoverageSelector } from './FileCoverage.selector'
 import { getFileCoverage } from './FileCoverage.actions'
-import { CoverageBar } from '../coveragebar/CoverageBar'
-import { FileCoverageContainer } from './FileCoverage.style'
+import { FileCoverageNavBar, FileCoverageContainer } from './FileCoverage.style'
 import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
-import { IFileData } from './FileCoverage.reducer'
-import { getCoveragePercentage } from '../../utils/utils'
 import {
   SimpleCoverageTable,
   TableType,
@@ -41,8 +38,7 @@ export const FileCoverage = () => {
   return (
     <FileCoverageContainer>
       <Typography variant="h2">Files</Typography>
-      <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
-      <div className="back-button-container">
+      <FileCoverageNavBar>
         <Button
           startIcon={<ArrowBack />}
           sx={{ color: 'white' }}
@@ -50,12 +46,17 @@ export const FileCoverage = () => {
         >
           Back
         </Button>
-      </div>
-      <SimpleCoverageTable
-        tableType={TableType.FILES}
-        tableData={fileCoverage}
-        forwardNavigation={forwardNavigation}
-      />
+        <TotalCoverage totalLines={totalLines} coveredLines={coveredLines} />
+      </FileCoverageNavBar>
+      {fileCoverage ? (
+        <SimpleCoverageTable
+          tableType={TableType.FILES}
+          tableData={fileCoverage}
+          forwardNavigation={forwardNavigation}
+        />
+      ) : (
+        <Typography>No file coverage found</Typography>
+      )}
     </FileCoverageContainer>
   )
 }
