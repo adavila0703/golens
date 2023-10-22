@@ -50,17 +50,24 @@ export const createDirectories =
 
     post(body, DirectoryEndpoints.GetRootDirectoryPaths).then((resp) => {
       const paths: string[] = resp.paths
-      const requests: Promise<any>[] = []
+      const requests: any[] = []
 
       paths.forEach((path) => {
-        requests.push(
-          post({ path }, DirectoryEndpoints.CreateDirectory).then((resp) => {
-            dispatch(createDirectoriesCompleted(resp.directory))
-          })
-        )
+        requests.push({
+          body: { path },
+          endpoint: DirectoryEndpoints.CreateDirectory,
+        })
       })
 
-      Promise.all(requests).finally(() => dispatch(tableLoading(false)))
+      Promise.all(
+        requests.map((req) =>
+          post(req.body, req.endpoint)
+            .then((resp) =>
+              dispatch(createDirectoriesCompleted(resp.directory))
+            )
+            .finally(() => console.log(req.body))
+        )
+      ).finally(() => dispatch(tableLoading(false)))
     })
   }
 
@@ -127,9 +134,12 @@ export const updateDirectory =
   }
 
 export const updateDirectories = (): AppThunk => async (dispatch, state) => {
-  const goLensState = state().goLensState as IGoLensState
+  const goLensState: IGoLensState = state().goLensState
+
   goLensState.selectedIds.forEach((id) => {
-    dispatch(updateDirectory(id))
+    post({ id }, DirectoryEndpoints.UpdateDirectory).then((resp) => {
+      dispatch(updateDirectoryCompleted(resp.directory))
+    })
   })
 }
 
