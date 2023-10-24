@@ -31,6 +31,7 @@ import {
   ModalBoxContainer,
   ModalContent,
 } from './TableBar.style'
+import { useSnackbar } from 'notistack'
 
 enum TypeSelect {
   NONE,
@@ -40,10 +41,11 @@ enum TypeSelect {
 
 export const TableBar: React.FC = () => {
   const dispatch = useAppDispatch()
+  const { enqueueSnackbar } = useSnackbar()
   const isAllSelected = useAppSelector(isAllSelectedSelector)
   const selectedIds = useAppSelector(getSelectedIdsSelector)
 
-  const [path, setPath] = useState<string>()
+  const [path, setPath] = useState<string>('')
   const [open, setOpen] = useState(false)
   const [typeSelect, setTypeSelect] = useState<TypeSelect>(TypeSelect.NONE)
   const [inputError, setInputError] = useState(false)
@@ -73,15 +75,11 @@ export const TableBar: React.FC = () => {
 
     switch (typeSelect) {
       case TypeSelect.SINGLE_REPO:
-        if (path) {
-          dispatch(createDirectory(path))
-        }
+        dispatch(createDirectory(path, enqueueSnackbar))
         break
 
       case TypeSelect.MULTI_REPO:
-        if (path) {
-          dispatch(createDirectories(path))
-        }
+        dispatch(createDirectories(path, enqueueSnackbar))
         break
 
       default:
@@ -118,7 +116,7 @@ export const TableBar: React.FC = () => {
     {
       text: 'Refresh Selected',
       endIcon: <Refresh />,
-      onClick: () => dispatch(updateDirectories()),
+      onClick: () => dispatch(updateDirectories(enqueueSnackbar)),
       selectedButtons: true,
     },
   ]

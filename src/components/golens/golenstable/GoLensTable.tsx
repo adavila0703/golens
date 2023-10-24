@@ -19,18 +19,14 @@ import {
   TableBody,
   Typography,
 } from '@mui/material'
-import {
-  LoadingBarContainer,
-  TableCoverage,
-  TableName,
-} from './GoLensTable.style'
+import { TableCoverage, TableName } from './GoLensTable.style'
 import { ActionMenu } from './actionmenu/ActionMenu'
 import { getCoveragePercentage } from '../../../utils/utils'
 
 export const GoLensTable: React.FC = () => {
   const dispatch = useAppDispatch()
   const tableData = useAppSelector(getDataSelector)
-  const isLoading = useAppSelector(isLoadingSelector)
+
   const selectedIds = useAppSelector(getSelectedIdsSelector)
 
   const navigate = useNavigate()
@@ -51,16 +47,6 @@ export const GoLensTable: React.FC = () => {
 
   return (
     <>
-      {isLoading && (
-        <LoadingBarContainer>
-          <ReactLoading
-            type="bubbles"
-            color="#fff"
-            width={'10%'}
-            height={'10%'}
-          />
-        </LoadingBarContainer>
-      )}
       <TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

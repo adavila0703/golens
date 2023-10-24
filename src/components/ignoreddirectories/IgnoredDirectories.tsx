@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Button,
   TableBody,
@@ -10,12 +11,19 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { Delete } from '@mui/icons-material'
 import { ignoredDirectoriesSelector } from './IgnoredDirectories.selector'
-import { deleteIgnoredDirectory } from './IgnoredDirectories.actions'
+import {
+  deleteIgnoredDirectory,
+  getIgnoredDirectories,
+} from './IgnoredDirectories.actions'
 import { PageTitle } from '../pagetitle/PageTitle'
 
 export const IgnoredDirectories = () => {
   const ignoredDirectories = useAppSelector(ignoredDirectoriesSelector)
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(getIgnoredDirectories())
+  }, [])
 
   return (
     <>

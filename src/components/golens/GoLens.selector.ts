@@ -13,6 +13,7 @@ export const getDataSelector = createSelector(dataSelector, (data) => data)
 
 export const selectedIdsSelector = (state: IAppReducerState) =>
   state.goLensState.selectedIds
+
 export const getSelectedIdsSelector = createSelector(
   selectedIdsSelector,
   (selectedIds) => selectedIds

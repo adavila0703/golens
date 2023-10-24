@@ -41,10 +41,6 @@ export const goLensReducer = createReducer(
         state.loading = payload
       })
       .addCase(createDirectoriesCompleted, (state, { payload }) => {
-        if (!state.data) {
-          state.data = [payload]
-          return
-        }
         state.data = [...state.data, payload]
       })
       .addCase(setSelectedIds, (state, { payload }) => {

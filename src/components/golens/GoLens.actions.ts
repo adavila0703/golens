@@ -18,19 +18,16 @@ export const getTableData = (): AppThunk => async (dispatch) => {
   )
 }
 
-export const createDirectoryCompleted = createAction<any>(
-  'GET_DATA_TABLE_COMPLETED'
-)
-
 export const createDirectory =
-  (path: string): AppThunk =>
+  (path: string, enqueueSnackbar: any): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
-    const body = {
-      path: path,
-    }
-    post(body, DirectoryEndpoints.CreateDirectory)
-      .then(() => dispatch(getTableData()))
+
+    post({ path }, DirectoryEndpoints.CreateDirectory)
+      .then((resp) => {
+        dispatch(createDirectoriesCompleted(resp.directory))
+        enqueueSnackbar(`${resp.directory.coverageName} created.`)
+      })
       .finally(() => dispatch(tableLoading(false)))
   }
 
@@ -41,7 +38,7 @@ export const createDirectoriesCompleted = createAction<any>(
 )
 
 export const createDirectories =
-  (path: string): AppThunk =>
+  (path: string, enqueueSnackbar: any): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
     const body = {
@@ -61,11 +58,10 @@ export const createDirectories =
 
       Promise.all(
         requests.map((req) =>
-          post(req.body, req.endpoint)
-            .then((resp) =>
-              dispatch(createDirectoriesCompleted(resp.directory))
-            )
-            .finally(() => console.log(req.body))
+          post(req.body, req.endpoint).then((resp) => {
+            dispatch(createDirectoriesCompleted(resp.directory))
+            enqueueSnackbar(`${resp.directory.coverageName} created.`)
+          })
         )
       ).finally(() => dispatch(tableLoading(false)))
     })
@@ -122,6 +118,7 @@ export const deleteSelectedIds = (): AppThunk => async (dispatch, state) => {
 export const updateDirectoryCompleted = createAction<any>(
   'UPDATE_DIRECTORY_COMPLETED'
 )
+
 export const updateDirectory =
   (id: string): AppThunk =>
   async (dispatch) => {
@@ -133,15 +130,25 @@ export const updateDirectory =
       .finally(() => dispatch(tableLoading(false)))
   }
 
-export const updateDirectories = (): AppThunk => async (dispatch, state) => {
-  const goLensState: IGoLensState = state().goLensState
+export const updateDirectories =
+  (enqueueSnackbar: any): AppThunk =>
+  async (dispatch, state) => {
+    const goLensState: IGoLensState = state().goLensState
 
-  goLensState.selectedIds.forEach((id) => {
-    post({ id }, DirectoryEndpoints.UpdateDirectory).then((resp) => {
-      dispatch(updateDirectoryCompleted(resp.directory))
+    goLensState.selectedIds.forEach((id) => {
+      post({ id }, DirectoryEndpoints.UpdateDirectory)
+        .then((resp) => {
+          dispatch(updateDirectoryCompleted(resp.directory))
+        })
+        .finally(() => {
+          const directoryName = goLensState.data.find(
+            (data) => data.id === id
+          )?.coverageName
+
+          enqueueSnackbar(`${directoryName} updated.`)
+        })
     })
-  })
-}
+  }
 
 export const createIgnoredDirectory =
   (directoryName: string): AppThunk =>
