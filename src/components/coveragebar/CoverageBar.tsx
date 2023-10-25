@@ -11,7 +11,6 @@ interface CoverageBarProps {
 
 export const CoverageBar = ({ coverage }: CoverageBarProps) => {
   const barColor = getBarColor(coverage)
-  console.log(coverage)
 
   if (!coverage) {
     coverage = 0.0

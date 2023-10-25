@@ -45,7 +45,7 @@ export const routes: Route[] = [
     navbar: false,
   },
   {
-    path: '/settings',
+    path: '/tasks',
     element: <Tasks />,
     index: true,
     navbar: true,

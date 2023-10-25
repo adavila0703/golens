@@ -1,13 +1,8 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { getTableData, setSelectedIds } from '../GoLens.actions'
-import {
-  getDataSelector,
-  getSelectedIdsSelector,
-  isLoadingSelector,
-} from '../GoLens.selector'
+import { getTableData } from '../GoLens.actions'
+import { getDataSelector } from '../GoLens.selector'
 import { useNavigate } from 'react-router-dom'
-import ReactLoading from 'react-loading'
 import { CoverageBar } from '../../coveragebar/CoverageBar'
 import {
   Table,
@@ -19,20 +14,22 @@ import {
   TableBody,
   Typography,
 } from '@mui/material'
-import {
-  LoadingBarContainer,
-  TableCoverage,
-  TableName,
-} from './GoLensTable.style'
+import { TableCoverage, TableName } from './GoLensTable.style'
 import { ActionMenu } from './actionmenu/ActionMenu'
 import { getCoveragePercentage } from '../../../utils/utils'
 
-export const GoLensTable: React.FC = () => {
+interface GoLensTableProps {
+  selectedIds: string[]
+  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+export const GoLensTable = ({
+  selectedIds,
+  setSelectedIds,
+}: GoLensTableProps) => {
   const dispatch = useAppDispatch()
   const tableData = useAppSelector(getDataSelector)
-  const isLoading = useAppSelector(isLoadingSelector)
-  const selectedIds = useAppSelector(getSelectedIdsSelector)
-
+  // const selectedIds = useAppSelector(getSelectedIdsSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,27 +37,18 @@ export const GoLensTable: React.FC = () => {
   }, [])
 
   const onSelect = (id: string, checked: boolean) => {
-    let newRepoIds: string[] = []
+    // let newRepoIds: string[] = []
     if (checked) {
-      newRepoIds = [...selectedIds, id]
+      setSelectedIds([...selectedIds, id])
     } else {
-      newRepoIds = selectedIds.filter((repoId) => repoId != id)
+      const newSelectedIds = selectedIds.filter((repoId) => repoId != id)
+      setSelectedIds(newSelectedIds)
     }
-    dispatch(setSelectedIds(newRepoIds))
+    // dispatch(setSelectedIds(newRepoIds))
   }
 
   return (
     <>
-      {isLoading && (
-        <LoadingBarContainer>
-          <ReactLoading
-            type="bubbles"
-            color="#fff"
-            width={'10%'}
-            height={'10%'}
-          />
-        </LoadingBarContainer>
-      )}
       <TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

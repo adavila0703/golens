@@ -2,7 +2,7 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { get, post } from '../../utils/api'
-import { IDirectoryData, IGoLensState } from './GoLens.reducer'
+import { IGoLensState } from './GoLens.reducer'
 import {
   DirectoryEndpoints,
   IgnoreDirectoryEndpoints,
@@ -18,19 +18,16 @@ export const getTableData = (): AppThunk => async (dispatch) => {
   )
 }
 
-export const createDirectoryCompleted = createAction<any>(
-  'GET_DATA_TABLE_COMPLETED'
-)
-
 export const createDirectory =
-  (path: string): AppThunk =>
+  (path: string, enqueueSnackbar: any): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
-    const body = {
-      path: path,
-    }
-    post(body, DirectoryEndpoints.CreateDirectory)
-      .then(() => dispatch(getTableData()))
+
+    post({ path }, DirectoryEndpoints.CreateDirectory)
+      .then((resp) => {
+        dispatch(createDirectoriesCompleted(resp.directory))
+        enqueueSnackbar(`${resp.directory.coverageName} created.`)
+      })
       .finally(() => dispatch(tableLoading(false)))
   }
 
@@ -41,7 +38,7 @@ export const createDirectoriesCompleted = createAction<any>(
 )
 
 export const createDirectories =
-  (path: string): AppThunk =>
+  (path: string, enqueueSnackbar: any): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
     const body = {
@@ -50,17 +47,23 @@ export const createDirectories =
 
     post(body, DirectoryEndpoints.GetRootDirectoryPaths).then((resp) => {
       const paths: string[] = resp.paths
-      const requests: Promise<any>[] = []
+      const requests: any[] = []
 
       paths.forEach((path) => {
-        requests.push(
-          post({ path }, DirectoryEndpoints.CreateDirectory).then((resp) => {
-            dispatch(createDirectoriesCompleted(resp.directory))
-          })
-        )
+        requests.push({
+          body: { path },
+          endpoint: DirectoryEndpoints.CreateDirectory,
+        })
       })
 
-      Promise.all(requests).finally(() => dispatch(tableLoading(false)))
+      Promise.all(
+        requests.map((req) =>
+          post(req.body, req.endpoint).then((resp) => {
+            dispatch(createDirectoriesCompleted(resp.directory))
+            enqueueSnackbar(`${resp.directory.coverageName} created.`)
+          })
+        )
+      ).finally(() => dispatch(tableLoading(false)))
     })
   }
 
@@ -81,40 +84,24 @@ export const deleteDirectory =
     })
   }
 
-export const setSelectedIds = createAction<string[]>('SELECT_ID')
-export const selectAllIds = (): AppThunk => async (dispatch, state) => {
-  const { goLensState } = state()
-
-  if (goLensState.data.length == goLensState.selectedIds.length) {
-    dispatch(setSelectedIds([]))
-    return
-  }
-
-  const data: IDirectoryData[] = goLensState.data
-  const ids: string[] = []
-  data.forEach((d) => {
-    ids.push(d.id)
-  })
-  dispatch(setSelectedIds(ids))
-}
-
 export const deleteSelectedIdsCompleted = createAction<string>(
   'DELETE_SELECTED_IDS_COMPLETED'
 )
 
-export const deleteSelectedIds = (): AppThunk => async (dispatch, state) => {
-  const goLensState = state().goLensState as IGoLensState
-
-  goLensState.selectedIds.forEach((id) => {
-    post({ id }, DirectoryEndpoints.DeleteDirectory).finally(() => {
-      dispatch(deleteSelectedIdsCompleted(id))
+export const deleteSelectedIds =
+  (selectedIds: string[]): AppThunk =>
+  async (dispatch) => {
+    selectedIds.forEach((id) => {
+      post({ id }, DirectoryEndpoints.DeleteDirectory).finally(() => {
+        dispatch(deleteSelectedIdsCompleted(id))
+      })
     })
-  })
-}
+  }
 
 export const updateDirectoryCompleted = createAction<any>(
   'UPDATE_DIRECTORY_COMPLETED'
 )
+
 export const updateDirectory =
   (id: string): AppThunk =>
   async (dispatch) => {
@@ -126,12 +113,25 @@ export const updateDirectory =
       .finally(() => dispatch(tableLoading(false)))
   }
 
-export const updateDirectories = (): AppThunk => async (dispatch, state) => {
-  const goLensState = state().goLensState as IGoLensState
-  goLensState.selectedIds.forEach((id) => {
-    dispatch(updateDirectory(id))
-  })
-}
+export const updateDirectories =
+  (selectedIds: string[], enqueueSnackbar: any): AppThunk =>
+  async (dispatch, state) => {
+    const goLensState: IGoLensState = state().goLensState
+
+    selectedIds.forEach((id) => {
+      post({ id }, DirectoryEndpoints.UpdateDirectory)
+        .then((resp) => {
+          dispatch(updateDirectoryCompleted(resp.directory))
+        })
+        .finally(() => {
+          const directoryName = goLensState.data.find(
+            (data) => data.id === id
+          )?.coverageName
+
+          enqueueSnackbar(`${directoryName} updated.`)
+        })
+    })
+  }
 
 export const createIgnoredDirectory =
   (directoryName: string): AppThunk =>

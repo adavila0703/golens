@@ -6,6 +6,7 @@ import { Button, Typography } from '@mui/material'
 import { htmlContentSelector } from './HtmlContent.selector'
 import { getHtmlContent } from './HtmlContent.actions'
 import { HtmlContainer, HtmlContentContainer } from './HtmlContent.style'
+import { PageTitle } from '../pagetitle/PageTitle'
 
 export const HtmlContent = () => {
   const { id, packageName, fileName } = useParams()
@@ -21,6 +22,7 @@ export const HtmlContent = () => {
 
   return (
     <>
+      <PageTitle title="Code Details" />
       <div className="back-button-container">
         <Button
           startIcon={<ArrowBack />}

@@ -11,3 +11,9 @@ export const BarContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `
+
+export const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`
