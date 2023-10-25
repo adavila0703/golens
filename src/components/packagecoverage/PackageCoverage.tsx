@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getPackageCoverage } from './PackageCoverage.actions'
-import { packagecoverageDataSelector } from './PackageCoverage.selector'
+import { packageCoverageDataSelector } from './PackageCoverage.selector'
 import { ArrowBack } from '@mui/icons-material'
 import { Button, Typography } from '@mui/material'
 import {
@@ -18,7 +18,7 @@ import {
 export const PackageCoverage = () => {
   const { id } = useParams()
   const dispatch = useAppDispatch()
-  const packagesCoverage = useAppSelector(packagecoverageDataSelector)
+  const packagesCoverage = useAppSelector(packageCoverageDataSelector)
   const navigate = useNavigate()
 
   useEffect(() => {

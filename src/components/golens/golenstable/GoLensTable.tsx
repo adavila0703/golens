@@ -29,7 +29,6 @@ export const GoLensTable = ({
 }: GoLensTableProps) => {
   const dispatch = useAppDispatch()
   const tableData = useAppSelector(getDataSelector)
-  // const selectedIds = useAppSelector(getSelectedIdsSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -37,14 +36,12 @@ export const GoLensTable = ({
   }, [])
 
   const onSelect = (id: string, checked: boolean) => {
-    // let newRepoIds: string[] = []
     if (checked) {
       setSelectedIds([...selectedIds, id])
     } else {
       const newSelectedIds = selectedIds.filter((repoId) => repoId != id)
       setSelectedIds(newSelectedIds)
     }
-    // dispatch(setSelectedIds(newRepoIds))
   }
 
   return (
