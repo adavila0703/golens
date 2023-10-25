@@ -5,7 +5,7 @@ import { ArrowBack } from '@mui/icons-material'
 import { Button, Typography } from '@mui/material'
 import { htmlContentSelector } from './HtmlContent.selector'
 import { getHtmlContent } from './HtmlContent.actions'
-import { HtmlContainer, HtmlContentContainer } from './HtmlContent.style'
+import { HtmlContentContainer } from './HtmlContent.style'
 import { PageTitle } from '../pagetitle/PageTitle'
 
 export const HtmlContent = () => {
