@@ -31,8 +31,8 @@ import { useSnackbar } from 'notistack'
 
 enum TypeSelect {
   NONE,
-  SINGLE_REPO,
-  MULTI_REPO,
+  SINGLE_DIRECTORY,
+  MULTI_DIRECTORY,
 }
 
 interface TableBarProps {
@@ -74,11 +74,11 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
     }
 
     switch (typeSelect) {
-      case TypeSelect.SINGLE_REPO:
+      case TypeSelect.SINGLE_DIRECTORY:
         dispatch(createDirectory(path, enqueueSnackbar))
         break
 
-      case TypeSelect.MULTI_REPO:
+      case TypeSelect.MULTI_DIRECTORY:
         dispatch(createDirectories(path, enqueueSnackbar))
         break
 
@@ -201,10 +201,12 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
                   }}
                   error={selectError}
                 >
-                  <MenuItem value={TypeSelect.SINGLE_REPO}>
-                    Single Repo
+                  <MenuItem value={TypeSelect.SINGLE_DIRECTORY}>
+                    Single Directory
                   </MenuItem>
-                  <MenuItem value={TypeSelect.MULTI_REPO}>Multi Repo</MenuItem>
+                  <MenuItem value={TypeSelect.MULTI_DIRECTORY}>
+                    Multi Directory
+                  </MenuItem>
                 </Select>
               </FormControl>
 
@@ -228,7 +230,7 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
               >
                 Save
               </Button>
-              {typeSelect == TypeSelect.MULTI_REPO && (
+              {typeSelect == TypeSelect.MULTI_DIRECTORY && (
                 <Typography
                   sx={{
                     color: 'red',

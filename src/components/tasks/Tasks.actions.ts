@@ -3,13 +3,13 @@ import { AppThunk } from '../../store/store'
 import { get, post } from '../../utils/api'
 import { TasksEndpoints } from '../../utils/endpoints'
 
-export const getSettingsTasksCompleted = createAction<any>(
+export const getTasksCompleted = createAction<any>(
   'GET_SETTINGS_TASK_COMPLETED'
 )
 
-export const getSettingsTasks = (): AppThunk => async (dispatch) => {
+export const getTasks = (): AppThunk => async (dispatch) => {
   get(TasksEndpoints.GetTasks).then((resp) =>
-    dispatch(getSettingsTasksCompleted(resp.tasks))
+    dispatch(getTasksCompleted(resp.tasks))
   )
 }
 

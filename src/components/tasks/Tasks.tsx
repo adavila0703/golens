@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { allSelectedSelector, tasksSelector } from './Tasks.selector'
-import { createTask, createTasks } from './Tasks.actions'
+import { createTask, createTasks, getTasks } from './Tasks.actions'
 import {
   Button,
   Divider,
@@ -10,16 +10,22 @@ import {
   Select,
 } from '@mui/material'
 import { SettingsContainer } from './Tasks.style'
-import { getScheduleInt } from './Tasks.helper'
+import { ScheduleType, ScheduleTypeLabel } from './Tasks.helper'
 import { useSnackbar } from 'notistack'
 import { TaskTable } from './taskstable/TasksTable'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getDataSelector } from '../golens/GoLens.selector'
 import { PageTitle } from '../pagetitle/PageTitle'
+import { getTableData } from '../golens/GoLens.actions'
 
 export const Tasks = () => {
   const dispatch = useAppDispatch()
   const tasks = useAppSelector(tasksSelector)
+
+  useEffect(() => {
+    dispatch(getTableData())
+    dispatch(getTasks())
+  }, [])
 
   const tableData = useAppSelector(getDataSelector)
   const sortedArray = Array.from(tableData)
@@ -83,6 +89,21 @@ export const Tasks = () => {
       dispatch(createTask(directoryId, schedule))
     }
   }
+
+  const scheduleTypes = [
+    {
+      scheduleType: ScheduleType.DAILY,
+      label: ScheduleTypeLabel.DAILY,
+    },
+    {
+      scheduleType: ScheduleType.WEEKLY,
+      label: ScheduleTypeLabel.WEEKLY,
+    },
+    {
+      scheduleType: ScheduleType.MONTHLY,
+      label: ScheduleTypeLabel.MONTHLY,
+    },
+  ]
 
   return (
     <SettingsContainer>
@@ -151,10 +172,7 @@ export const Tasks = () => {
             id="directory-type"
             label="Schedule Type"
             onChange={(e) => {
-              const scheduleInt = getScheduleInt(e.target.value as string)
-              if (scheduleInt) {
-                setSchedule(scheduleInt)
-              }
+              setSchedule(e.target.value as number)
             }}
             style={{
               color: 'black',
@@ -163,13 +181,13 @@ export const Tasks = () => {
             }}
             error={scheduleError}
           >
-            <MenuItem value={'Daily (12 AM)'}>Daily (12 AM)</MenuItem>
-            <MenuItem value={'Weekly (Monday 12 AM)'}>
-              Weekly (Monday 12 AM)
-            </MenuItem>
-            <MenuItem value={'Monthly (1st 12 AM)'}>
-              Monthly (1st 12 AM)
-            </MenuItem>
+            {scheduleTypes.map((scheduleType) => {
+              return (
+                <MenuItem value={scheduleType.scheduleType}>
+                  {scheduleType.label}
+                </MenuItem>
+              )
+            })}
           </Select>
         </FormControl>
       </div>

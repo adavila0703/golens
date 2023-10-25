@@ -1,4 +1,4 @@
-import { createSelector } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 import { IAppReducerState } from '../../store/store'
 
 export const dataSelector = (state: IAppReducerState) => state.goLensState.data
@@ -10,18 +10,3 @@ export const isLoadingSelector = createSelector(isLoading, (loading) => {
 })
 
 export const getDataSelector = createSelector(dataSelector, (data) => data)
-
-export const selectedIdsSelector = (state: IAppReducerState) =>
-  state.goLensState.selectedIds
-
-export const getSelectedIdsSelector = createSelector(
-  selectedIdsSelector,
-  (selectedIds) => selectedIds
-)
-export const isAllSelectedSelector = createSelector(
-  dataSelector,
-  selectedIdsSelector,
-  (data, selectedIds) => {
-    return data?.length == selectedIds?.length
-  }
-)
