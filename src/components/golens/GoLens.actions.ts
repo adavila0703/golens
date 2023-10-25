@@ -2,7 +2,7 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { get, post } from '../../utils/api'
-import { IDirectoryData, IGoLensState } from './GoLens.reducer'
+import { IGoLensState } from './GoLens.reducer'
 import {
   DirectoryEndpoints,
   IgnoreDirectoryEndpoints,
@@ -84,36 +84,19 @@ export const deleteDirectory =
     })
   }
 
-export const setSelectedIds = createAction<string[]>('SELECT_ID')
-export const selectAllIds = (): AppThunk => async (dispatch, state) => {
-  const { goLensState } = state()
-
-  if (goLensState.data.length == goLensState.selectedIds.length) {
-    dispatch(setSelectedIds([]))
-    return
-  }
-
-  const data: IDirectoryData[] = goLensState.data
-  const ids: string[] = []
-  data.forEach((d) => {
-    ids.push(d.id)
-  })
-  dispatch(setSelectedIds(ids))
-}
-
 export const deleteSelectedIdsCompleted = createAction<string>(
   'DELETE_SELECTED_IDS_COMPLETED'
 )
 
-export const deleteSelectedIds = (): AppThunk => async (dispatch, state) => {
-  const goLensState = state().goLensState as IGoLensState
-
-  goLensState.selectedIds.forEach((id) => {
-    post({ id }, DirectoryEndpoints.DeleteDirectory).finally(() => {
-      dispatch(deleteSelectedIdsCompleted(id))
+export const deleteSelectedIds =
+  (selectedIds: string[]): AppThunk =>
+  async (dispatch) => {
+    selectedIds.forEach((id) => {
+      post({ id }, DirectoryEndpoints.DeleteDirectory).finally(() => {
+        dispatch(deleteSelectedIdsCompleted(id))
+      })
     })
-  })
-}
+  }
 
 export const updateDirectoryCompleted = createAction<any>(
   'UPDATE_DIRECTORY_COMPLETED'
@@ -131,11 +114,11 @@ export const updateDirectory =
   }
 
 export const updateDirectories =
-  (enqueueSnackbar: any): AppThunk =>
+  (selectedIds: string[], enqueueSnackbar: any): AppThunk =>
   async (dispatch, state) => {
     const goLensState: IGoLensState = state().goLensState
 
-    goLensState.selectedIds.forEach((id) => {
+    selectedIds.forEach((id) => {
       post({ id }, DirectoryEndpoints.UpdateDirectory)
         .then((resp) => {
           dispatch(updateDirectoryCompleted(resp.directory))

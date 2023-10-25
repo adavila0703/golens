@@ -4,7 +4,6 @@ import {
   createDirectories,
   createDirectory,
   deleteSelectedIds,
-  selectAllIds,
   updateDirectories,
 } from '../GoLens.actions'
 import Button from '@mui/material/Button'
@@ -14,10 +13,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import { TextField, Typography } from '@mui/material'
-import {
-  getSelectedIdsSelector,
-  isAllSelectedSelector,
-} from '../GoLens.selector'
+import { getDataSelector } from '../GoLens.selector'
 import {
   Add,
   Refresh,
@@ -39,11 +35,15 @@ enum TypeSelect {
   MULTI_REPO,
 }
 
-export const TableBar: React.FC = () => {
+interface TableBarProps {
+  selectedIds: string[]
+  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
   const dispatch = useAppDispatch()
   const { enqueueSnackbar } = useSnackbar()
-  const isAllSelected = useAppSelector(isAllSelectedSelector)
-  const selectedIds = useAppSelector(getSelectedIdsSelector)
+  const data = useAppSelector(getDataSelector)
 
   const [path, setPath] = useState<string>('')
   const [open, setOpen] = useState(false)
@@ -94,6 +94,16 @@ export const TableBar: React.FC = () => {
     setTypeSelect(selectionType)
   }
 
+  const selectAll = () => {
+    if (selectedIds.length) {
+      setSelectedIds([])
+      return
+    }
+
+    const ids = data.map((d) => d.id)
+    setSelectedIds(ids)
+  }
+
   const buttons = [
     {
       text: 'Add Repos',
@@ -102,21 +112,26 @@ export const TableBar: React.FC = () => {
       selectedButtons: false,
     },
     {
-      text: isAllSelected ? 'Deselect All' : 'Select All',
-      endIcon: isAllSelected ? <Deselect /> : <SelectAll />,
-      onClick: () => dispatch(selectAllIds()),
+      text: selectedIds.length ? 'Deselect All' : 'Select All',
+      endIcon: selectedIds.length ? <Deselect /> : <SelectAll />,
+      onClick: selectAll,
       selectedButtons: false,
     },
     {
       text: 'Delete Selected',
       endIcon: <Delete />,
-      onClick: () => dispatch(deleteSelectedIds()),
+      onClick: () => {
+        dispatch(deleteSelectedIds(selectedIds))
+        selectAll()
+      },
       selectedButtons: true,
     },
     {
       text: 'Refresh Selected',
       endIcon: <Refresh />,
-      onClick: () => dispatch(updateDirectories(enqueueSnackbar)),
+      onClick: () => {
+        dispatch(updateDirectories(selectedIds, enqueueSnackbar))
+      },
       selectedButtons: true,
     },
   ]
