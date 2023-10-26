@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { getTasksSelector } from '../Tasks.selector'
 import { useAppSelector } from '../../../store/store'
+import { Task } from '../Tasks.reducer'
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -10,8 +10,8 @@ const columns: GridColDef[] = [
 ]
 
 export const TaskTable = () => {
-  const taskData: any[] = useAppSelector(getTasksSelector)
-  const [rowsSelected, setRowsSelected] = useState<number[]>([])
+  const taskData: Task[] = useAppSelector(getTasksSelector)
+  console.log(taskData)
 
   return (
     <div
@@ -30,9 +30,7 @@ export const TaskTable = () => {
             paginationModel: { page: 0, pageSize: 5 },
           },
         }}
-        onRowSelectionModelChange={(rows) => {
-          setRowsSelected(rows as number[])
-        }}
+        // onRowSelectionModelChange={() => {}}
         pageSizeOptions={[5, 10]}
         checkboxSelection
         sx={{ borderRadius: '20px', color: 'black', fontWeight: 'lighter' }}

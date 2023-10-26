@@ -5,14 +5,12 @@ import {
 } from './IgnoredDirectories.actions'
 
 export interface IIgnoredDirectoriesState {
-  tasks: any[]
   ignoredDirectories: any[]
 }
 
 export const getInitialIgnoredDirectoriesState =
   (): IIgnoredDirectoriesState => {
     return {
-      tasks: [],
       ignoredDirectories: [],
     }
   }

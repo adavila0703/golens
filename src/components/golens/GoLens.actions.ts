@@ -28,6 +28,13 @@ export const createDirectory =
         dispatch(createDirectoriesCompleted(resp.directory))
         enqueueSnackbar(`${resp.directory.coverageName} created.`)
       })
+      .catch(() => {
+        enqueueSnackbar(`${path} is not a go directory.`, {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+          hideIconVariant: true,
+        })
+      })
       .finally(() => dispatch(tableLoading(false)))
   }
 
@@ -45,26 +52,37 @@ export const createDirectories =
       rootPath: path,
     }
 
-    post(body, DirectoryEndpoints.GetRootDirectoryPaths).then((resp) => {
-      const paths: string[] = resp.paths
-      const requests: any[] = []
+    post(body, DirectoryEndpoints.GetRootDirectoryPaths)
+      .then((resp) => {
+        const paths: string[] = resp.paths
+        const requests: any[] = []
 
-      paths.forEach((path) => {
-        requests.push({
-          body: { path },
-          endpoint: DirectoryEndpoints.CreateDirectory,
-        })
-      })
-
-      Promise.all(
-        requests.map((req) =>
-          post(req.body, req.endpoint).then((resp) => {
-            dispatch(createDirectoriesCompleted(resp.directory))
-            enqueueSnackbar(`${resp.directory.coverageName} created.`)
+        paths.forEach((path) => {
+          requests.push({
+            body: { path },
+            endpoint: DirectoryEndpoints.CreateDirectory,
           })
+        })
+
+        Promise.all(
+          requests.map((req) =>
+            post(req.body, req.endpoint).then((resp) => {
+              dispatch(createDirectoriesCompleted(resp.directory))
+              enqueueSnackbar(`${resp.directory.coverageName} created.`)
+            })
+          )
+        ).finally(() => dispatch(tableLoading(false)))
+      })
+      .catch(() => {
+        enqueueSnackbar(
+          'Path is a go directory, do not select a go directory when selecting the multi directory option.',
+          {
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'center' },
+            hideIconVariant: true,
+          }
         )
-      ).finally(() => dispatch(tableLoading(false)))
-    })
+      })
   }
 
 export const deleteDirectoryCompleted = createAction<any>(
@@ -103,34 +121,34 @@ export const updateDirectoryCompleted = createAction<any>(
 )
 
 export const updateDirectory =
-  (id: string): AppThunk =>
+  (id: string, enqueueSnackbar: any): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
     post({ id }, DirectoryEndpoints.UpdateDirectory)
       .then((resp) => {
         dispatch(updateDirectoryCompleted(resp.directory))
+        enqueueSnackbar(`${resp.directory.coverageName} updated.`)
       })
       .finally(() => dispatch(tableLoading(false)))
   }
 
 export const updateDirectories =
   (selectedIds: string[], enqueueSnackbar: any): AppThunk =>
-  async (dispatch, state) => {
-    const goLensState: IGoLensState = state().goLensState
+  async (dispatch) => {
+    dispatch(tableLoading(true))
+
+    const requests: Promise<any>[] = []
 
     selectedIds.forEach((id) => {
-      post({ id }, DirectoryEndpoints.UpdateDirectory)
-        .then((resp) => {
+      requests.push(
+        post({ id }, DirectoryEndpoints.UpdateDirectory).then((resp) => {
           dispatch(updateDirectoryCompleted(resp.directory))
+          enqueueSnackbar(`${resp.directory.coverageName} updated.`)
         })
-        .finally(() => {
-          const directoryName = goLensState.data.find(
-            (data) => data.id === id
-          )?.coverageName
-
-          enqueueSnackbar(`${directoryName} updated.`)
-        })
+      )
     })
+
+    Promise.all(requests).finally(() => dispatch(tableLoading(false)))
   }
 
 export const createIgnoredDirectory =

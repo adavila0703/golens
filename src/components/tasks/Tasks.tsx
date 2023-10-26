@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { allSelectedSelector, tasksSelector } from './Tasks.selector'
-import { createTask, createTasks } from './Tasks.actions'
+import { createTask, createTasks, getTasks } from './Tasks.actions'
 import {
   Button,
   Divider,
@@ -8,18 +8,27 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from '@mui/material'
 import { SettingsContainer } from './Tasks.style'
-import { getScheduleInt } from './Tasks.helper'
+import { ScheduleType, ScheduleTypeLabel } from './Tasks.helper'
 import { useSnackbar } from 'notistack'
 import { TaskTable } from './taskstable/TasksTable'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getDataSelector } from '../golens/GoLens.selector'
 import { PageTitle } from '../pagetitle/PageTitle'
+import { getTableData } from '../golens/GoLens.actions'
+
+const ALL_DIRECTORIES = 'All'
 
 export const Tasks = () => {
   const dispatch = useAppDispatch()
   const tasks = useAppSelector(tasksSelector)
+
+  useEffect(() => {
+    dispatch(getTableData())
+    dispatch(getTasks())
+  }, [])
 
   const tableData = useAppSelector(getDataSelector)
   const sortedArray = Array.from(tableData)
@@ -50,6 +59,8 @@ export const Tasks = () => {
         setDirectoryError(true)
         enqueueSnackbar('Directory field needs to be selected.', {
           variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+          hideIconVariant: true,
         })
       }
 
@@ -57,6 +68,8 @@ export const Tasks = () => {
         setScheduleError(true)
         enqueueSnackbar('Schedule type field needs to be selected.', {
           variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+          hideIconVariant: true,
         })
       }
       return false
@@ -65,6 +78,8 @@ export const Tasks = () => {
     if (allSelected) {
       enqueueSnackbar('All available directories have been scheduled.', {
         variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        hideIconVariant: true,
       })
       return false
     }
@@ -77,21 +92,38 @@ export const Tasks = () => {
   const handleCreateTask = () => {
     const validated = validateFields()
 
-    if (validated && directoryId === 'All') {
+    if (validated && directoryId === ALL_DIRECTORIES) {
       dispatch(createTasks(schedule))
     } else if (validated) {
       dispatch(createTask(directoryId, schedule))
     }
   }
 
+  const scheduleTypes = [
+    {
+      scheduleType: ScheduleType.DAILY,
+      label: ScheduleTypeLabel.DAILY,
+    },
+    {
+      scheduleType: ScheduleType.WEEKLY,
+      label: ScheduleTypeLabel.WEEKLY,
+    },
+    {
+      scheduleType: ScheduleType.MONTHLY,
+      label: ScheduleTypeLabel.MONTHLY,
+    },
+  ]
+
   return (
     <SettingsContainer>
       <PageTitle title="Tasks" />
-      <p>Select directory you would like to schedule to update.</p>
-      <p>
+      <Typography>
+        Select a directory you would like to schedule to update.
+      </Typography>
+      <Typography>
         Note: If you chose "All", you will not be able to chose individual
         directories unless that schedule is deleted
-      </p>
+      </Typography>
       <div className="schedule-input-background">
         <FormControl className="schedule-input" fullWidth>
           <InputLabel id="directory-type-label" style={{ color: 'black' }}>
@@ -102,8 +134,8 @@ export const Tasks = () => {
             id="directory-type"
             label="Directory"
             onChange={(e) => {
-              if (e.target.value === 'All') {
-                setDirectoryId('All')
+              if (e.target.value === ALL_DIRECTORIES) {
+                setDirectoryId(ALL_DIRECTORIES)
                 return
               }
 
@@ -119,28 +151,19 @@ export const Tasks = () => {
             }}
             error={directoryError}
           >
-            <MenuItem value={'All'}>All</MenuItem>
-            {sortedArray &&
-              sortedArray.map((data) => {
-                let exists = false
-                tasks.forEach((task: any) => {
-                  if (task.coverageName === data.coverageName) {
-                    exists = true
-                  }
-                })
-
-                if (!exists) {
-                  return (
-                    <MenuItem value={data.coverageName}>
-                      {data.coverageName}
-                    </MenuItem>
-                  )
-                }
+            <MenuItem value={ALL_DIRECTORIES}>{ALL_DIRECTORIES}</MenuItem>
+            {tasks &&
+              tasks.map((task: any) => {
+                return (
+                  <MenuItem value={task.coverageName}>
+                    {task.coverageName}
+                  </MenuItem>
+                )
               })}
           </Select>
         </FormControl>
       </div>
-      <p>Choose the schedule type.</p>
+      <Typography>Choose the schedule type.</Typography>
       <div className="schedule-input-background">
         <FormControl className="schedule-input" fullWidth>
           <InputLabel id="directory-type-label" style={{ color: 'black' }}>
@@ -151,10 +174,7 @@ export const Tasks = () => {
             id="directory-type"
             label="Schedule Type"
             onChange={(e) => {
-              const scheduleInt = getScheduleInt(e.target.value as string)
-              if (scheduleInt) {
-                setSchedule(scheduleInt)
-              }
+              setSchedule(e.target.value as number)
             }}
             style={{
               color: 'black',
@@ -163,13 +183,13 @@ export const Tasks = () => {
             }}
             error={scheduleError}
           >
-            <MenuItem value={'Daily (12 AM)'}>Daily (12 AM)</MenuItem>
-            <MenuItem value={'Weekly (Monday 12 AM)'}>
-              Weekly (Monday 12 AM)
-            </MenuItem>
-            <MenuItem value={'Monthly (1st 12 AM)'}>
-              Monthly (1st 12 AM)
-            </MenuItem>
+            {scheduleTypes.map((scheduleType) => {
+              return (
+                <MenuItem value={scheduleType.scheduleType}>
+                  {scheduleType.label}
+                </MenuItem>
+              )
+            })}
           </Select>
         </FormControl>
       </div>
@@ -193,7 +213,7 @@ export const Tasks = () => {
           marginBottom: '10px',
         }}
       />
-      <h2>Currently Scheduled</h2>
+      <Typography variant="h5">Currently Scheduled</Typography>
       <TaskTable />
     </SettingsContainer>
   )

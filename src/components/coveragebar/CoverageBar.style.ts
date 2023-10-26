@@ -23,8 +23,14 @@ export const CoverageBarFiller = styled.div<{
   left: 0;
   height: 100%;
   z-index: -1;
-  animation: fillAnimation 1s ease-in-out forwards;
+  animation: fillAnimation 0.25s ease-in-out forwards;
   border-radius: 25px;
   width: ${({ width }) => width}%;
   background-color: ${({ barColor }) => barColor};
+
+  @keyframes fillAnimation {
+    0% {
+      width: 0;
+    }
+  }
 `

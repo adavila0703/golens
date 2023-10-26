@@ -1,4 +1,4 @@
-import { createSelector } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 import { dataSelector } from '../golens/GoLens.selector'
 import { IAppReducerState } from '../../store/store'
 
