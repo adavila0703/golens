@@ -155,7 +155,6 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
                 key={index}
                 onClick={button.onClick}
                 variant="outlined"
-                sx={{ color: 'white', borderColor: 'white', width: '10vw' }}
                 endIcon={button.endIcon}
               >
                 {button.text}
@@ -195,6 +194,7 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
                   id="directory-type"
                   label="Type"
                   onChange={handleChange}
+                  value={typeSelect === TypeSelect.SINGLE_DIRECTORY ? '1' : '2'}
                   sx={{
                     color: 'black',
                     borderColor: 'white',

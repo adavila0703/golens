@@ -38,6 +38,7 @@ export const goLensReducer = createReducer(
         state.loading = payload
       })
       .addCase(createDirectoriesCompleted, (state, { payload }) => {
+        console.log(payload)
         state.data = [...state.data, payload]
       })
       .addCase(deleteSelectedIdsCompleted, (state, { payload }) => {
@@ -45,13 +46,8 @@ export const goLensReducer = createReducer(
         state.data = newData
       })
       .addCase(updateDirectoryCompleted, (state, { payload }) => {
-        const newData = state.data.map((data) => {
-          if (data.id === payload.id) {
-            data.coverageName = payload.coverageName
-          }
-          return data
-        })
-        state.data = newData
+        const newData = state.data.filter((data) => data.id !== payload.id)
+        state.data = [...newData, payload]
       })
   }
 )

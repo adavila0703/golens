@@ -16,7 +16,7 @@ export const CoverageBarText = styled.div<{ color: string }>`
 
 export const CoverageBarFiller = styled.div<{
   width: number
-  barColor: string
+  barcolor: string
 }>`
   position: absolute;
   top: 0;
@@ -26,7 +26,7 @@ export const CoverageBarFiller = styled.div<{
   animation: fillAnimation 0.25s ease-in-out forwards;
   border-radius: 25px;
   width: ${({ width }) => width}%;
-  background-color: ${({ barColor }) => barColor};
+  background-color: ${({ barcolor }) => barcolor};
 
   @keyframes fillAnimation {
     0% {

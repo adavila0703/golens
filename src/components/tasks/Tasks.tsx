@@ -24,15 +24,14 @@ const ALL_DIRECTORIES = 'All'
 export const Tasks = () => {
   const dispatch = useAppDispatch()
   const tasks = useAppSelector(tasksSelector)
+  const tableData = useAppSelector(getDataSelector)
+  const sortedArray = Array.from(tableData || [])
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     dispatch(getTableData())
     dispatch(getTasks())
   }, [])
-
-  const tableData = useAppSelector(getDataSelector)
-  const sortedArray = Array.from(tableData)
-  const { enqueueSnackbar } = useSnackbar()
 
   sortedArray.sort((a, b) => {
     if (a.coverageName < b.coverageName) {
@@ -152,13 +151,17 @@ export const Tasks = () => {
             error={directoryError}
           >
             <MenuItem value={ALL_DIRECTORIES}>{ALL_DIRECTORIES}</MenuItem>
-            {tasks &&
-              tasks.map((task: any) => {
-                return (
-                  <MenuItem value={task.coverageName}>
-                    {task.coverageName}
-                  </MenuItem>
-                )
+            {sortedArray &&
+              sortedArray.map((data) => {
+                if (
+                  !tasks.some((task) => task.coverageName === data.coverageName)
+                ) {
+                  return (
+                    <MenuItem value={data.coverageName}>
+                      {data.coverageName}
+                    </MenuItem>
+                  )
+                }
               })}
           </Select>
         </FormControl>

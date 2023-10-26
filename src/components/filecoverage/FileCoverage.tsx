@@ -41,7 +41,6 @@ export const FileCoverage = () => {
       <FileCoverageNavBar>
         <Button
           startIcon={<ArrowBack />}
-          sx={{ color: 'white' }}
           onClick={() => navigate(`/package-coverage/${id}`)}
         >
           Back

@@ -12,7 +12,24 @@ const theme: Theme = createTheme({
   typography: {
     fontFamily: 'sans-serif',
   },
-  components: {},
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: 'white',
+          borderColor: 'white',
+          width: 'auto',
+          height: 'auto',
+          fontSize: '11px',
+          ':hover': {
+            borderColor: 'black',
+            color: 'white',
+            backgroundColor: 'black',
+          },
+        },
+      },
+    },
+  },
   palette: {},
 })
 

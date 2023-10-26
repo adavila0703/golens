@@ -2,7 +2,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { get, post } from '../../utils/api'
-import { IGoLensState } from './GoLens.reducer'
 import {
   DirectoryEndpoints,
   IgnoreDirectoryEndpoints,
