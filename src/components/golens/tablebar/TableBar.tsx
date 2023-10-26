@@ -131,6 +131,7 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
       endIcon: <Refresh />,
       onClick: () => {
         dispatch(updateDirectories(selectedIds, enqueueSnackbar))
+        setSelectedIds([])
       },
       selectedButtons: true,
     },

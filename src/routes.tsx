@@ -57,7 +57,7 @@ export const routes: Route[] = [
     element: <IgnoredDirectories />,
     index: true,
     navbar: true,
-    navbarName: 'Ignored Directories',
+    navbarName: 'Ignored',
     navbarIcon: <Computer />,
   },
 ]

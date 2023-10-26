@@ -1,19 +1,19 @@
-export const getScheduleType = (type: number) => {
-  switch (type) {
-    case 1:
-      return 'Daily'
-    case 2:
-      return 'Weekly'
-    case 3:
-      return 'Monthly'
-  }
-}
-
 export enum ScheduleType {
   MINUTE = 1,
   DAILY = 3,
   WEEKLY = 4,
   MONTHLY = 5,
+}
+
+export const getScheduleType = (type: number) => {
+  switch (type) {
+    case ScheduleType.DAILY:
+      return 'Daily'
+    case ScheduleType.WEEKLY:
+      return 'Weekly'
+    case ScheduleType.MONTHLY:
+      return 'Monthly'
+  }
 }
 
 export enum ScheduleTypeLabel {

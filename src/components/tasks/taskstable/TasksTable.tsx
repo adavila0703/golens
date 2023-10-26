@@ -1,6 +1,7 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { getTasksSelector } from '../Tasks.selector'
 import { useAppSelector } from '../../../store/store'
+import { Task } from '../Tasks.reducer'
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -9,7 +10,8 @@ const columns: GridColDef[] = [
 ]
 
 export const TaskTable = () => {
-  const taskData: any[] = useAppSelector(getTasksSelector)
+  const taskData: Task[] = useAppSelector(getTasksSelector)
+  console.log(taskData)
 
   return (
     <div

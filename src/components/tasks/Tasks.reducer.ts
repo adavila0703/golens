@@ -6,8 +6,26 @@ import {
 } from './Tasks.actions'
 import { getScheduleType } from './Tasks.helper'
 
+export interface Task {
+  CreatedAt: string
+  DeletedAt: string | null
+  Directory: {
+    CoverageName: string
+    CreatedAt: string
+    DeletedAt: string | null
+    ID: string
+    Path: string
+    UpdatedAt: string
+  }
+  DirectoryID: string
+  ScheduleType: number
+  id?: number
+  coverageName?: string
+  scheduleTypeName?: string
+}
+
 export interface ITasksState {
-  tasks: any[]
+  tasks: Task[]
 }
 
 export const getInitialTasksState = (): ITasksState => {
@@ -18,17 +36,14 @@ export const getInitialTasksState = (): ITasksState => {
 
 export const tasksReducer = createReducer(getInitialTasksState(), (builder) => {
   builder
-    .addCase(getTasksCompleted, (state, { payload }: { payload: any[] }) => {
-      const data: any[] = []
-
-      payload.forEach((task, index) => {
-        const newTask = {
+    .addCase(getTasksCompleted, (state, { payload }: { payload: Task[] }) => {
+      const data: Task[] = payload.map((task: Task, index) => {
+        return {
           ...task,
           id: index + 1,
           coverageName: task.Directory.CoverageName,
           scheduleTypeName: getScheduleType(task.ScheduleType),
         }
-        data.push(newTask)
       })
 
       state.tasks = data
@@ -38,7 +53,7 @@ export const tasksReducer = createReducer(getInitialTasksState(), (builder) => {
       const newTasks = [
         ...state.tasks,
         {
-          ...payload,
+          ...task,
           id: state.tasks.length + 1,
           coverageName: coverageName,
           scheduleTypeName: getScheduleType(task.ScheduleType),

@@ -16,6 +16,7 @@ import {
   deleteDirectory,
   updateDirectory,
 } from '../../GoLens.actions'
+import { useSnackbar } from 'notistack'
 
 interface ActionMenuProps {
   id: string
@@ -30,6 +31,7 @@ enum ActionMenuOptions {
 
 export const ActionMenu = ({ id, directoryName }: ActionMenuProps) => {
   const dispatch = useAppDispatch()
+  const { enqueueSnackbar } = useSnackbar()
 
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
     null
@@ -48,7 +50,8 @@ export const ActionMenu = ({ id, directoryName }: ActionMenuProps) => {
   const handleButtonClick = (options: ActionMenuOptions) => {
     switch (options) {
       case ActionMenuOptions.REFRESH:
-        dispatch(updateDirectory(id))
+        dispatch(updateDirectory(id, enqueueSnackbar))
+        enqueueSnackbar(`Refreshing ${directoryName}`)
         break
 
       case ActionMenuOptions.DELETE:
