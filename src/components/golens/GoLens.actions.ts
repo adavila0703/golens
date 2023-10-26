@@ -73,6 +73,7 @@ export const createDirectories =
         ).finally(() => dispatch(tableLoading(false)))
       })
       .catch(() => {
+        dispatch(tableLoading(false))
         enqueueSnackbar(
           'Path is a go directory, do not select a go directory when selecting the multi directory option.',
           {
