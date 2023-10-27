@@ -5,7 +5,7 @@ import { PackageCoverage } from './components/packagecoverage/PackageCoverage'
 import { FileCoverage } from './components/filecoverage/FileCoverage'
 import { HtmlContent } from './components/htmlcontent/HtmlContent'
 import { Tasks } from './components/tasks/Tasks'
-import { Home, Task, StoreMallDirectory, Computer } from '@mui/icons-material'
+import { Home, Task, Computer } from '@mui/icons-material'
 import { IgnoredDirectories } from './components/ignoreddirectories/IgnoredDirectories'
 
 export interface Route {

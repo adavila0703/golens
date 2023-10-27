@@ -11,7 +11,7 @@ export const getHtmlContent =
   (id: string, fileName: string): AppThunk =>
   async (dispatch) => {
     const body = {
-      repoId: id,
+      directoryId: id,
       fileName,
     }
     post(body, DirectoryEndpoints.GetHtmlContents).then((resp) =>
