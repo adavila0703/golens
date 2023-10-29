@@ -24,6 +24,8 @@ export const FileCoverage = () => {
     }
   }, [])
 
+  console.log(fileCoverage)
+
   const totalLines = fileCoverage?.map((data) => data.totalLines)
   const coveredLines = fileCoverage?.map((data) => data.coveredLines)
 

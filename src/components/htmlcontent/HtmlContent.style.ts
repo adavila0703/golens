@@ -71,19 +71,14 @@ export const HtmlContentCSS = css`
   }
 `
 
-export const HtmlContainer = styled.div`
-  display: flex;
-  gap: 25px;
-  border: 1px solid white;
-  padding: 10px;
-  max-width: 300px;
-`
-
 export const HtmlContentContainer = styled.div`
   ${HtmlContentCSS}
 
+  background-color: black;
+  padding-left: 10px;
   .file {
     font-size: x-large;
     font-weight: bold;
+    color: white;
   }
 `

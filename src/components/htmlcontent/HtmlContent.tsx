@@ -16,13 +16,13 @@ export const HtmlContent = () => {
 
   useEffect(() => {
     if (id && fileName && packageName) {
-      dispatch(getHtmlContent(id, fileName))
+      dispatch(getHtmlContent(id, fileName, packageName))
     }
   }, [])
 
   return (
     <>
-      <PageTitle title="Code Details" />
+      <PageTitle title={`${fileName}.go`} />
       <div className="back-button-container">
         <Button
           startIcon={<ArrowBack />}
