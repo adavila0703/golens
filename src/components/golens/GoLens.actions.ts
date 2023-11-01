@@ -2,7 +2,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { get, post } from '../../utils/api'
-import { IGoLensState } from './GoLens.reducer'
 import {
   DirectoryEndpoints,
   IgnoreDirectoryEndpoints,
@@ -74,6 +73,7 @@ export const createDirectories =
         ).finally(() => dispatch(tableLoading(false)))
       })
       .catch(() => {
+        dispatch(tableLoading(false))
         enqueueSnackbar(
           'Path is a go directory, do not select a go directory when selecting the multi directory option.',
           {

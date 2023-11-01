@@ -11,6 +11,6 @@ export const allSelectedSelector = createSelector(
   tasksSelector,
   dataSelector,
   (tasks, directories) => {
-    return tasks.length === directories.length
+    return tasks?.length === directories?.length
   }
 )

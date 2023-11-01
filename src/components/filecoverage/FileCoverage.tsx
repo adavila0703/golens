@@ -24,6 +24,8 @@ export const FileCoverage = () => {
     }
   }, [])
 
+  console.log(fileCoverage)
+
   const totalLines = fileCoverage?.map((data) => data.totalLines)
   const coveredLines = fileCoverage?.map((data) => data.coveredLines)
 
@@ -41,7 +43,6 @@ export const FileCoverage = () => {
       <FileCoverageNavBar>
         <Button
           startIcon={<ArrowBack />}
-          sx={{ color: 'white' }}
           onClick={() => navigate(`/package-coverage/${id}`)}
         >
           Back
