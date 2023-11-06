@@ -10,7 +10,7 @@ export const CoverageBarContainer = styled.div`
 `
 
 export const CoverageBarText = styled.div<{ color: string }>`
-  color: white;
+  color: ${({ color }) => color};
   text-align: center;
 `
 

@@ -16,9 +16,11 @@ export const CoverageBar = ({ coverage }: CoverageBarProps) => {
     coverage = 0.0
   }
 
+  console.log(barColor)
+
   return (
     <CoverageBarContainer>
-      <CoverageBarText color={barColor === 'yellow' ? 'black' : ''}>
+      <CoverageBarText color={barColor === 'yellow' ? 'black' : 'white'}>
         {coverage.toFixed(2)}%
       </CoverageBarText>
       <CoverageBarFiller width={coverage} barcolor={barColor} />
