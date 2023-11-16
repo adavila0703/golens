@@ -153,10 +153,7 @@ export const updateDirectories =
   }
 
 export const createIgnoredDirectory =
-  (directoryName: string, ignoreType: IgnoreType): AppThunk =>
+  (name: string, ignoreType: IgnoreType): AppThunk =>
   async () => {
-    post(
-      { directoryName, ignoreType },
-      IgnoreDirectoryEndpoints.CreateIgnoredDirectory
-    )
+    post({ name, ignoreType }, IgnoreDirectoryEndpoints.CreateIgnored)
   }

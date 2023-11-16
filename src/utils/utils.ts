@@ -1,8 +1,8 @@
 export enum IgnoreType {
-  DirectoryType = 1,
-  PathType = 2,
-  FileType = 3,
-  PackageType = 4,
+  DirectoryType = '1',
+  PathType = '2',
+  FileType = '3',
+  PackageType = '4',
 }
 
 export const getBarColor = (coverage: number): string => {

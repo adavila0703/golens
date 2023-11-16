@@ -21,7 +21,7 @@ export enum TasksEndpoints {
 }
 
 export enum IgnoreDirectoryEndpoints {
-  CreateIgnoredDirectory = 'api/ignore_directory/CreateIgnoredDirectory',
-  GetIgnoredDirectories = 'api/ignore_directory/GetIgnoredDirectories',
-  DeleteIgnoredDirectory = 'api/ignore_directory/DeleteIgnoredDirectory',
+  CreateIgnored = 'api/ignored/CreateIgnored',
+  GetIgnored = 'api/ignored/GetIgnored',
+  DeleteIgnored = 'api/ignored/DeleteIgnored',
 }

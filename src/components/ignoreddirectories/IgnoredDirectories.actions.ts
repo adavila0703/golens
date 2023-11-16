@@ -8,7 +8,7 @@ export const getIgnoredDirectoriesCompleted = createAction<any>(
 )
 
 export const getIgnoredDirectories = (): AppThunk => async (dispatch) => {
-  get(IgnoreDirectoryEndpoints.GetIgnoredDirectories).then((resp) =>
+  get(IgnoreDirectoryEndpoints.GetIgnored).then((resp) =>
     dispatch(getIgnoredDirectoriesCompleted(resp.directories))
   )
 }
@@ -20,7 +20,7 @@ export const deleteIgnoredDirectoryCompleted = createAction<any>(
 export const deleteIgnoredDirectory =
   (id: string): AppThunk =>
   async (dispatch) => {
-    post({ id }, IgnoreDirectoryEndpoints.DeleteIgnoredDirectory).then(() =>
+    post({ id }, IgnoreDirectoryEndpoints.DeleteIgnored).then(() =>
       dispatch(deleteIgnoredDirectoryCompleted(id))
     )
   }
