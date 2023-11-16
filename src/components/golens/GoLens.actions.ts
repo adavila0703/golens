@@ -6,6 +6,7 @@ import {
   DirectoryEndpoints,
   IgnoreDirectoryEndpoints,
 } from '../../utils/endpoints'
+import { IgnoreType } from '../../utils/utils'
 
 export const getTableDataCompleted = createAction<any>(
   'GET_DATA_TABLE_COMPLETED'
@@ -152,7 +153,10 @@ export const updateDirectories =
   }
 
 export const createIgnoredDirectory =
-  (directoryName: string): AppThunk =>
+  (directoryName: string, ignoreType: IgnoreType): AppThunk =>
   async () => {
-    post({ directoryName }, IgnoreDirectoryEndpoints.CreateIgnoredDirectory)
+    post(
+      { directoryName, ignoreType },
+      IgnoreDirectoryEndpoints.CreateIgnoredDirectory
+    )
   }
