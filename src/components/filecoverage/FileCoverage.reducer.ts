@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getFileCoverageCompleted } from './FileCoverage.actions'
+import { getFileCoverageCompleted, removeFile } from './FileCoverage.actions'
 
 export interface IFileData {
   totalLines: number
@@ -20,8 +20,14 @@ export const getInitialFileCoverageState = (): IFileCoverageState => {
 export const fileCoverageReducer = createReducer(
   getInitialFileCoverageState(),
   (builder) => {
-    builder.addCase(getFileCoverageCompleted, (state, { payload }) => {
-      state.fileCoverage = payload.fileCoverage
-    })
+    builder
+      .addCase(getFileCoverageCompleted, (state, { payload }) => {
+        state.fileCoverage = payload.fileCoverage
+      })
+      .addCase(removeFile, (state, { payload }) => {
+        state.fileCoverage = state.fileCoverage.filter(
+          (file) => file.fileName !== payload
+        )
+      })
   }
 )

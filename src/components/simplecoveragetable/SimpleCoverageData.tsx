@@ -14,7 +14,7 @@ import { IFileData } from '../filecoverage/FileCoverage.reducer'
 import { IgnoreType, getCoveragePercentage } from '../../utils/utils'
 import { CoverageBar } from '../coveragebar/CoverageBar'
 import { useNavigate, useParams } from 'react-router-dom'
-import { DeleteForever, Tablet } from '@mui/icons-material'
+import { DeleteForever } from '@mui/icons-material'
 import { useAppDispatch } from '../../store/store'
 import { createIgnoredDirectory } from '../golens/GoLens.actions'
 
@@ -55,16 +55,20 @@ export const SimpleCoverageTable = ({
   const handleIgnoreClick = (data: DataTypes) => {
     switch (tableType) {
       case TableType.PACKAGES: {
-        const name = `${params.id}/${(data as IPackageData).packageName}`
-        dispatch(createIgnoredDirectory(name, IgnoreType.PackageType))
+        const name = (data as IPackageData).packageName
+        if (params.id) {
+          dispatch(
+            createIgnoredDirectory(params.id, name, IgnoreType.PackageType)
+          )
+        }
         break
       }
 
       case TableType.FILES: {
-        const name = `${params.id}/${params.packageName}/${
-          (data as IFileData).fileName
-        }`
-        dispatch(createIgnoredDirectory(name, IgnoreType.FileType))
+        const name = `${params.packageName}/${(data as IFileData).fileName}`
+        if (params.id) {
+          dispatch(createIgnoredDirectory(params.id, name, IgnoreType.FileType))
+        }
         break
       }
     }

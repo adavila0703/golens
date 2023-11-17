@@ -7,6 +7,8 @@ import {
   IgnoreDirectoryEndpoints,
 } from '../../utils/endpoints'
 import { IgnoreType } from '../../utils/utils'
+import { removePackage } from '../packagecoverage/PackageCoverage.actions'
+import { removeFile } from '../filecoverage/FileCoverage.actions'
 
 export const getTableDataCompleted = createAction<any>(
   'GET_DATA_TABLE_COMPLETED'
@@ -153,7 +155,20 @@ export const updateDirectories =
   }
 
 export const createIgnoredDirectory =
-  (name: string, ignoreType: IgnoreType): AppThunk =>
-  async () => {
-    post({ name, ignoreType }, IgnoreDirectoryEndpoints.CreateIgnored)
+  (directoryId: string, name: string, ignoreType: IgnoreType): AppThunk =>
+  async (dispatch) => {
+    post(
+      { directoryId, name, ignoreType },
+      IgnoreDirectoryEndpoints.CreateIgnored
+    ).then(() => {
+      switch (ignoreType) {
+        case IgnoreType.PackageType:
+          dispatch(removePackage(name))
+          break
+
+        case IgnoreType.FileType:
+          dispatch(removeFile(name.split('/')[1]))
+          break
+      }
+    })
   }

@@ -62,7 +62,7 @@ export const ActionMenu = ({ id, directoryName }: ActionMenuProps) => {
       case ActionMenuOptions.DELETE_FOREVER:
         dispatch(deleteDirectory(id))
         dispatch(
-          createIgnoredDirectory(directoryName, IgnoreType.DirectoryType)
+          createIgnoredDirectory(id, directoryName, IgnoreType.DirectoryType)
         )
         break
 

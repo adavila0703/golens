@@ -14,3 +14,5 @@ export const getPackageCoverage =
       dispatch(getPackageCoverageCompleted(resp))
     )
   }
+
+export const removePackage = createAction<string>('REMOVE_PACKAGE')
