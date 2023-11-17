@@ -18,3 +18,5 @@ export const getFileCoverage =
       dispatch(getFileCoverageCompleted(resp))
     )
   }
+
+export const removeFile = createAction<string>('REMOVE_FILE')

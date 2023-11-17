@@ -17,6 +17,7 @@ import {
   updateDirectory,
 } from '../../GoLens.actions'
 import { useSnackbar } from 'notistack'
+import { IgnoreType } from '../../../../utils/utils'
 
 interface ActionMenuProps {
   id: string
@@ -60,7 +61,9 @@ export const ActionMenu = ({ id, directoryName }: ActionMenuProps) => {
 
       case ActionMenuOptions.DELETE_FOREVER:
         dispatch(deleteDirectory(id))
-        dispatch(createIgnoredDirectory(directoryName))
+        dispatch(
+          createIgnoredDirectory(id, directoryName, IgnoreType.DirectoryType)
+        )
         break
 
       default:

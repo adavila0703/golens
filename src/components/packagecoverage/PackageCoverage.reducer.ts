@@ -1,5 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getPackageCoverageCompleted } from './PackageCoverage.actions'
+import {
+  getPackageCoverageCompleted,
+  removePackage,
+} from './PackageCoverage.actions'
 
 export interface IPackageData {
   packageName: string
@@ -20,8 +23,14 @@ export const getInitialPackageCoverageState = (): IPackageCoverageState => {
 export const packageCoverageReducer = createReducer(
   getInitialPackageCoverageState(),
   (builder) => {
-    builder.addCase(getPackageCoverageCompleted, (state, { payload }) => {
-      state.data = payload.packageCoverage
-    })
+    builder
+      .addCase(getPackageCoverageCompleted, (state, { payload }) => {
+        state.data = payload.packageCoverage
+      })
+      .addCase(removePackage, (state, { payload }) => {
+        state.data = state.data.filter(
+          (packages) => packages.packageName !== payload
+        )
+      })
   }
 )

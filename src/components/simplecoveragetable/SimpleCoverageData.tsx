@@ -6,13 +6,17 @@ import {
   TableCell,
   TableBody,
   Typography,
+  IconButton,
 } from '@mui/material'
 import { TableName } from './SimpleCoverageData.style'
 import { IPackageData } from '../packagecoverage/PackageCoverage.reducer'
 import { IFileData } from '../filecoverage/FileCoverage.reducer'
-import { getCoveragePercentage } from '../../utils/utils'
+import { IgnoreType, getCoveragePercentage } from '../../utils/utils'
 import { CoverageBar } from '../coveragebar/CoverageBar'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { DeleteForever } from '@mui/icons-material'
+import { useAppDispatch } from '../../store/store'
+import { createIgnoredDirectory } from '../golens/GoLens.actions'
 
 export enum TableType {
   PACKAGES,
@@ -34,6 +38,8 @@ export const SimpleCoverageTable = ({
   forwardNavigation,
 }: ISimpleCoverageTableProps) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const params = useParams()
 
   const forwardNavigate = (data: DataTypes) => {
     const key =
@@ -44,6 +50,28 @@ export const SimpleCoverageTable = ({
     const path = forwardNavigation[key]
 
     navigate(path)
+  }
+
+  const handleIgnoreClick = (data: DataTypes) => {
+    switch (tableType) {
+      case TableType.PACKAGES: {
+        const name = (data as IPackageData).packageName
+        if (params.id) {
+          dispatch(
+            createIgnoredDirectory(params.id, name, IgnoreType.PackageType)
+          )
+        }
+        break
+      }
+
+      case TableType.FILES: {
+        const name = `${params.packageName}/${(data as IFileData).fileName}`
+        if (params.id) {
+          dispatch(createIgnoredDirectory(params.id, name, IgnoreType.FileType))
+        }
+        break
+      }
+    }
   }
 
   return (
@@ -62,6 +90,14 @@ export const SimpleCoverageTable = ({
               <TableCell align="left">
                 <TableName>
                   <Typography>Name</Typography>
+                </TableName>
+              </TableCell>
+              <TableCell align="left">
+                <TableName>
+                  <Typography>
+                    Ignore{' '}
+                    {tableType === TableType.PACKAGES ? 'Package' : 'File'}
+                  </Typography>
                 </TableName>
               </TableCell>
             </TableRow>
@@ -91,6 +127,11 @@ export const SimpleCoverageTable = ({
                         data.coveredLines
                       )}
                     />
+                  </TableCell>
+                  <TableCell align="left">
+                    <IconButton onClick={() => handleIgnoreClick(data)}>
+                      <DeleteForever sx={{ color: 'white' }} />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
