@@ -19,6 +19,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/components/filecoverage/.selector.ts"],
+  "include": ["src", "src/components/file-coverage/.selector.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

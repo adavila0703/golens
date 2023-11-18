@@ -1,7 +1,7 @@
 export type GolensEndpoints =
   | DirectoryEndpoints
   | TasksEndpoints
-  | IgnoreDirectoryEndpoints
+  | IgnoredEndpoints
 
 export enum DirectoryEndpoints {
   GetDirectories = 'api/directory/GetDirectories',
@@ -20,7 +20,7 @@ export enum TasksEndpoints {
   CreateTasks = 'api/tasks/CreateTasks',
 }
 
-export enum IgnoreDirectoryEndpoints {
+export enum IgnoredEndpoints {
   CreateIgnored = 'api/ignored/CreateIgnored',
   GetIgnored = 'api/ignored/GetIgnored',
   DeleteIgnored = 'api/ignored/DeleteIgnored',

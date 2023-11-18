@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { getCoveragePercentage } from '../../../utils/utils'
-import { CoverageBar } from '../../coveragebar/CoverageBar'
+import { CoverageBar } from '../../coverage-bar/CoverageBar'
 import { TotalCoverageContainer } from './TotalCoverage.style'
 
 interface TotalCoverageProps {

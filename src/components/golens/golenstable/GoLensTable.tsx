@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { getTableData } from '../GoLens.actions'
 import { getDataSelector } from '../GoLens.selector'
 import { useNavigate } from 'react-router-dom'
-import { CoverageBar } from '../../coveragebar/CoverageBar'
+import { CoverageBar } from '../../coverage-bar/CoverageBar'
 import {
   Table,
   Checkbox,

@@ -9,10 +9,10 @@ import {
   IconButton,
 } from '@mui/material'
 import { TableName } from './SimpleCoverageData.style'
-import { IPackageData } from '../packagecoverage/PackageCoverage.reducer'
-import { IFileData } from '../filecoverage/FileCoverage.reducer'
+import { IPackageData } from '../package-coverage/PackageCoverage.reducer'
+import { IFileData } from '../file-coverage/FileCoverage.reducer'
 import { IgnoreType, getCoveragePercentage } from '../../utils/utils'
-import { CoverageBar } from '../coveragebar/CoverageBar'
+import { CoverageBar } from '../coverage-bar/CoverageBar'
 import { useNavigate, useParams } from 'react-router-dom'
 import { DeleteForever } from '@mui/icons-material'
 import { useAppDispatch } from '../../store/store'

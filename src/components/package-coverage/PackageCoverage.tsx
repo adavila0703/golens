@@ -13,7 +13,7 @@ import { TotalCoverage } from '../golens/totalcoverage/TotalCoverage'
 import {
   SimpleCoverageTable,
   TableType,
-} from '../simplecoveragetable/SimpleCoverageData'
+} from '../simple-coverage-table/SimpleCoverageData'
 
 export const PackageCoverage = () => {
   const { id } = useParams()
