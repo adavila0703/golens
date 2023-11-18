@@ -5,7 +5,7 @@ import { BarContainer, GoLensContainer, TitleContainer } from './GoLens.style'
 import { useAppSelector } from '../../store/store'
 import { getDataSelector, isLoadingSelector } from './GoLens.selector'
 import { GoLensTable } from './golenstable/GoLensTable'
-import { PageTitle } from '../pagetitle/PageTitle'
+import { PageTitle } from '../page-title/PageTitle'
 import ReactLoading from 'react-loading'
 
 export const GoLens = () => {

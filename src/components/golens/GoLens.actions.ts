@@ -2,13 +2,10 @@
 import { createAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../../store/store'
 import { get, post } from '../../utils/api'
-import {
-  DirectoryEndpoints,
-  IgnoreDirectoryEndpoints,
-} from '../../utils/endpoints'
+import { DirectoryEndpoints, IgnoredEndpoints } from '../../utils/endpoints'
 import { IgnoreType } from '../../utils/utils'
-import { removePackage } from '../packagecoverage/PackageCoverage.actions'
-import { removeFile } from '../filecoverage/FileCoverage.actions'
+import { removePackage } from '../package-coverage/PackageCoverage.actions'
+import { removeFile } from '../file-coverage/FileCoverage.actions'
 
 export const getTableDataCompleted = createAction<any>(
   'GET_DATA_TABLE_COMPLETED'
@@ -159,7 +156,7 @@ export const createIgnoredDirectory =
   async (dispatch) => {
     post(
       { directoryId, name, ignoreType },
-      IgnoreDirectoryEndpoints.CreateIgnored
+      IgnoredEndpoints.CreateIgnored
     ).then(() => {
       switch (ignoreType) {
         case IgnoreType.PackageType:

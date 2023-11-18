@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
 import { GoLens } from './components/golens/GoLens'
 import { Route } from 'react-router-dom'
-import { PackageCoverage } from './components/packagecoverage/PackageCoverage'
-import { FileCoverage } from './components/filecoverage/FileCoverage'
-import { HtmlContent } from './components/htmlcontent/HtmlContent'
+import { PackageCoverage } from './components/package-coverage/PackageCoverage'
+import { FileCoverage } from './components/file-coverage/FileCoverage'
+import { HtmlContent } from './components/html-content/HtmlContent'
 import { Tasks } from './components/tasks/Tasks'
 import { Home, Task, Computer } from '@mui/icons-material'
-import { IgnoredDirectories } from './components/ignoreddirectories/IgnoredDirectories'
+import { Ignored } from './components/ignored/Ignored'
 
 export interface Route {
   path: string
@@ -54,7 +54,7 @@ export const routes: Route[] = [
   },
   {
     path: '/ignore_directory',
-    element: <IgnoredDirectories />,
+    element: <Ignored />,
     index: true,
     navbar: true,
     navbarName: 'Ignored',

@@ -16,7 +16,7 @@ import { useSnackbar } from 'notistack'
 import { TaskTable } from './taskstable/TasksTable'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getDataSelector } from '../golens/GoLens.selector'
-import { PageTitle } from '../pagetitle/PageTitle'
+import { PageTitle } from '../page-title/PageTitle'
 import { getTableData } from '../golens/GoLens.actions'
 
 const ALL_DIRECTORIES = 'All'

@@ -10,22 +10,17 @@ import {
 } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { Delete } from '@mui/icons-material'
-import { ignoredDirectoriesSelector } from './IgnoredDirectories.selector'
-import {
-  deleteIgnoredDirectory,
-  getIgnoredDirectories,
-} from './IgnoredDirectories.actions'
-import { PageTitle } from '../pagetitle/PageTitle'
+import { ignoredSelector } from './Ignored.selector'
+import { deleteIgnored, getIgnored } from './Ignored.actions'
+import { PageTitle } from '../page-title/PageTitle'
 import { IgnoreType } from '../../utils/utils'
 
-export const IgnoredDirectories = () => {
-  const ignoredDirectories = useAppSelector(ignoredDirectoriesSelector)
+export const Ignored = () => {
+  const ignoredData = useAppSelector(ignoredSelector)
   const dispatch = useAppDispatch()
 
-  console.log(ignoredDirectories)
-
   useEffect(() => {
-    dispatch(getIgnoredDirectories())
+    dispatch(getIgnored())
   }, [])
 
   const getIgnoredType = (ignoredType: number) => {
@@ -63,8 +58,8 @@ export const IgnoredDirectories = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {ignoredDirectories &&
-            ignoredDirectories.map((directory, index) => {
+          {ignoredData &&
+            ignoredData.map((directory, index) => {
               return (
                 <TableRow key={index}>
                   <TableCell>
@@ -79,9 +74,7 @@ export const IgnoredDirectories = () => {
                   </TableCell>
                   <TableCell>
                     <Button
-                      onClick={() =>
-                        dispatch(deleteIgnoredDirectory(directory.ID))
-                      }
+                      onClick={() => dispatch(deleteIgnored(directory.ID))}
                     >
                       <Delete />
                     </Button>

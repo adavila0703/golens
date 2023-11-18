@@ -6,7 +6,7 @@ import { Button, Typography } from '@mui/material'
 import { htmlContentSelector } from './HtmlContent.selector'
 import { getHtmlContent } from './HtmlContent.actions'
 import { HtmlContentContainer } from './HtmlContent.style'
-import { PageTitle } from '../pagetitle/PageTitle'
+import { PageTitle } from '../page-title/PageTitle'
 
 export const HtmlContent = () => {
   const { id, packageName, fileName } = useParams()
