@@ -1,36 +1,24 @@
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import {
-  createDirectories,
   createDirectory,
   deleteSelectedIds,
+  findAndCreateDirectories,
+  getGoProjects,
   updateDirectories,
 } from '../GoLens.actions'
 import Button from '@mui/material/Button'
-import Modal from '@mui/material/Modal'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import { TextField, Typography } from '@mui/material'
+import { SelectChangeEvent } from '@mui/material/Select'
 import { getDataSelector } from '../GoLens.selector'
-import {
-  Add,
-  Refresh,
-  SelectAll,
-  Deselect,
-  Delete,
-  Close,
-} from '@mui/icons-material'
-import {
-  ButtonContainer,
-  ModalBoxContainer,
-  ModalContent,
-} from './TableBar.style'
+import { Add, Refresh, SelectAll, Deselect, Delete } from '@mui/icons-material'
+import { ButtonContainer } from './TableBar.style'
 import { useSnackbar } from 'notistack'
+import { AddModal } from './modals/AddModal'
+import { PathListModal } from './modals/PathListModal'
 
-enum TypeSelect {
+export enum TypeSelect {
   NONE,
+  GET_GO_PROJECTS,
   SINGLE_DIRECTORY,
   MULTI_DIRECTORY,
 }
@@ -46,8 +34,10 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
   const data = useAppSelector(getDataSelector)
 
   const [path, setPath] = useState<string>('')
-  const [open, setOpen] = useState(false)
-  const [typeSelect, setTypeSelect] = useState<TypeSelect>(TypeSelect.NONE)
+  const [addModalOpen, setAddModalOpen] = useState(false)
+  const [typeSelect, setTypeSelect] = useState<TypeSelect>(
+    TypeSelect.GET_GO_PROJECTS
+  )
   const [inputError, setInputError] = useState(false)
   const [selectError, setSelectError] = useState(false)
 
@@ -67,26 +57,48 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
     return true
   }
 
-  const saveRepo = () => {
+  const [pathModalOpen, setPathModalOpen] = useState(false)
+  const [pathData, setPathData] = useState<
+    { Path: string; DirectoryName: string }[]
+  >([])
+
+  const goProjectsCallback = (resp: {
+    paths: { Path: string; DirectoryName: string }[]
+  }) => {
+    const existingPaths =
+      data?.map((d) => {
+        return d.path
+      }) || []
+
+    setPathData(resp.paths.filter((path) => !existingPaths.includes(path.Path)))
+    setPathModalOpen(true)
+    setAddModalOpen(false)
+  }
+
+  const saveRepo = async () => {
     const validation = validateSelections()
     if (!validation) {
       return
     }
 
     switch (typeSelect) {
+      case TypeSelect.GET_GO_PROJECTS:
+        dispatch(getGoProjects(path, enqueueSnackbar, goProjectsCallback))
+        break
+
       case TypeSelect.SINGLE_DIRECTORY:
         dispatch(createDirectory(path, enqueueSnackbar))
         break
 
       case TypeSelect.MULTI_DIRECTORY:
-        dispatch(createDirectories(path, enqueueSnackbar))
+        dispatch(findAndCreateDirectories(path, enqueueSnackbar))
         break
 
       default:
         break
     }
 
-    setOpen(false)
+    setAddModalOpen(false)
   }
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -108,7 +120,7 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
     {
       text: 'Add Repos',
       endIcon: <Add />,
-      onClick: () => setOpen(true),
+      onClick: () => setAddModalOpen(true),
       selectedButtons: false,
     },
     {
@@ -137,9 +149,15 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
     },
   ]
 
-  const handleCloseMenu = () => {
-    setOpen(false)
-    setTypeSelect(TypeSelect.NONE)
+  const handleCloseAddModal = () => {
+    setAddModalOpen(false)
+    setTypeSelect(TypeSelect.GET_GO_PROJECTS)
+  }
+
+  const handleClosePathListModal = () => {
+    setPathModalOpen(false)
+    setAddModalOpen(false)
+    setTypeSelect(TypeSelect.GET_GO_PROJECTS)
   }
 
   return (
@@ -163,90 +181,22 @@ export const TableBar = ({ selectedIds, setSelectedIds }: TableBarProps) => {
           }
         })}
       </ButtonContainer>
-      <div>
-        <Modal
-          open={open}
-          onClose={handleCloseMenu}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBoxContainer>
-            <ModalContent>
-              <Button
-                onClick={handleCloseMenu}
-                sx={{
-                  color: 'white',
-                  width: 10,
-                  right: 10,
-                  top: 10,
-                  position: 'absolute',
-                }}
-              >
-                <Close />
-              </Button>
-              <Typography variant="h5">Add Repo</Typography>
-              <FormControl style={{ backgroundColor: 'white' }}>
-                <InputLabel id="directory-type-label" sx={{ color: 'black' }}>
-                  Type
-                </InputLabel>
-                <Select
-                  labelId="directory-type-label"
-                  id="directory-type"
-                  label="Type"
-                  onChange={handleChange}
-                  value={typeSelect === TypeSelect.SINGLE_DIRECTORY ? '1' : '2'}
-                  sx={{
-                    color: 'black',
-                    borderColor: 'white',
-                    backgroundColor: 'white',
-                  }}
-                  error={selectError}
-                >
-                  <MenuItem value={TypeSelect.SINGLE_DIRECTORY}>
-                    Single Directory
-                  </MenuItem>
-                  <MenuItem value={TypeSelect.MULTI_DIRECTORY}>
-                    Multi Directory
-                  </MenuItem>
-                </Select>
-              </FormControl>
+      <AddModal
+        open={addModalOpen}
+        selectError={selectError}
+        inputError={inputError}
+        typeSelect={typeSelect}
+        setPath={setPath}
+        saveRepo={saveRepo}
+        handleCloseMenu={handleCloseAddModal}
+        handleChange={handleChange}
+      />
 
-              <TextField
-                id="outlined-basic"
-                label="Enter path"
-                variant="outlined"
-                onChange={(e) => setPath(e.target.value)}
-                error={inputError}
-                sx={{
-                  color: 'black',
-                  borderColor: 'white',
-                  backgroundColor: 'white',
-                }}
-              />
-              <Button
-                className="manage-repo-button"
-                onClick={saveRepo}
-                variant="outlined"
-                sx={{ color: 'white', borderColor: 'white' }}
-              >
-                Save
-              </Button>
-              {typeSelect == TypeSelect.MULTI_DIRECTORY && (
-                <Typography
-                  sx={{
-                    color: 'red',
-                    fontWeight: 'bold',
-                    backgroundColor: 'black',
-                  }}
-                >
-                  Note: This will walk the given directory and search for any Go
-                  projects to add.
-                </Typography>
-              )}
-            </ModalContent>
-          </ModalBoxContainer>
-        </Modal>
-      </div>
+      <PathListModal
+        pathData={pathData}
+        pathModalOpen={pathModalOpen}
+        handleClosePathListModal={handleClosePathListModal}
+      />
     </>
   )
 }
