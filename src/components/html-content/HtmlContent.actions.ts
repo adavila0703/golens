@@ -10,7 +10,6 @@ export const getHtmlContentCompleted = createAction<any>(
 export const getHtmlContent =
   (id: string, fileName: string, packageName: string): AppThunk =>
   async (dispatch) => {
-    console.log(fileName)
     const body = {
       directoryId: id,
       fileName,

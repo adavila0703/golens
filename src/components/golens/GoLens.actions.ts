@@ -43,7 +43,7 @@ export const createDirectoriesCompleted = createAction<any>(
   'CREATE_DIRECTORIES_COMPLETED'
 )
 
-export const createDirectories =
+export const findAndCreateDirectories =
   (path: string, enqueueSnackbar: any): AppThunk =>
   async (dispatch) => {
     dispatch(tableLoading(true))
@@ -168,4 +168,64 @@ export const createIgnoredDirectory =
           break
       }
     })
+  }
+
+export const getGoProjectsCompleted = createAction<any>(
+  'GET_GO_PROJECTS_COMPLETED'
+)
+
+export const getGoProjects =
+  (
+    rootPath: string,
+    enqueueSnackbar: any,
+    callback: (resp: {
+      paths: {
+        Path: string
+        DirectoryName: string
+      }[]
+    }) => void
+  ): AppThunk =>
+  async (dispatch) => {
+    dispatch(tableLoading(true))
+    const body = {
+      rootPath,
+    }
+
+    post(body, DirectoryEndpoints.GetRootDirectoryPaths)
+      .then((resp) => {
+        callback(resp)
+      })
+      .catch(() => {
+        dispatch(tableLoading(false))
+        enqueueSnackbar(
+          'Path is a go directory, do not select a go directory when selecting the multi directory option.',
+          {
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'center' },
+            hideIconVariant: true,
+          }
+        )
+      })
+  }
+
+export const createDirectories =
+  (paths: string[], enqueueSnackbar: any): AppThunk =>
+  async (dispatch) => {
+    const requests: any[] = []
+
+    paths.forEach((path) => {
+      requests.push({
+        body: { path },
+        endpoint: DirectoryEndpoints.CreateDirectory,
+      })
+    })
+
+    Promise.all(
+      requests.map((req) =>
+        post(req.body, req.endpoint).then((resp) => {
+          dispatch(createDirectoriesCompleted(resp.directory))
+          enqueueSnackbar(`${resp.directory.coverageName} created.`)
+        })
+      )
+    ).finally(() => dispatch(tableLoading(false)))
   }

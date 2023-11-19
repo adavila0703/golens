@@ -11,7 +11,6 @@ const columns: GridColDef[] = [
 
 export const TaskTable = () => {
   const taskData: Task[] = useAppSelector(getTasksSelector)
-  console.log(taskData)
 
   return (
     <div
