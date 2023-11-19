@@ -8,6 +8,8 @@
 
 `golens` is a code coverage visualization tool for your Go projects. Originally built to get an understanding of code coverage across a large microservice architecture.
 
+<img alt="golens-logo" src="src/assets/golens.png"  />
+
 ## Getting started
 
 1. Install and run the golens backend.
