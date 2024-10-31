@@ -30,9 +30,8 @@ export const FileCoverage = () => {
   const forwardNavigation: { [keyof: string]: string } = {}
   fileCoverage?.forEach((data) => {
     const fileName = data.fileName.split('.')[0]
-    forwardNavigation[
-      data.fileName
-    ] = `/package-coverage/${id}/${packageName}/${fileName}`
+    forwardNavigation[data.fileName] =
+      `/package-coverage/${id}/${packageName}/${fileName}`
   })
 
   return (
